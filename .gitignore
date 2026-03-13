@@ -1,0 +1,42 @@
+# Dependencies
+backend/node_modules/
+client/node_modules/
+node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.*
+backend/.env
+backend/.env.*
+client/.env
+client/.env.*
+
+# Build/Dist
+client/dist/
+client/build/
+backend/dist/
+backend/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+backend/logs/
+client/logs/
+*.log
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+# Editor Folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+.cache/
+.npm/
+.vite/
