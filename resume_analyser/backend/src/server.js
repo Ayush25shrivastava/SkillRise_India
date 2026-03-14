@@ -29,3 +29,5 @@ app.listen(PORT,()=>{
 app.get("/", (req,res)=>{
  res.send("Backend running");
 });
+
+console.log("GEMINI KEY:", process.env.GEMINI_API_KEY?.slice(0,10));

@@ -1,29 +1,46 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
+
 dotenv.config();
-import OpenAI from "openai";
 
-const openai = new OpenAI({
- apiKey: process.env.OPENAI_API_KEY
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-export async function extractSkills(resumeText){
+async function safeGenerate(prompt, retryCount = 0) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemma-3-27b-it" });
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  } catch (err) {
+    if (err.message.includes("429") && retryCount < 3) {
+      console.warn(`Quota hit. Retrying...`);
+      await new Promise(r => setTimeout(r, 40000));
+      return safeGenerate(prompt, retryCount + 1);
+    }
+    throw err;
+  }
+}
 
- const prompt = `
- Extract technical skills from the resume.
+export async function extractSkills(resumeText) {
 
- Resume:
- ${resumeText}
+  const prompt = `
+Extract technical skills from this resume.
 
- Return JSON:
- { "skills": [] }
- `;
+Resume:
+${resumeText}
 
- const response = await openai.chat.completions.create({
-   model:"gpt-4o-mini",
-   messages:[{role:"user",content:prompt}]
- });
+Return JSON only:
+{"skills":[]}
+`;
 
- const result = JSON.parse(response.choices[0].message.content);
+  const text = await safeGenerate(prompt);
 
- return result.skills;
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+
+  if (!jsonMatch) {
+    return [];
+  }
+
+  const parsed = JSON.parse(jsonMatch[0]);
+
+  return parsed.skills || [];
 }

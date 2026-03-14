@@ -1,24 +1,24 @@
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
 
-const openai = new OpenAI({
- apiKey:process.env.OPENAI_API_KEY
-});
+dotenv.config();
 
-export async function generateSuggestions(resume,job){
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+export async function generateSuggestions(resume, job){
+
+ const model = genAI.getGenerativeModel({
+  model: "gemma-3-27b-it"
+ });
 
  const prompt = `
- Analyze resume 
+ Analyze the resume and suggest improvements to increase ATS score.
 
  Resume:
  ${resume}
-
- Suggest improvements to increase ATS score.
  `;
 
- const res = await openai.chat.completions.create({
-   model:"gpt-4o-mini",
-   messages:[{role:"user",content:prompt}]
- });
+ const result = await model.generateContent(prompt);
 
- return res.choices[0].message.content;
+ return result.response.text();
 }

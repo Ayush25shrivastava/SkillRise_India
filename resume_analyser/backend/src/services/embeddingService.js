@@ -1,20 +1,43 @@
-import OpenAI from "openai";
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+// import cosineSimilarity from "cosine-similarity";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// export async function getEmbedding(text) {
+
+//  const model = genAI.getGenerativeModel({
+//   model: "embedding-001"
+//  });
+
+//  const result = await model.embedContent(text);
+
+//  return result.embedding.values;
+// }
+
+// export function compareEmbeddings(vec1, vec2) {
+//  return cosineSimilarity(vec1, vec2);
+// }
+
 import cosineSimilarity from "cosine-similarity";
 
-const openai = new OpenAI({
- apiKey:process.env.OPENAI_API_KEY
-});
+function textToVector(text) {
+  const words = text.toLowerCase().split(/\W+/);
+  const vector = {};
 
-export async function getEmbedding(text){
+  words.forEach(w => {
+    vector[w] = (vector[w] || 0) + 1;
+  });
 
- const res = await openai.embeddings.create({
-   model:"text-embedding-3-small",
-   input:text
- });
-
- return res.data[0].embedding;
+  return vector;
 }
 
-export function compareEmbeddings(vec1,vec2){
- return cosineSimilarity(vec1,vec2);
+export async function getEmbedding(text) {
+  return textToVector(text);
+}
+
+export function compareEmbeddings(vec1, vec2) {
+  return cosineSimilarity(vec1, vec2);
 }

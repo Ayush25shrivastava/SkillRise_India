@@ -31,4 +31,5 @@ export async function analyzeResume(req,res){
   res.status(500).json({error:err.message});
  }
 
+
 }

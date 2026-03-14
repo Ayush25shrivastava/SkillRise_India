@@ -1,8 +1,4 @@
-// import { createRequire } from "module";
 // import mammoth from "mammoth";
-
-// const require = createRequire(import.meta.url);
-// const pdfParse = require("pdf-parse");
 
 // export async function parseResume(file) {
 
@@ -12,30 +8,34 @@
 
 //   // PDF
 //   if (file.mimetype === "application/pdf") {
+
+//     const pdfModule = await import("pdf-parse");
+//     const pdfParse = pdfModule.default || pdfModule;
+
 //     const data = await pdfParse(file.buffer);
+
 //     return data.text;
 //   }
 
 //   // DOCX
 //   if (
 //     file.mimetype ===
-//     "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+//       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
 //     file.mimetype.includes("word")
 //   ) {
-//     const result = await mammoth.extractRawText({ buffer: file.buffer });
+
+//     const result = await mammoth.extractRawText({
+//       buffer: file.buffer
+//     });
+
 //     return result.value;
 //   }
 
 //   return file.buffer.toString();
 // }
+// backend/src/services/resumeParser.js
+import pdf from "pdf-parse/lib/pdf-parse.js";
 import mammoth from "mammoth";
-import { createRequire } from "module";
-
-const require = createRequire(import.meta.url);
-const pdfModule = require("pdf-parse");
-
-// Fix for Node ESM interop
-const pdfParse = pdfModule.default || pdfModule;
 
 export async function parseResume(file) {
 
@@ -46,7 +46,7 @@ export async function parseResume(file) {
   // PDF
   if (file.mimetype === "application/pdf") {
 
-    const data = await pdfParse(file.buffer);
+    const data = await pdf(file.buffer);
 
     return data.text;
   }
@@ -54,7 +54,7 @@ export async function parseResume(file) {
   // DOCX
   if (
     file.mimetype ===
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
     file.mimetype.includes("word")
   ) {
 
