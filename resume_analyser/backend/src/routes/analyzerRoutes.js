@@ -8,7 +8,7 @@
 // router.post("/analyze", upload.single("resume"), analyzeResume);
 
 // export default router;
-
+//backend/src/routes/analyzerRoutes.js
 import express from "express";
 import multer from "multer";
 

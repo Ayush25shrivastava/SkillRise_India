@@ -14,6 +14,9 @@ export async function analyzeResume(req,res){
  const score = calculateATS(skills,req.body.jobSkills,0.8);
 
  const suggestions = await generateSuggestions(text,req.body.jobDescription);
+ 
+  const jobSkills = req.body?.jobSkills || [];
+  const jobDescription = req.body?.jobDescription || "";
 
  res.json({
   skills,

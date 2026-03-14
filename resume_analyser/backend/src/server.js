@@ -25,3 +25,7 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT,()=>{
     console.log(`AI Resume Analyzer running on ${PORT}`);
 });
+
+app.get("/", (req,res)=>{
+ res.send("Backend running");
+});

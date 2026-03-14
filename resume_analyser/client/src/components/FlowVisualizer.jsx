@@ -1,5 +1,6 @@
+// resume_analyser\client\src\components\FlowVisualizer.jsx
 import ReactFlow from "reactflow";
-
+import "reactflow/dist/style.css";
 const nodes = [
 
  { id:"1", position:{x:0,y:0}, data:{label:"Resume Upload"}, type:"default" },
