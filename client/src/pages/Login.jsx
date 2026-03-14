@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -8,6 +8,10 @@ export default function Login() {
     password: ""
   });
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract the destination where the user was trying to go
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleChange = (e) => {
     setForm({
@@ -21,8 +25,9 @@ export default function Login() {
     try {
       const res = await loginUser(form);
       localStorage.setItem("token", res.data.token);
-      alert("Login successful!");
-      navigate("/dashboard"); 
+      
+      // Redirect to the originally intended page or dashboard
+      navigate(from, { replace: true }); 
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     }

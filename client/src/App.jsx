@@ -3,24 +3,47 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Profile from "./pages/Profile.jsx";
+import AICareerAssistant from "./pages/AICareerAssistant.jsx";
+import ResumeAnalyzer from "./pages/ResumeAnalyzer.jsx";
+import SkillGapAnalysis from "./pages/SkillGapAnalysis.jsx";
+import CareerExplorer from "./pages/CareerExplorer.jsx";
+import LearningRoadmap from "./pages/LearningRoadmap.jsx";
+import JobsAndInternships from "./pages/JobsAndInternships.jsx";
+import GovernmentSchemes from "./pages/GovernmentSchemes.jsx";
+import SkillProgress from "./pages/SkillProgress.jsx";
+import Feedback from "./pages/Feedback.jsx";
 import Navbar from "./components/Navbar.jsx";
+import MainLayout from "./components/layout/MainLayout.jsx";
+import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 
 function App() {
 
   return (
 
     <BrowserRouter>
-      <Navbar />
-
       <Routes>
 
         <Route path="/" element={<Navigate to="/login" />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<><Navbar /><Login /></>} />
+        <Route path="/register" element={<><Navbar /><Register /></>} />
 
-        <Route path="/register" element={<Register />} />
-
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/ai-assistant" element={<AICareerAssistant />} />
+            <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
+            <Route path="/skill-gap" element={<SkillGapAnalysis />} />
+            <Route path="/career-explorer" element={<CareerExplorer />} />
+            <Route path="/learning-roadmap" element={<LearningRoadmap />} />
+            <Route path="/jobs" element={<JobsAndInternships />} />
+            <Route path="/schemes" element={<GovernmentSchemes />} />
+            <Route path="/progress" element={<SkillProgress />} />
+            <Route path="/feedback" element={<Feedback />} />
+          </Route>
+        </Route>
 
       </Routes>
 
