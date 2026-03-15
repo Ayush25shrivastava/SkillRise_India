@@ -1,412 +1,548 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Upload,
-  CheckCircle2,
-  AlertCircle,
-  Code2,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
-  FileText,
-  Clock,
-  Download,
-  Trash2,
-  ChevronRight,
-  Target,
-  FileSearch
-} from 'lucide-react';
-import { cn } from '../services/utils';
+// import React, { useState } from "react";
+// import { analyzeResume } from "../services/resumeAnalyzerService";
+// import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
+// import { UploadCloud } from "lucide-react";
 
-/* ─────────────────────────────────────────────
-   Skill Tag
-───────────────────────────────────────────── */
-const SkillTag = ({ name, type = 'detected' }) => (
-  <span className={cn(
-    'px-3.5 py-1.5 rounded-lg text-[12px] font-bold uppercase tracking-wider transition-all',
-    type === 'detected'
-      ? 'bg-white/5 border border-white/10 text-white/60 hover:text-white'
-      : 'bg-red-500/10 border border-red-500/20 text-red-400'
-  )}>
-    {name}
-  </span>
-);
+// const cleanText = (text) => {
+//   if (!text) return "";
+//   return text
+//     .replace(/\*\*/g, "")
+//     .replace(/```/g, "")
+//     .replace(/^\s*-\s*/gm, "• ")
+//     .replace(/\n{2,}/g, "\n\n");
+// };
 
-/* ─────────────────────────────────────────────
-   Analysis Section Card
-───────────────────────────────────────────── */
-const AnalysisSection = ({ title, icon: Icon, children }) => (
-  <div className="bg-[#0c0c14]/40 backdrop-blur-md border border-white/[0.08] rounded-3xl p-7 transition-all hover:bg-white/[0.05] h-full shadow-xl">
-    <div className="flex items-center gap-3 mb-6">
-      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 shadow-inner">
-        <Icon size={20} strokeWidth={2} />
-      </div>
-      <h3 className="text-[13px] font-black text-white/40 uppercase tracking-[0.2em]">{title}</h3>
-    </div>
-    {children}
-  </div>
-);
+// const ResumeAnalyzer = () => {
+//   const [result, setResult] = useState(null);
+//   const [loading, setLoading] = useState(false);
 
-/* ─────────────────────────────────────────────
-   Resume Analyzer Page
-───────────────────────────────────────────── */
+//   const handleUpload = async (e) => {
+//     const file = e.target.files[0];
+//     if (!file) return;
+
+//     setLoading(true);
+
+//     try {
+//       const response = await analyzeResume(file);
+
+//       const skillScore = Math.min((response.skills?.length || 0) * 5, 40);
+//       const suggestionPenalty =
+//         response.suggestions?.length > 800 ? 10 : 0;
+
+//       const atsScore = Math.min(100, 60 + skillScore - suggestionPenalty);
+
+//       setResult({
+//         ...response,
+//         atsScore
+//       });
+
+//     } catch (error) {
+//       console.error(error);
+//     }
+
+//     setLoading(false);
+//   };
+
+//   const chartData = [{ name: "ATS", value: result?.atsScore || 0 }];
+
+//   return (
+//     <div className="w-full min-h-screen bg-gradient-to-b from-[#071428] to-[#020617] text-white p-8">
+
+//       {/* HERO */}
+
+//       <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+//         {/* LEFT SIDE */}
+
+//         <div className="max-w-xl">
+
+//           <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+//             Free ATS Resume Checker
+//           </h1>
+
+//           <p className="text-gray-400 text-lg mb-8">
+//             Our free ATS Resume Checker scans for 30+ criteria and delivers
+//             instant suggestions to boost your resume score — right from your
+//             desktop or mobile device.
+//           </p>
+
+//           {/* Upload Card */}
+
+//           <div className="border border-dashed border-gray-600 rounded-xl p-8 bg-[#0f172a]">
+
+//             <label
+//               htmlFor="resumeUpload"
+//               className="flex flex-col items-center cursor-pointer"
+//             >
+
+//               <UploadCloud size={40} className="mb-4 text-blue-400" />
+
+//               <span className="bg-teal-500 hover:bg-teal-600 px-6 py-3 rounded-full font-semibold">
+//                 Check Your Score
+//               </span>
+
+//               <p className="text-sm text-gray-400 mt-4 text-center">
+//                 Upload or choose a file: DOC, DOCX, PDF, HTML, RTF, TXT
+//                 <br />
+//                 (max 5MB)
+//               </p>
+
+//             </label>
+
+//             <input
+//               type="file"
+//               id="resumeUpload"
+//               className="hidden"
+//               onChange={handleUpload}
+//             />
+
+//           </div>
+
+//           {/* STATS */}
+
+//           <div className="flex gap-12 mt-8 text-sm">
+
+//             <div>
+//               <p className="text-yellow-400 font-semibold">
+//                 ↑ 30% higher chance
+//               </p>
+//               <p className="text-gray-400">of getting a job</p>
+//             </div>
+
+//             <div>
+//               <p className="text-green-400 font-semibold">
+//                 ↑ 42% response rate
+//               </p>
+//               <p className="text-gray-400">from recruiters</p>
+//             </div>
+
+//           </div>
+
+//         </div>
+
+//         {/* RIGHT SIDE IMAGE */}
+
+//         <div className="hidden lg:flex justify-center">
+
+//           <img
+//             src="/resume.png"
+//             alt="Resume preview"
+//             className="w-[420px] rounded-xl shadow-2xl"
+//           />
+
+//         </div>
+
+//       </div>
+
+//       {/* LOADING */}
+
+//       {loading && (
+//         <p className="text-gray-400 mt-10">
+//           Analyzing resume...
+//         </p>
+//       )}
+
+//       {/* RESULTS */}
+
+//       {result && (
+
+//         <div className="mt-16 space-y-10">
+
+//           {/* ATS SCORE */}
+
+//           <div className="bg-[#0f172a] p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-8">
+
+//             <div>
+
+//               <h2 className="text-2xl font-semibold mb-2">
+//                 ATS Score
+//               </h2>
+
+//               <p className="text-gray-400">
+//                 Resume compatibility with applicant tracking systems
+//               </p>
+
+//             </div>
+
+//             <div className="flex items-center gap-6">
+
+//               <RadialBarChart
+//                 width={200}
+//                 height={200}
+//                 innerRadius="70%"
+//                 outerRadius="100%"
+//                 data={chartData}
+//                 startAngle={90}
+//                 endAngle={-270}
+//               >
+
+//                 <PolarAngleAxis
+//                   type="number"
+//                   domain={[0, 100]}
+//                   tick={false}
+//                 />
+
+//                 <RadialBar
+//                   dataKey="value"
+//                   cornerRadius={10}
+//                   fill="#22c55e"
+//                 />
+
+//               </RadialBarChart>
+
+//               <div className="text-4xl font-bold text-green-400">
+//                 {result.atsScore}
+//               </div>
+
+//             </div>
+
+//           </div>
+
+//           {/* SKILLS */}
+
+//           <div className="bg-[#0f172a] p-8 rounded-xl">
+
+//             <h2 className="text-2xl font-semibold mb-6">
+//               Extracted Skills
+//             </h2>
+
+//             <div className="flex flex-wrap gap-3">
+
+//               {result.skills?.map((skill, index) => (
+
+//                 <span
+//                   key={index}
+//                   className="bg-purple-600 px-4 py-1 rounded-full text-sm"
+//                 >
+//                   {skill}
+//                 </span>
+
+//               ))}
+
+//             </div>
+
+//           </div>
+
+//           {/* SUGGESTIONS */}
+
+//           <div className="bg-[#0f172a] p-8 rounded-xl">
+
+//             <h2 className="text-2xl font-semibold mb-6">
+//               Resume Suggestions
+//             </h2>
+
+//             <div className="space-y-3 text-gray-300 leading-relaxed">
+
+//               {cleanText(result.suggestions)
+//                 .split("\n")
+//                 .map((line, i) => (
+//                   <p key={i}>{line}</p>
+//                 ))}
+
+//             </div>
+
+//           </div>
+
+//         </div>
+
+//       )}
+
+//     </div>
+//   );
+// };
+
+// export default ResumeAnalyzer;
+
+
+
+
+import React, { useState } from "react";
+import { analyzeResume } from "../services/resumeAnalyzerService";
+import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
+import { UploadCloud, Sparkles } from "lucide-react";
+
+const cleanText = (text) => {
+  if (!text) return "";
+  return text
+    .replace(/\*\*/g, "")
+    .replace(/```/g, "")
+    .replace(/^\s*-\s*/gm, "• ")
+    .replace(/\n{2,}/g, "\n\n");
+};
+
 const ResumeAnalyzer = () => {
-  const [file, setFile] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [hasAnalyzed, setHasAnalyzed] = useState(false);
-  const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const careerGoal = "Frontend Architect";
-
-  useEffect(() => {
-    if (file && !hasAnalyzed && !isAnalyzing) {
-      startAnalysis();
-    }
-  }, [file, hasAnalyzed, isAnalyzing]);
-
-  const startAnalysis = () => {
-    setIsAnalyzing(true);
-    setAnalysisProgress(0);
-    
-    const interval = setInterval(() => {
-      setAnalysisProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 60);
-
-    setTimeout(() => {
-      setIsAnalyzing(false);
-      setHasAnalyzed(true);
-    }, 3500);
-  };
-
-  const handleFileUpload = (f) => {
-    if (f) {
-      setFile(f);
-      setHasAnalyzed(false);
-    }
-  };
-
-  const handleDownloadReport = () => {
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
     if (!file) return;
-    
-    const reportContent = `
-SKILLRISE AI - RESUME ANALYSIS REPORT
---------------------------------------
-File: ${file.name}
-ATS Match Score: 82%
-Status: Highly Compatible
-Career Path: ${careerGoal}
 
-COMPETENCY STRENGTHS:
-- React (85%)
-- Node.js (72%)
-- TypeScript (64%)
+    setLoading(true);
 
-CRITICAL COMPETENCY GAPS:
-- Docker
-- AWS Cloud
-- Jest
-- Kubernetes
+    try {
+      const response = await analyzeResume(file);
 
-AI RECOMMENDATIONS:
-1. Include measurable performance metrics.
-2. Optimize professional summary with role-specific keywords.
-3. Highlight Cloud certifications prominently.
-4. Consolidate historical roles to optimize space.
+      const skillScore = Math.min((response.skills?.length || 0) * 5, 40);
+      const suggestionPenalty =
+        response.suggestions?.length > 800 ? 10 : 0;
 
-Generated by SkillRise AI - ${new Date().toLocaleDateString()}
-    `;
+      const atsScore = Math.min(100, 60 + skillScore - suggestionPenalty);
 
-    const blob = new Blob([reportContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `SkillRise_Report_${file.name.split('.')[0]}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      setResult({
+        ...response,
+        atsScore,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setLoading(false);
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-6 px-4 md:px-8 lg:px-10 pb-6">
-      
-      {/* Page header (Original Design) */}
-      <div className="shrink-0 mt-4 flex flex-col items-center justify-center text-center">
-        <h1 className="text-[32px] md:text-[36px] font-bold text-white tracking-tight mb-3">
-          Resume <span className="text-white/30 font-light">Analyzer</span>
-        </h1>
-        <p className="text-[15px] md:text-[16px] text-white/50 max-w-2xl leading-relaxed">
-          Upload your resume to quantify your professional presence and identify critical competency gaps before applying.
-        </p>
-      </div>
+    <div className="w-full min-h-screen px-10 py-12 text-white bg-[#020617]">
 
-      {/* Main content grid */}
-      <div className="flex flex-col gap-6 flex-1 items-center justify-center w-full">
+      {/* HERO */}
 
-        {!file && !hasAnalyzed ? (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-12 mt-4 md:mt-0">
-            {/* Huge dropzone (Original Design) */}
-            <div
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setIsDragging(false);
-                const droppedFile = e.dataTransfer.files[0];
-                handleFileUpload(droppedFile);
-              }}
-              className={cn(
-                'relative flex flex-col items-center justify-center w-full max-w-5xl min-h-[360px] border-[3px] border-dashed rounded-[40px] transition-all bg-[#0a0a0f]/80 backdrop-blur-xl group cursor-pointer',
-                isDragging
-                  ? 'border-purple-500/60 bg-purple-500/10 scale-[1.02] shadow-[0_0_60px_rgba(168,85,247,0.2)]'
-                  : 'border-white/[0.06] hover:border-purple-500/40 hover:bg-white/[0.02] hover:shadow-[0_0_50px_rgba(168,85,247,0.08)]'
-              )}
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+        {/* LEFT */}
+
+        <div>
+
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
+            Free ATS Resume Checker
+          </h1>
+
+          <p className="text-gray-400 text-lg mb-10">
+            Scan your resume against ATS systems and receive
+            actionable insights to improve your chances of
+            landing interviews.
+          </p>
+
+          {/* Upload */}
+
+          <div className="bg-gradient-to-r from-red-900/40 to-indigo-900/30 border border-white/10 p-10 rounded-2xl backdrop-blur">
+
+            <label
+              htmlFor="resumeUpload"
+              className="flex flex-col items-center cursor-pointer"
             >
-              <label className="absolute inset-0 w-full h-full cursor-pointer z-10">
-                <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0])} accept=".pdf,.docx,.doc" />
-              </label>
-              <div className="flex flex-col items-center gap-6 pointer-events-none">
-                <div className="w-24 h-24 rounded-[28px] bg-white/[0.02] border border-white/10 flex items-center justify-center text-white/40 group-hover:text-purple-400 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 transition-all duration-500 group-hover:scale-110 shadow-2xl mb-2">
-                  <Upload size={44} strokeWidth={1.5} />
-                </div>
-                <div className="text-center space-y-3">
-                  <h3 className="text-[26px] md:text-[30px] font-bold text-white tracking-tight">Drop your resume here</h3>
-                  <p className="text-white/40 text-[15px] font-medium tracking-wide">Supports PDF, DOCX (Max 10MB)</p>
-                </div>
-                <div className="flex items-center justify-center gap-3 opacity-60 mt-4 bg-white/5 transition-colors px-6 py-2.5 rounded-full border border-white/10 group-hover:bg-white/10 group-hover:opacity-100">
-                  <ShieldCheck size={16} />
-                  <span className="text-[12px] font-bold uppercase tracking-widest text-white/80">End-to-End Encrypted</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Analysis History Section (Original Design) */}
-            <div className="w-full max-w-5xl flex flex-col gap-6 mt-8 pb-10">
-              <div className="flex items-center gap-5 opacity-80">
-                <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-white/60">Analysis History</span>
-                <div className="h-px bg-white/10 flex-1" />
-              </div>
-              
-              <div className="flex flex-col gap-3 w-full">
-                {/* Row Item 1 */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between p-5 md:px-6 md:py-5 rounded-[20px] bg-[#0c0c14]/50 border border-white/[0.05] hover:bg-white/[0.03] hover:border-white/[0.1] transition-all cursor-pointer group shadow-lg gap-4 md:gap-0">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/10 text-purple-400 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors shrink-0">
-                      <FileText size={22} strokeWidth={2} />
-                    </div>
-                    <div className="flex flex-col justify-center gap-1.5">
-                      <p className="text-[16px] text-white/90 font-bold tracking-wide group-hover:text-white transition-colors">Frontend Developer Match</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[12px] font-bold uppercase tracking-widest text-white/30">2 days ago</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span className="text-[13px] text-white/50 font-medium">3 Missing Skills</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-6 self-start md:self-auto pl-[68px] md:pl-0">
-                    <div className="flex flex-col items-start md:items-end gap-1">
-                      <span className="text-[18px] text-emerald-400 font-black leading-none">82%</span>
-                      <span className="text-[11px] uppercase tracking-widest text-white/40 font-bold">ATS Score</span>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 group-hover:text-white text-white/30 transition-all hidden md:flex">
-                      <ArrowRight size={18} />
-                    </div>
-                  </div>
-                </div>
+              <UploadCloud size={42} className="text-blue-400 mb-4"/>
 
-                {/* Row Item 2 */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between p-5 md:px-6 md:py-5 rounded-[20px] bg-[#0c0c14]/50 border border-white/[0.05] hover:bg-white/[0.03] hover:border-white/[0.1] transition-all cursor-pointer group shadow-lg gap-4 md:gap-0">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/10 text-indigo-400 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors shrink-0">
-                      <FileText size={22} strokeWidth={2} />
-                    </div>
-                    <div className="flex flex-col justify-center gap-1.5">
-                      <p className="text-[16px] text-white/90 font-bold tracking-wide group-hover:text-white transition-colors">Fullstack Engineer Match</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[12px] font-bold uppercase tracking-widest text-white/30">1 week ago</span>
-                        <span className="w-1 h-1 rounded-full bg-white/20" />
-                        <span className="text-[13px] text-white/50 font-medium">5 Missing Skills</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-6 self-start md:self-auto pl-[68px] md:pl-0">
-                    <div className="flex flex-col items-start md:items-end gap-1">
-                      <span className="text-[18px] text-amber-400 font-black leading-none">71%</span>
-                      <span className="text-[11px] uppercase tracking-widest text-white/40 font-bold">ATS Score</span>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 group-hover:text-white text-white/30 transition-all hidden md:flex">
-                      <ArrowRight size={18} />
-                    </div>
-                  </div>
-                </div>
+              <span className="bg-teal-500 hover:bg-teal-600 px-8 py-3 rounded-full font-semibold text-lg transition">
+                Upload Resume
+              </span>
 
-                {/* View All */}
-                <button className="w-full mt-2 py-4 rounded-[20px] border-2 border-white/[0.05] border-dashed flex items-center justify-center gap-3 hover:bg-white/[0.03] hover:border-white/20 transition-all group text-white/50 hover:text-white/90">
-                  <Clock size={16} className="group-hover:scale-110 transition-transform" />
-                  <span className="text-[13px] uppercase tracking-[0.2em] font-bold">View Full History</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : isAnalyzing ? (
-          
-          <div className="h-full w-full flex flex-col items-center justify-center flex-1 space-y-10 animate-in fade-in duration-700">
-            {/* Immersive Pulse Animation */}
-            <div className="relative w-48 h-48 flex items-center justify-center">
-              <div className="absolute inset-0 bg-purple-500/20 rounded-full blur-[40px] animate-pulse" />
-              <div className="absolute inset-[-20%] bg-blue-500/10 rounded-full blur-[50px] animate-pulse" style={{ animationDelay: '1s' }} />
+              <p className="text-gray-400 text-sm mt-4 text-center">
+                DOC • DOCX • PDF • HTML • TXT  
+                <br />
+                Max file size 5MB
+              </p>
 
-              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-purple-400/80 border-r-purple-500/30 animate-[spin_1.5s_linear_infinite] shadow-[0_0_20px_rgba(168,85,247,0.3)]" />
-              <div className="absolute inset-4 rounded-full border-2 border-transparent border-b-cyan-400/80 border-l-cyan-500/30 animate-[spin_2s_linear_infinite_reverse] shadow-[0_0_15px_rgba(34,211,238,0.3)]" />
-              <div className="absolute inset-8 rounded-full border-2 border-transparent border-t-indigo-400/80 animate-[spin_3s_linear_infinite]" />
-              
-              <div className="absolute inset-0 m-auto w-16 h-16 bg-[#0a0a0f] rounded-full border border-white/10 flex items-center justify-center shadow-inner z-10">
-                  <Sparkles className="text-purple-400 animate-pulse" size={28} />
-              </div>
-            </div>
+            </label>
 
-            <div className="flex flex-col items-center gap-6">
-              <div className="space-y-2 text-center">
-                 <h3 className="text-[28px] font-black text-white tracking-widest uppercase italic animate-pulse">Analyzing</h3>
-                 <p className="text-white/20 text-[11px] font-black uppercase tracking-[0.5em]">Neural Logic Synthesis</p>
-              </div>
-              {/* Progress Tracker */}
-              <div className="w-64 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                <div 
-                  className="h-full bg-gradient-to-r from-purple-600 via-indigo-500 to-cyan-500 transition-all duration-300 ease-out"
-                  style={{ width: `${analysisProgress}%` }}
-                />
-              </div>
-            </div>
+            <input
+              type="file"
+              id="resumeUpload"
+              className="hidden"
+              onChange={handleUpload}
+            />
+
           </div>
 
-        ) : hasAnalyzed && file ? (
+          {/* STATS */}
 
-          <div className="w-full h-full flex flex-col gap-8 animate-in slide-in-from-bottom-8 duration-700">
-            {/* Top Bar for analyzed file */}
-            <div className="flex flex-col md:flex-row items-center justify-between bg-[#0b0b12]/60 border border-white/[0.08] p-5 rounded-[24px] backdrop-blur-xl gap-4 shrink-0 shadow-lg">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 text-purple-400 flex items-center justify-center border border-purple-500/20 shadow-inner">
-                  <CheckCircle2 size={28} />
-                </div>
-                <div>
-                  <p className="text-white font-bold text-[16px] tracking-tight">{file.name}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-white/30 text-[10px] font-black uppercase tracking-[0.2em]">Analysis Active</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span className="text-white/40 text-[11px] font-medium">{(file.size/1024/1024).toFixed(2)} MB PDF</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => { setFile(null); setHasAnalyzed(false); }} 
-                  className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-bold text-[11px] uppercase tracking-widest transition-all border border-white/5 active:scale-95"
-                >
-                  New Analysis
-                </button>
-              </div>
+          <div className="flex gap-16 mt-10">
+
+            <div>
+              <p className="text-yellow-400 font-semibold text-lg">
+                ↑ 30% higher chance
+              </p>
+              <p className="text-gray-400 text-sm">
+                of getting a job
+              </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-8 items-stretch pb-10">
-              
-              {/* Card 1: Score & Export */}
-              <div className="w-full lg:w-[320px] shrink-0">
-                <AnalysisSection title="ATS Match Score" icon={Sparkles}>
-                  <div className="flex flex-col items-center text-center gap-10 py-6">
-                    <div className="relative w-44 h-44 flex items-center justify-center">
-                      <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                        <circle cx="88" cy="88" r="78" fill="transparent" stroke="rgba(255,255,255,0.03)" strokeWidth="14" />
-                        <circle cx="88" cy="88" r="78" fill="transparent" stroke="url(#ats-gradient)" strokeWidth="14" strokeLinecap="round" strokeDasharray="490" strokeDashoffset={490 * (1 - 0.82)} className="transition-all duration-1000 ease-out" />
-                        <defs>
-                          <linearGradient id="ats-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#a786ff" />
-                            <stop offset="100%" stopColor="#60a5fa" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                      <span className="text-[58px] font-black text-white tracking-tighter">82%</span>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <h4 className="text-[20px] font-bold text-white tracking-tight">Highly Compatible</h4>
-                      <p className="text-[14px] text-white/40 leading-relaxed font-medium">
-                        Your resume aligns with {careerGoal} standards.
-                      </p>
-                    </div>
-
-                    <button 
-                      onClick={handleDownloadReport}
-                      className="w-full py-4 rounded-[20px] bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-xl flex items-center justify-center gap-3 group font-bold tracking-wider"
-                    >
-                      <Download size={18} />
-                      Export Report
-                    </button>
-                  </div>
-                </AnalysisSection>
-              </div>
-
-              {/* Card 2: Competency Breakdown */}
-              <div className="flex-1 flex flex-col gap-8">
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 h-full">
-                  <AnalysisSection title="Competency Match" icon={Target}>
-                    <div className="space-y-6 pt-2 h-full">
-                      <div className="space-y-5">
-                        {[
-                          { name: 'React', value: 85, color: 'bg-purple-500' },
-                          { name: 'Node.js', value: 72, color: 'bg-indigo-500' },
-                          { name: 'TypeScript', value: 64, color: 'bg-blue-500' }
-                        ].map((skill, idx) => (
-                          <div key={idx} className="space-y-2">
-                            <div className="flex justify-between items-end px-1">
-                              <span className="text-[14px] text-white/90 font-bold tracking-tight">{skill.name}</span>
-                              <span className="text-[12px] font-black text-white/40">{skill.value}%</span>
-                            </div>
-                            <div className="h-2 w-full bg-[#0a0a0f] rounded-full overflow-hidden border border-white/[0.05]">
-                              <div className={cn("h-full transition-all duration-1000", skill.color)} style={{ width: `${skill.value}%` }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="pt-8 border-t border-white/[0.05]">
-                        <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-white/30 mb-3">Missing Essentials</h4>
-                        <div className="flex flex-wrap gap-2.5">
-                          {['Docker', 'AWS Cloud', 'Jest', 'Kubernetes'].map(g => <SkillTag key={g} name={g} type="gap" />)}
-                        </div>
-                      </div>
-                    </div>
-                  </AnalysisSection>
-
-                  <AnalysisSection title="AI Optimization" icon={AlertCircle}>
-                    <div className="flex flex-col gap-4 pt-1 h-full">
-                      {[
-                        'Add measurable metrics like "Increased performance by 40%".',
-                        'Refine the "Professional Summary" to include keywords.',
-                        'Highlight Cloud certifications in header.',
-                        'Prune historical roles beyond threshold.'
-                      ].map((t, i) => (
-                        <div key={i} className="bg-[#0a0a12]/50 border border-white/[0.05] rounded-[20px] p-5 flex gap-4 items-start group hover:bg-white/[0.04] transition-all">
-                          <div className="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center shrink-0 text-[10px] font-black text-white/20 group-hover:text-purple-400 border border-white/5">
-                            {i+1}
-                          </div>
-                          <p className="text-[14px] text-white/50 leading-relaxed font-medium group-hover:text-white/90 transition-colors">{t}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </AnalysisSection>
-                </div>
-              </div>
+            <div>
+              <p className="text-green-400 font-semibold text-lg">
+                ↑ 42% response rate
+              </p>
+              <p className="text-gray-400 text-sm">
+                from recruiters
+              </p>
             </div>
+
           </div>
-        ) : null}
+
+        </div>
+
+        {/* RIGHT IMAGE */}
+
+        <div className="flex justify-center">
+
+          <div className="bg-[#0f172a] p-6 rounded-2xl shadow-xl border border-white/10">
+
+            <img
+              src="/resume.png"
+              alt="Resume"
+              className="w-[350px] rounded-xl"
+            />
+
+          </div>
+
+        </div>
+
       </div>
+
+
+      {/* LOADING */}
+
+      {loading && (
+        <div className="text-center mt-16 text-gray-400">
+          <Sparkles className="animate-spin mx-auto mb-4" />
+          Analyzing Resume...
+        </div>
+      )}
+
+
+      {/* RESULTS */}
+
+      {result && (
+
+        <div className="max-w-6xl mx-auto mt-20 space-y-10">
+
+          {/* ATS SCORE */}
+
+          <div className="bg-[#0f172a] border border-white/10 p-10 rounded-2xl flex flex-col md:flex-row items-center justify-between">
+
+            <div>
+
+              <h2 className="text-2xl font-semibold mb-2">
+                ATS Score
+              </h2>
+
+              <p className="text-gray-400">
+                Resume compatibility with applicant tracking systems
+              </p>
+
+            </div>
+
+            <div className="flex items-center gap-8 mt-6 md:mt-0">
+
+              <RadialBarChart
+                width={180}
+                height={180}
+                innerRadius="70%"
+                outerRadius="100%"
+                data={[{ name: "ATS", value: result.atsScore }]}
+                startAngle={90}
+                endAngle={-270}
+              >
+
+                <PolarAngleAxis
+                  type="number"
+                  domain={[0,100]}
+                  tick={false}
+                />
+
+                <RadialBar
+                  dataKey="value"
+                  cornerRadius={10}
+                  fill="#22c55e"
+                />
+
+              </RadialBarChart>
+
+              <span className="text-5xl font-bold text-green-400">
+                {result.atsScore}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          {/* SKILLS */}
+
+          <div className="bg-[#0f172a] border border-white/10 p-10 rounded-2xl">
+
+            <h2 className="text-2xl font-semibold mb-6">
+              Extracted Skills
+            </h2>
+
+            <div className="flex flex-wrap gap-3">
+
+              {result.skills?.map((skill, index) => (
+
+                <span
+                  key={index}
+                  className="bg-purple-600/80 hover:bg-purple-600 px-4 py-2 rounded-full text-sm transition"
+                >
+                  {skill}
+                </span>
+
+              ))}
+
+            </div>
+
+          </div>
+
+
+          {/* SUGGESTIONS */}
+
+          <div className="bg-[#0f172a] border border-white/10 p-10 rounded-2xl">
+
+            <h2 className="text-2xl font-semibold mb-8">
+              Resume Suggestions
+            </h2>
+
+            <div className="space-y-6">
+
+              {cleanText(result.suggestions)
+                .split("\n\n")
+                .map((block, index) => {
+
+                  const lines = block.split("\n");
+
+                  const heading = lines[0];
+                  const content = lines.slice(1);
+
+                  return (
+
+                    <div
+                      key={index}
+                      className="border-l-4 border-blue-500 pl-5"
+                    >
+
+                      <h3 className="text-lg font-semibold mb-2">
+                        {heading}
+                      </h3>
+
+                      <div className="space-y-1 text-gray-300">
+
+                        {content.map((line, i) => (
+                          <p key={i}>{line}</p>
+                        ))}
+
+                      </div>
+
+                    </div>
+
+                  );
+
+                })}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
     </div>
   );
 };
