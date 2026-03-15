@@ -1,11 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
-
-dotenv.config();
 
 const app = express();
 
@@ -31,8 +29,8 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
 
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`Server running on port ${process.env.PORT || 5000}`);
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server running on port ${process.env.PORT || 8000}`);
     });
 
   })

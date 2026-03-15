@@ -11,7 +11,8 @@ import {
   LogOut,
   Activity,
   X,
-  ArrowLeft
+  ArrowLeft,
+  Bot
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -57,7 +58,8 @@ const MainLayout = () => {
     { label: "Resume Analyzer", icon: FileSearch, path: "/resume-analyzer" },
     { label: "Job Recommendations", icon: Briefcase, path: "/jobs" },
     { label: "Career Roadmap", icon: Map, path: "/learning-roadmap" },
-    { label: "Mock Interview", icon: PlayCircle, path: "/ai-assistant" },
+    { label: "Agentic Chatbot", icon: Bot, path: "/chatbot" },
+    { label: "Mock Interview", icon: PlayCircle, path: "/mock-interview" },
     { label: "Feedback", icon: MessageSquare, path: "/feedback" },
   ];
 
@@ -78,7 +80,7 @@ const MainLayout = () => {
       <aside className="flex flex-col h-full border border-white/[0.06] bg-[#0a0a0f] rounded-[24px] transition-all duration-300 overflow-hidden">
         <div className="flex items-center justify-start gap-3 px-8 h-[90px] border-b border-white/[0.06] flex-shrink-0">
           <div className="w-10 h-10 rounded-[12px] overflow-hidden flex items-center justify-center flex-shrink-0 shadow-lg shadow-purple-500/10 border border-white/10">
-            <img src="/logo.jpeg" alt="SkillRise Logo" className="w-full h-full object-cover" />
+            <img src="/favicon.png" alt="SkillRise Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-[15px] font-bold text-white/90 tracking-tight">
             SkillRise

@@ -1,0 +1,423 @@
+{
+  "Data Science": [
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "NPTEL Probability and Statistics",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/111106093"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "NPTEL Deep Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106184"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "Google Data Analytics (Skill India)",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Skill India Data Visualization Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Data Analytics Course",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    }
+  ],
+  "Web Development": [
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "Skill India Frontend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "Skill India Backend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    }
+  ],
+  "Other": [
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "NPTEL Data Analytics Course",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "Google Data Analytics (Skill India)",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Skill India Backend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    },
+    {
+      "name": "NPTEL Probability and Statistics",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/111106093"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "NPTEL Deep Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106184"
+    }
+  ],
+  "Enterprise Platforms": [
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    }
+  ],
+  "Software Development": [
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "Skill India Backend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "NPTEL Probability and Statistics",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/111106093"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "Skill India Data Visualization Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Skill India Frontend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Google Data Analytics (Skill India)",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    }
+  ],
+  "Blockchain": [
+    {
+      "name": "NPTEL Probability and Statistics",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/111106093"
+    }
+  ],
+  "AI": [
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    },
+    {
+      "name": "NPTEL Data Analytics Course",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    },
+    {
+      "name": "NPTEL Deep Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106184"
+    },
+    {
+      "name": "Google Data Analytics (Skill India)",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "Skill India Backend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "AI For India 2.0",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://ai-for-india.in"
+    },
+    {
+      "name": "Skill India Frontend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Probability and Statistics",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/111106093"
+    },
+    {
+      "name": "Skill India Data Visualization Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    }
+  ],
+  "Cloud Computing": [
+    {
+      "name": "NPTEL Python for Data Science",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106212"
+    },
+    {
+      "name": "NPTEL Cloud Computing",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105167"
+    },
+    {
+      "name": "AWS Cloud Foundations (AWS Skill Builder)",
+      "provider": "Skill India / Govt Initiative",
+      "link": "https://explore.skillbuilder.aws"
+    },
+    {
+      "name": "NPTEL Database Management Systems",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105175"
+    },
+    {
+      "name": "NPTEL Machine Learning",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106106139"
+    },
+    {
+      "name": "Skill India Backend Developer",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "NPTEL Programming in Java",
+      "provider": "NPTEL",
+      "link": "https://nptel.ac.in/courses/106105191"
+    },
+    {
+      "name": "Skill India Web Developer Course",
+      "provider": "Skill India",
+      "link": "https://www.skillindiadigital.gov.in"
+    },
+    {
+      "name": "PMKVY Data Entry Operator Course",
+      "provider": "PMKVY",
+      "link": "https://www.pmkvyofficial.org"
+    }
+  ]
+}

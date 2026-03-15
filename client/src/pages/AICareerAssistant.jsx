@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Sparkles, 
   Zap, 
@@ -31,8 +32,10 @@ import { cn } from '../services/utils';
 /* ─────────────────────────────────────────────
    Official Assessment Module (8-Block Grid)
 ───────────────────────────────────────────── */
-const RoleCard = ({ role, level, icon: Icon, colorTheme, description, borderTheme, stats, delay }) => (
-  <div className={cn(
+const RoleCard = ({ role, level, icon: Icon, colorTheme, description, borderTheme, stats, delay, onClick }) => (
+  <div 
+    onClick={onClick}
+    className={cn(
     "group relative h-full min-h-[300px] flex flex-col bg-[#0c0c14]/40 backdrop-blur-3xl border rounded-[2.5rem] p-8 transition-all duration-700 cursor-pointer overflow-hidden shadow-2xl animate-in fade-in slide-in-from-bottom-8",
     borderTheme,
     delay
@@ -88,6 +91,7 @@ const RoleCard = ({ role, level, icon: Icon, colorTheme, description, borderThem
 );
 
 const AICareerAssistant = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('simulate');
 
   const modules = [
@@ -236,7 +240,11 @@ const AICareerAssistant = () => {
         {/* The Matrix Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-32">
           {modules.map((m, idx) => (
-            <RoleCard key={idx} {...m} />
+            <RoleCard 
+              key={idx} 
+              {...m} 
+              onClick={() => navigate('/mock-interview', { state: { role: m.role } })}
+            />
           ))}
           
           {/* Custom Matrix Initiation Entry */}
