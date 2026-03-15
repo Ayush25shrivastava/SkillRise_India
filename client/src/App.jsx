@@ -14,6 +14,7 @@ import GovernmentSchemes from "./pages/GovernmentSchemes.jsx";
 import SkillProgress from "./pages/SkillProgress.jsx";
 import Feedback from "./pages/Feedback.jsx";
 import InterviewPage from "./pages/InterviewPage.jsx";
+import Chatbot from "./pages/Chatbot/Chatbot.jsx";
 import Navbar from "./components/Navbar.jsx";
 import MainLayout from "./components/layout/MainLayout.jsx";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
@@ -44,6 +45,7 @@ function App() {
             <Route path="/progress" element={<SkillProgress />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/mock-interview" element={<InterviewPage />} />
+            <Route path="/chatbot" element={<Chatbot />} />
           </Route>
         </Route>
 

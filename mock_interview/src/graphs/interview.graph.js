@@ -17,6 +17,7 @@ export function getSession(id) {
  * Node: Generate Question
  */
 async function nodeGenerateQuestion(state) {
+  console.log("Entering nodeGenerateQuestion", state);
   const previousQuestions = state.history.map((h) => h.question);
   
   // Skill Rotation
@@ -37,7 +38,7 @@ async function nodeGenerateQuestion(state) {
     previousQuestions,
   });
 
-  return {
+  const newState = {
     ...state,
     currentQuestion: question,
     currentSkill: targetSkill,
@@ -45,6 +46,8 @@ async function nodeGenerateQuestion(state) {
     followUpUsed: false, // Reset follow-up flag for new topic
     state: "questioning",
   };
+  console.log("Exiting nodeGenerateQuestion", newState);
+  return newState;
 }
 
 /**

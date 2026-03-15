@@ -260,6 +260,7 @@ import React, { useState } from "react";
 import { analyzeResume } from "../services/resumeAnalyzerService";
 import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
 import { UploadCloud, Sparkles } from "lucide-react";
+import FlowVisualizer from "../components/FlowVisualizer";
 
 const cleanText = (text) => {
   if (!text) return "";
@@ -381,7 +382,7 @@ const ResumeAnalyzer = () => {
 
         {/* RIGHT IMAGE */}
 
-        <div className="flex justify-center">
+        <div className="flex flex-col gap-6 justify-center">
 
           <div className="bg-[#0f172a] p-6 rounded-2xl shadow-xl border border-white/10">
 
@@ -391,6 +392,11 @@ const ResumeAnalyzer = () => {
               className="w-[350px] rounded-xl"
             />
 
+          </div>
+
+          <div className="bg-black/50 p-6 rounded-2xl border border-white/5 opacity-80 pointer-events-none">
+            <h3 className="text-white font-semibold mb-4 text-sm tracking-wider uppercase">AI Processing Pipeline</h3>
+            <FlowVisualizer />
           </div>
 
         </div>

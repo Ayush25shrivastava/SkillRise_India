@@ -113,15 +113,23 @@ Output ONLY valid JSON.
 // ── Exported invoke functions ────────────────────────────────────
 
 export async function generateQuestion({ role, level, skills, category, difficulty, questionNumber, previousQuestions }) {
-    return questionChain.invoke({
-        role,
-        level,
-        category: category || "Concept",
-        difficulty: difficulty || "standard",
-        skills: Array.isArray(skills) ? skills.join(", ") : skills,
-        questionNumber: String(questionNumber),
-        previousQuestions: previousQuestions.length ? previousQuestions.join(", ") : "None",
-    });
+    try {
+        console.log("Invoking questionChain...");
+        const res = await questionChain.invoke({
+            role,
+            level,
+            category: category || "Concept",
+            difficulty: difficulty || "standard",
+            skills: Array.isArray(skills) ? skills.join(", ") : skills,
+            questionNumber: String(questionNumber),
+            previousQuestions: previousQuestions.length ? previousQuestions.join(", ") : "None",
+        });
+        console.log("questionChain result:", res);
+        return res;
+    } catch(e) {
+        console.error("Error in generateQuestion:", e);
+        throw e;
+    }
 }
 
 export async function generateFollowUp({ role, level, question, answer, feedback }) {

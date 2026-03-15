@@ -4,6 +4,7 @@ import {
   Plus,
   Send,
   Mic,
+  Bot,
   Search,
   Command,
   PlusCircle,
@@ -28,6 +29,7 @@ const Sidebar = () => {
     { icon: FileSearch, label: 'Resume Analyzer', path: '/resume-analyzer' },
     { icon: Briefcase, label: 'Job Recommendations', path: '/jobs' },
     { icon: Map, label: 'Career Roadmap', path: '/learning-roadmap' },
+    { icon: Bot, label: 'Agentic Chatbot', path: '/chatbot' },
     { icon: Mic, label: 'Mock Interview', path: '/mock-interview' },
     { icon: MessageSquare, label: 'Feedback', path: '/feedback' },
   ];
