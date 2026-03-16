@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const BASE_URL = "http://localhost:6000/api/interview";
+const BASE_URL = "http://localhost:5005/api/interview";
 
 /**
  * Technical Assessment Laboratory
