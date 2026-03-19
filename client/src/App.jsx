@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -19,6 +19,10 @@ import Navbar from "./components/Navbar.jsx";
 import MainLayout from "./components/layout/MainLayout.jsx";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+
+
 function App() {
 
   return (
@@ -26,10 +30,12 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<LandingPage />}/>
 
         <Route path="/login" element={<><Navbar /><Login /></>} />
         <Route path="/register" element={<><Navbar /><Register /></>} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
