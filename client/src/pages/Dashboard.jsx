@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   PlayCircle,
   Plus,
@@ -106,7 +106,20 @@ const Dashboard = () => {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token");
 
+  if (token) {
+    localStorage.setItem("token", token);
+
+    // remove token from URL (clean URL)
+    window.history.replaceState({}, document.title, "/dashboard");
+  }
+}, []);
   const features = [
     { title: "Resume Analyzer", description: "Instant ATS feedback & structure review", icon: FileSearch, path: "/resume-analyzer", colorName: "indigo" },
     { title: "Job Recommendations", description: "High-match roles at top companies", icon: Briefcase, path: "/jobs", colorName: "emerald" },
