@@ -22,6 +22,8 @@ import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
+import ProfileSetup from "./pages/ProfileSetup";
+import ProfileDashboard from "./pages/ProfileDashboard";
 
 function App() {
 
@@ -36,7 +38,8 @@ function App() {
         <Route path="/register" element={<><Navbar /><Register /></>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-
+        <Route path="/profile" element={<ProfileSetup />} />
+        <Route path="/profile/dashboard" element={<ProfileDashboard />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
