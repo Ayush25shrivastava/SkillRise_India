@@ -32,8 +32,8 @@ function App() {
 
         <Route path="/" element={<LandingPage />}/>
 
-        <Route path="/login" element={<><Navbar /><Login /></>} />
-        <Route path="/register" element={<><Navbar /><Register /></>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 

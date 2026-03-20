@@ -7,23 +7,34 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary: #ffffff;
-  --color-main: #0a0a0a;
-  --color-muted: #a1a1aa;
-  --color-glass: rgba(255, 255, 255, 0.03);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+  /* Colors */
+  --color-bg-base: #06060a;           /* Deep navy / near black */
+  --color-bg-surface: #0a0a0f;        /* Slightly lighter dark panels */
+  --color-bg-card: #12121a;           /* Cards and elevated panels */
+  --color-bg-input: rgba(255, 255, 255, 0.03); 
+  
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a1a1aa;    /* Gray */
+  --color-text-muted: rgba(255, 255, 255, 0.3);
+
+  /* Primary Gradients */
+  --color-accent-purple: #8b5cf6;     /* Violet-500 */
+  --color-accent-blue: #3b82f6;       /* Blue-500 */
+  --color-accent-teal: #14b8a6;       /* Teal-500 */
+  
+  /* Borders & Glass */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-focus: rgba(139, 92, 246, 0.4);
+  
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
 :root {
-  --primary: oklch(0.205 0 0);
-  --bg-main: #0a0a0a;
-  --sidebar-bg: rgba(15, 15, 15, 0.7);
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --text: #ffffff;
-  --text-muted: #888888;
-  --accent-gradient: linear-gradient(135deg, #a786ff 0%, #ff8db2 50%, #ffdf9e 100%);
+  --background: #06060a;
+  --foreground: #ffffff;
+  --card: #12121a;
+  --card-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.06);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -57,16 +68,16 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #0a0a0a;
-  color: #ffffff;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
   min-height: 100vh;
   overflow-x: hidden;
 }
