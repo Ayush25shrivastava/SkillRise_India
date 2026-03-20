@@ -4,7 +4,7 @@ export const authenticate = (req, res, next) => {
   try {
 
     const authHeader = req.headers.authorization;
-
+    console.log("AUTH HEADER:", req.headers.authorization);
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
@@ -19,7 +19,7 @@ export const authenticate = (req, res, next) => {
     req.user = decoded;
 
     next();
-
+    
   } catch (error) {
 
     if (error.name === "TokenExpiredError") {

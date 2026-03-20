@@ -29,7 +29,40 @@ const userSchema = new mongoose.Schema(
         isVerified: {
         type: Boolean,
         default: false
-        }
+        },
+
+        userType: {
+      type: String,
+      enum: ["student", "professional", "worker"],
+    },
+
+        phone: String,
+        location: String,
+        preferredLanguage: String,
+
+        profile: {
+        // 🎓 student
+        college: String,
+        degree: String,
+        year: String,
+        interests: [String],
+        careerGoal: String,
+
+        // 💼 professional
+        currentRole: String,
+        experience: String,
+        company: String,
+        salaryRange: String,
+
+        // 🔧 worker
+        skillType: String,
+        workType: String,
+        availability: String,
+
+        // 🌍 common
+        skills: [String],
+    },
+
     },
     { timestamps: true }
 );
