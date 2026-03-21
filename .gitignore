@@ -11,6 +11,14 @@ backend/.env
 backend/.env.*
 client/.env
 client/.env.*
+new_mock/server/.env
+new_mock/server/.env.*
+new_mock/client/.env
+new_mock/client/.env.*
+resume_analyser/backend/.env
+resume_analyser/backend/.env.*
+agentic-chatbot/.env
+agentic-chatbot/.env.*
 
 # Build/Dist
 client/dist/

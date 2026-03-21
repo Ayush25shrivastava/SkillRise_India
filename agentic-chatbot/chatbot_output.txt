@@ -1,0 +1,528 @@
+[dotenv@17.3.1] injecting env (8) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+Connected to MongoDB
+Server running on port 5002
+(node:28744) [MONGOOSE] Warning: mongoose: Duplicate schema index on {"userId":1} for model "ChatThread". This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28744) [MONGOOSE] Warning: mongoose: Duplicate schema index on {"threadId":1} for model "ChatMessage". This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd70660d3289db404574d4...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: aa4dc39e949a4914 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd706b0d3289db404574d6
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 256e8d6f08116b3a (TTL: 300s)
+Vector Memory Error: Could not store embedding PineconeConnectionError: Request failed to reach Pinecone. This can occur for reasons such as network problems that prevent the request from being completed, or a Pinecone API outage. Check your network connection, and visit https://status.pinecone.io/ to see whether any outages are ongoing.
+    at handleApiError (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\errors\handling.js:32:16)
+    at Object.onError (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\utils\middleware.js:87:63)
+    at VectorOperationsApi.fetchApi (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\runtime.js:180:49)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async VectorOperationsApi.request (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\runtime.js:113:26)
+    ... 4 lines matching cause stack trace ...
+    at async Object.storeEmbedding (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\agentic-chatbot\memory\vectorMemory.js:46:5) {
+  cause: TypeError: fetch failed
+      at node:internal/deps/undici/undici:13510:13
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\utils\fetch.js:131:34
+      at async VectorOperationsApi.fetchApi (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\runtime.js:175:24)
+      at async VectorOperationsApi.request (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\runtime.js:113:26)
+      at async VectorOperationsApi.upsertVectorsRaw (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\apis\VectorOperationsApi.js:415:26)
+      at async VectorOperationsApi.upsertVectors (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\pinecone-generated-ts-fetch\db_data\apis\VectorOperationsApi.js:429:26)
+      at async UpsertCommand.run (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\data\vectors\upsert.js:30:9)
+      at async Index.upsert (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\node_modules\@pinecone-database\pinecone\dist\data\index.js:396:16)
+      at async Object.storeEmbedding (C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\agentic-chatbot\memory\vectorMemory.js:46:5) {
+    [cause]: ConnectTimeoutError: Connect Timeout Error (attempted addresses: 64:ff9b::3407:b5ed:443, 64:ff9b::6431:58e0:443, 64:ff9b::36f2:b02e:443, timeout: 10000ms)
+        at onConnectTimeout (node:internal/deps/undici/undici:2602:28)
+        at Immediate._onImmediate (node:internal/deps/undici/undici:2568:35)
+        at process.processImmediate (node:internal/timers:485:21)
+        at process.callbackTrampoline (node:internal/async_hooks:130:17) {
+      code: 'UND_ERR_CONNECT_TIMEOUT'
+    }
+  }
+}
+[Cache] Evicted 1 expired entries.
+[Cache] Evicted 1 expired entries.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd791c0d3289db404574dd...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 0172a1dace611122 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd791d0d3289db404574df
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: e9f9922eb7e4ddd3 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd79310d3289db404574e3
+[MemoryManager] Successfully vectorized message 69bd79390d3289db404574e8
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd79350d3289db404574e5...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: b489f02b86d82cf5 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 220c1df392b6e991 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd79470d3289db404574ec
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd79600d3289db404574ef...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: dafd09d38f395efa (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd79600d3289db404574f1
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: a38642f533bcd10f (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd796c0d3289db404574f5
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7a5d0d3289db404574f8...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: dafd09d38f395efa (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Returning cached conversational response.
+[Cache] HIT for key: a38642f533bcd10f
+[MemoryManager] Successfully vectorized message 69bd7a5d0d3289db404574fa
+[MemoryManager] Successfully vectorized message 69bd7a600d3289db404574fe
+[MemoryManager] Successfully vectorized message 69bd7a850d3289db40457503
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7a850d3289db40457501...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: e743a5a39f870f15 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[Cache] Evicted 4 expired entries.
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: c2b7691df72c98b6 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7a940d3289db40457507
+[MemoryManager] Successfully vectorized message 69bd7a990d3289db4045750c
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7a990d3289db4045750a...
+--- ROUTER AGENT EXECUTION ---
+[Cache] HIT for key: dafd09d38f395efa
+[RouterAgent] Returning cached routing decision.
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: a38642f533bcd10f (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7aa60d3289db40457510
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7b2e0d3289db40457513...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: dafd09d38f395efa (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Returning cached conversational response.
+[Cache] HIT for key: a38642f533bcd10f
+[MemoryManager] Successfully vectorized message 69bd7b2e0d3289db40457515
+[MemoryManager] Successfully vectorized message 69bd7b2f0d3289db40457519
+[Cache] Evicted 2 expired entries.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7c700d3289db4045751c...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 3fd16fb758ef7b7b (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd7c700d3289db4045751e
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: c70eebffbeef705b (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7c7d0d3289db40457522
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7c980d3289db40457525...
+--- ROUTER AGENT EXECUTION ---
+[Cache] HIT for key: 3fd16fb758ef7b7b
+[RouterAgent] Returning cached routing decision.
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Returning cached conversational response.
+[Cache] HIT for key: c70eebffbeef705b
+[MemoryManager] Successfully vectorized message 69bd7c980d3289db40457527
+[MemoryManager] Successfully vectorized message 69bd7c9b0d3289db4045752b
+[Cache] Evicted 2 expired entries.
+[MemoryManager] Successfully vectorized message 69bd7cf80d3289db40457530
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7cf70d3289db4045752e...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 3fd16fb758ef7b7b (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Returning cached conversational response.
+[Cache] HIT for key: c70eebffbeef705b
+[MemoryManager] Successfully vectorized message 69bd7cfa0d3289db40457534
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7d630d3289db40457537...
+--- ROUTER AGENT EXECUTION ---
+[Cache] HIT for key: 3fd16fb758ef7b7b
+[RouterAgent] Returning cached routing decision.
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Returning cached conversational response.
+[Cache] HIT for key: c70eebffbeef705b
+[MemoryManager] Successfully vectorized message 69bd7d630d3289db40457539
+[MemoryManager] Successfully vectorized message 69bd7d660d3289db4045753d
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7dd40d3289db40457540...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 3fd16fb758ef7b7b (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd7dd40d3289db40457542
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: c70eebffbeef705b (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7de20d3289db40457546
+[MemoryManager] Successfully vectorized message 69bd7e490d3289db4045754b
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7e480d3289db40457549...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 651408eb14ca89c0 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: python
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 2968e82a932907cc (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7e550d3289db4045754f
+[MemoryManager] Successfully vectorized message 69bd7e970d3289db40457554
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7e970d3289db40457552...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: dafd09d38f395efa (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: react
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: a38642f533bcd10f (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7ea90d3289db40457558
+[MemoryManager] Successfully vectorized message 69bd7eaf0d3289db4045755b
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd7e480d3289db40457549...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 08a26bb9f1cb87e0 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: python
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 45232a7bcbc27f3a (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd7ebb0d3289db4045755f
+[Cache] Evicted 5 expired entries.
+[Cache] Evicted 3 expired entries.
+[MemoryManager] Successfully vectorized message 69bd80960d3289db40457564
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd80950d3289db40457562...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 8c64cb1e15c033ea (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 8fb4b85211f6b1dd (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd80a30d3289db40457568
+[Cache] Evicted 1 expired entries.
+[Cache] Evicted 1 expired entries.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd83030d3289db4045756b...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 77b9988044342414 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd83030d3289db4045756d
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: f90d16a87e815448 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd83110d3289db40457571
+[Cache] Evicted 1 expired entries.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd84aa0d3289db40457574...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 77b9988044342414 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd84aa0d3289db40457576
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: f90d16a87e815448 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd84b60d3289db4045757a
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd84aa0d3289db40457574...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 059e45ec59e37286 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd84de0d3289db4045757d
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: acc0ddedc693781e (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd84e90d3289db40457581
+[Cache] Evicted 4 expired entries.
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd882b0d3289db40457584...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 77b9988044342414 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd882b0d3289db40457586
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: f90d16a87e815448 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd88350d3289db4045758a
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd89320d3289db4045758d...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 635d0e427223ced9 (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Calling Gemini (primary)...
+[MemoryManager] Successfully vectorized message 69bd89320d3289db4045758f
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 5f352f019b9b1148 (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd89430d3289db40457593
+[Cache] Evicted 3 expired entries.
+[MemoryManager] Successfully vectorized message 69bd8a890d3289db40457598
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd8a890d3289db40457596...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 8c64cb1e15c033ea (TTL: 120s)
+[RouterAgent] Selected agents: careerAgent, skillAgent
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: (empty)
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: api
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini response generated.
+[Cache] STORED key: 8fb4b85211f6b1dd (TTL: 300s)
+[MemoryManager] Successfully vectorized message 69bd8a960d3289db4045759c
+[Cache] Evicted 1 expired entries.
+[MemoryManager] Successfully vectorized message 69bd8c150d3289db404575a1
+[ChatbotRoute] Invoking Agentic Graph for Thread 69bd8c150d3289db4045759f...
+--- ROUTER AGENT EXECUTION ---
+[RouterAgent] Calling Gemini (primary)...
+[RouterAgent] Gemini failed (Cannot read properties of undefined (reading 'replace')). Using safe default routing.
+[Cache] STORED key: 9fb830f05aa113b8 (TTL: 120s)
+[RouterAgent] Selected agents: resumeAgent, careerAgent, skillAgent
+--- RESUME AGENT EXECUTION ---
+[ResumeAgent] Analyzing resume found at: C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\backend\uploads\resume-1774029845188-461804228.pdf
+[ResumeParser] Parsing resume: C:\Users\Ayush\OneDrive\Desktop\SkillRise_India\agentic-chatbot\backend\uploads\resume-1774029845188-461804228.pdf
+[ResumeParser] Parsing PDF buffer...
+[ResumeParser] Extracted 2 chars from PDF.
+[ResumeAgent] Extraction complete. Found 0 skills.
+[ResumeAgent] Generating vector embeddings for resume and storing to semantic memory...
+--- CAREER AGENT EXECUTION ---
+[CareerAgent] Warning: No user skills found in state.
+--- SKILL AGENT EXECUTION ---
+[SkillAgent] Analyzing skills... Target Role preference: Not specified
+[SkillAgent] Warning: No user skills found.
+--- RESPONSE AGGREGATOR EXECUTION ---
+[ResponseAggregator] Response keys: resumeInfo
+--- RESPONSE GENERATOR EXECUTION ---
+[ResponseGenerator] Resolved keywords for resource lookup: software development
+[ResponseGenerator] Calling Gemini (primary)...
+[ResponseGenerator] Gemini failed ([GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.). Falling back to Groq...
+[ResponseGenerator] Groq fallback response generated.
+[Cache] STORED key: 33803ac9df195fbb (TTL: 300s)
+[Cache] Evicted 2 expired entries.
+[MemoryManager] Successfully vectorized message 69bd8c220d3289db404575a5
+[Cache] Evicted 2 expired entries.

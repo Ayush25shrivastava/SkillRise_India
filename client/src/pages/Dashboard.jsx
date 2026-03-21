@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 
 import FeatureModal from "../components/common/FeatureModal";
+import { Badge } from "../components/ui/Badge";
+import { Button } from "../components/ui/Button";
 
 /* ─────────────────────────────────────────────
    Feature Card Colors
@@ -76,22 +78,21 @@ const FeatureCard = ({ title, description, icon: Icon, onClick, colorName = "pur
       onClick={onClick}
       className={`
         group relative flex flex-col items-center justify-center w-full
-        p-5 md:p-6 rounded-3xl text-center
-        bg-[#0c0c14]/80 backdrop-blur-xl border ${color.border}
-        transition-all duration-400 hover:-translate-y-1.5 ${color.shadow}
-        min-h-[150px] overflow-hidden
+        p-8 rounded-[2rem] text-center
+        bg-[#11111a] backdrop-blur-3xl border border-white/5
+        transition-all duration-500 hover:-translate-y-2 hover:border-white/10 hover:shadow-2xl
+        min-h-[160px] overflow-hidden shadow-xl
       `}
     >
-      {/* Vibrant Background Glow */}
-      <div className={`absolute inset-0 opacity-100 transition-opacity duration-500 bg-gradient-to-br ${color.glow} pointer-events-none`} />
+      <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 bg-gradient-to-br ${color.glow} pointer-events-none group-hover:opacity-100`} />
 
-      <div className={`relative z-10 flex-shrink-0 w-12 h-12 mb-4 rounded-2xl border flex items-center justify-center ${color.iconText} ${color.iconBg} transition-all duration-300 group-hover:scale-110 shadow-inner`}>
-        <Icon size={22} strokeWidth={2} />
+      <div className={`relative z-10 flex-shrink-0 w-14 h-14 mb-5 rounded-2xl border flex items-center justify-center ${color.iconText} ${color.iconBg} transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-inner`}>
+        <Icon size={24} strokeWidth={2} />
       </div>
 
       <div className="relative z-10 flex flex-col items-center mt-auto w-full">
-        <h3 className="text-[15px] font-bold text-white tracking-tight">{title}</h3>
-        <p className="text-[12px] text-white/50 mt-1.5 leading-relaxed font-medium px-2">{description}</p>
+        <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
+        <p className="text-sm text-white/40 mt-2 leading-relaxed font-medium px-4">{description}</p>
       </div>
     </button>
   );
@@ -131,9 +132,8 @@ const Dashboard = () => {
     <>
       {/* Vibrant Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-purple-600/15 blur-[140px] animate-pulse duration-[8s]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse duration-[10s]" />
-        <div className="absolute top-[30%] left-[60%] w-[45%] h-[45%] rounded-full bg-emerald-600/5 blur-[100px] animate-pulse duration-[12s]" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[140px] animate-pulse duration-[8s]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse duration-[10s]" />
       </div>
 
       <style>{`
@@ -184,10 +184,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <h1 className="text-[32px] lg:text-[40px] font-bold text-white tracking-tight leading-[1.2]">
-            Good Evening, DeepAI.
+          <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
+            Good Evening, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">DeepAI.</span>
             <br />
-            Can I help you with anything?
+            Ready for your next breakthrough?
           </h1>
         </div>
 
@@ -196,37 +196,37 @@ const Dashboard = () => {
           <div className="w-full max-w-3xl relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-blue-500/30 rounded-[28px] blur-xl opacity-30 z-0 transition-opacity duration-1000" />
 
-            <div className="relative z-10 flex flex-col rounded-[24px] bg-[#0c0c14]/90 backdrop-blur-3xl border border-white/[0.15] shadow-[0_8px_40px_rgba(0,0,0,0.6)] focus-within:border-purple-500/50 focus-within:shadow-[0_8px_50px_rgba(167,134,255,0.2)] transition-all duration-300 overflow-hidden">
+            <div className="relative z-10 flex flex-col rounded-[24px] bg-[#12121a] backdrop-blur-3xl border border-white/10 shadow-2xl focus-within:border-violet-500/50 focus-within:shadow-[0_8px_50px_rgba(139,92,246,0.2)] transition-all duration-300 overflow-hidden">
               
               {/* File Preview block (if file selected) */}
               {selectedFile && (
-                <div className="flex items-center gap-3 w-full bg-white/[0.05] border-b border-white/[0.08] px-4 py-3 transition-all animate-in fade-in slide-in-from-top-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
-                    <FileText size={16} strokeWidth={2} />
+                <div className="flex items-center gap-3 w-full bg-white/[0.02] border-b border-white/[0.05] px-6 py-4 transition-all animate-in fade-in slide-in-from-top-2">
+                  <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center">
+                    <FileText size={20} strokeWidth={2} />
                   </div>
                   <div className="flex flex-col flex-1">
-                    <span className="text-[13px] text-white/90 font-medium truncate">{selectedFile.name}</span>
-                    <span className="text-[10px] text-white/40 uppercase tracking-wider">{(selectedFile.size / 1024).toFixed(1)} KB</span>
+                    <span className="text-sm text-white font-medium truncate">{selectedFile.name}</span>
+                    <span className="text-xs text-white/40 uppercase tracking-widest font-bold">{(selectedFile.size / 1024).toFixed(1)} KB</span>
                   </div>
                   <button 
                     onClick={removeFile}
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-white/30 hover:text-white/90 hover:bg-white/10 transition-all opacity-80 hover:opacity-100"
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white/30 hover:text-white hover:bg-white/10 transition-all"
                   >
-                    <X size={14} />
+                    <X size={16} />
                   </button>
                 </div>
               )}
 
-              <div className="flex items-center gap-3 px-2 py-2">
+              <div className="flex items-center gap-4 px-3 py-3">
                 
                 {/* Left Side: Actions */}
-                <div className="flex items-center gap-1 pl-2">
+                <div className="flex items-center gap-2 pl-2">
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all bg-white/5 group"
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
                     title="Attach Resume"
                   >
-                    <Plus size={18} strokeWidth={2.5} className="group-hover:rotate-90 transition-transform duration-300" />
+                    <Plus size={20} strokeWidth={2.5} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
                   <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
                 </div>
@@ -235,17 +235,17 @@ const Dashboard = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Ask anything, format resume, try a module..."
-                  className="flex-1 bg-transparent text-white/90 text-[15px] placeholder:text-white/30 outline-none h-12 px-2"
+                  className="flex-1 bg-transparent text-white text-base font-medium placeholder:text-white/20 outline-none h-14 px-2"
                 />
 
                 {/* Right Side: Send/Voice */}
-                <div className="flex items-center gap-2 pr-2">
-                  <button className="w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all">
-                    <Mic size={18} strokeWidth={2} />
+                <div className="flex items-center gap-3 pr-2">
+                  <button className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all">
+                    <Mic size={20} strokeWidth={2} />
                   </button>
-                  <button className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white hover:opacity-90 transition-all shadow-lg active:scale-95">
-                    <ArrowRight size={18} strokeWidth={2.5} />
-                  </button>
+                  <Button variant="primary" size="icon" className="w-12 h-12 rounded-[1.2rem] shadow-none hover:shadow-lg">
+                    <ArrowRight size={20} strokeWidth={2.5} />
+                  </Button>
                 </div>
               </div>
             </div>
@@ -268,30 +268,7 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* AI Vision Ticker (Improvement) */}
-          <div className="w-full max-w-4xl bg-white/[0.03] border border-white/5 rounded-2xl py-3 px-6 overflow-hidden relative group">
-            <div className="flex items-center gap-4 animate-marquee whitespace-nowrap">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="flex gap-12 items-center">
-                  <span className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
-                    <Sparkles size={12} className="text-purple-400/50" />
-                    AI Intelligence: Global hiring in <span className="text-white/40 italic">Artificial Intelligence</span> up 24% this quarter
-                  </span>
-                  <span className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
-                    <TrendingUp size={12} className="text-emerald-400/50" />
-                    Skill Trend: <span className="text-white/40">React Hostile Architecture</span> is currently trending in Tier-1 firms
-                  </span>
-                  <span className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
-                    <Zap size={12} className="text-amber-400/50" />
-                    System Status: <span className="text-white/40">Neural Synthesis Engine</span> online and optimized
-                  </span>
-                </div>
-              ))}
-            </div>
-            {/* Fade Edges */}
-            <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0a0a0f] to-transparent pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0a0a0f] to-transparent pointer-events-none" />
-          </div>
+          
         </div>
 
       </div>
