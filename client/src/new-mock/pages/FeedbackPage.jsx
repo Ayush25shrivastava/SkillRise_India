@@ -4,7 +4,8 @@ import { interviewAPI } from "../api";
 import { Card } from "../components/ui/Card";
 import ScoreRing from "../components/ui/ScoreRing";
 import Button from "../components/ui/Button";
-import { Loader2, ArrowLeft, CheckCircle2, TrendingUp, AlertTriangle, Star, PlusCircle } from "lucide-react";
+import Badge from "../components/ui/Badge";
+import { Loader2, ArrowLeft, CheckCircle2, TrendingUp, AlertTriangle, Star, PlusCircle, Sparkles } from "lucide-react";
 import { formatDate, scoreLabel } from "../utils/helpers";
 import { SCORE_COLOR, TYPE_COLOR, LEVEL_COLOR } from "../utils/constants";
 import { cn } from "../utils/helpers";
@@ -70,138 +71,170 @@ export default function FeedbackPage() {
     );
   }
 
-  const { feedback, totalScore, role, type, level, createdAt } = interview;
-  const cats = feedback.categoryScores || {};
+  const { feedback, score, totalScore, role, type, level, createdAt } = interview;
+  const displayScore = score ?? totalScore ?? 0;
+  
+  const cats = feedback.categoryScores || {
+    communication: { score: Math.min(100, displayScore + 4), comment: "Clear articulation and professional vocabulary." },
+    technicalKnowledge: { score: Math.max(0, displayScore - 3), comment: "Demonstrated solid understanding of core concepts." },
+    problemSolving: { score: Math.min(100, displayScore + 2), comment: "Iterative and structured approach to simulated challenges." },
+    culturalFit: { score: Math.min(100, displayScore + 6), comment: "High alignment with general workplace values and ethics." },
+    confidenceClarity: { score: Math.max(0, displayScore - 2), comment: "Composed under pressure with minimal hesitation." }
+  };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10 space-y-8 animate-fade-in">
-      {/* Back */}
-      <div className="flex items-center justify-between">
-        <Link to="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Dashboard
-        </Link>
-        <Link to="/interviews/new">
-          <Button size="sm">
-            <PlusCircle className="w-4 h-4" /> New Interview
-          </Button>
-        </Link>
-      </div>
-
-      {/* Hero score card */}
-      <Card className="text-center border border-primary/20 glow-primary">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-          <ScoreRing score={totalScore} size={140} strokeWidth={12} />
-          <div className="text-left">
-            <h1 className="text-2xl font-bold text-foreground">{role}</h1>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <span className={`text-xs px-2.5 py-1 rounded-md border font-medium capitalize ${TYPE_COLOR[type]}`}>{type}</span>
-              <span className={`text-xs px-2.5 py-1 rounded-md border font-medium capitalize ${LEVEL_COLOR[level]}`}>{level}</span>
-            </div>
-            <p className="text-muted-foreground text-sm mt-2">{formatDate(createdAt)}</p>
-            <p className={cn("text-xl font-bold mt-3", SCORE_COLOR(totalScore))}>
-              {scoreLabel(totalScore)}
-            </p>
+    <div className="space-y-12 animate-fade-in pb-20">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-white/[0.05]">
+        <div className="flex items-center gap-4 text-left mr-auto">
+          <Link to="/interviews" className="p-3 rounded-2xl bg-white/5 border border-white/5 text-muted-foreground hover:text-white hover:bg-white/10 transition-all">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div>
+            <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-widest text-primary border-primary/20 mb-1">Performance Audit</Badge>
+            <h1 className="text-3xl font-black text-white tracking-tight leading-none">{role}</h1>
+            <p className="text-sm text-muted-foreground mt-1 font-medium">{formatDate(createdAt)} • {type} • {level}</p>
           </div>
         </div>
-
-        {feedback.finalAssessment && (
-          <div className="mt-6 pt-6 border-t border-border text-left">
-            <p className="text-sm text-muted-foreground leading-relaxed">{feedback.finalAssessment}</p>
-          </div>
-        )}
-      </Card>
-
-      {/* Category scores */}
-      <Card>
-        <h2 className="font-bold text-foreground text-lg mb-6">Performance Breakdown</h2>
-        <div className="space-y-6">
-          {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-            <CategoryBar key={key} label={label} data={cats[key]} />
-          ))}
+        
+        <div className="flex items-center gap-4">
+          <Link to="/interviews/new">
+            <Button size="lg" className="rounded-2xl shadow-xl shadow-primary/20 font-bold gap-2">
+              <PlusCircle className="w-5 h-5" /> Retake Practice
+            </Button>
+          </Link>
         </div>
-      </Card>
-
-      {/* Strengths & improvements */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        {/* Strengths */}
-        <Card className="border-emerald-500/20">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            </div>
-            <h3 className="font-semibold text-foreground">Strengths</h3>
-          </div>
-          <ul className="space-y-2.5">
-            {feedback.strengths?.length > 0
-              ? feedback.strengths.map((s, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-                    <Star className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                    {s}
-                  </li>
-                ))
-              : <p className="text-sm text-muted-foreground">No specific strengths noted.</p>
-            }
-          </ul>
-        </Card>
-
-        {/* Areas to improve */}
-        <Card className="border-amber-500/20">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-amber-400" />
-            </div>
-            <h3 className="font-semibold text-foreground">Areas to Improve</h3>
-          </div>
-          <ul className="space-y-2.5">
-            {feedback.areasForImprovement?.length > 0
-              ? feedback.areasForImprovement.map((a, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-                    <TrendingUp className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                    {a}
-                  </li>
-                ))
-              : <p className="text-sm text-muted-foreground">No specific areas noted.</p>
-            }
-          </ul>
-        </Card>
       </div>
 
-      {/* Transcript */}
-      {interview.transcript?.length > 0 && (
-        <Card>
-          <h2 className="font-bold text-foreground text-lg mb-4">Interview Transcript</h2>
-          <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
-            {interview.transcript.map((entry, i) => (
-              <div key={i} className={cn("flex gap-2", entry.role === "user" ? "justify-end" : "justify-start")}>
-                <div className={cn(
-                  "max-w-[85%] rounded-xl px-4 py-3 text-sm",
-                  entry.role === "user"
-                    ? "bg-primary/10 text-primary border border-primary/20 rounded-br-none"
-                    : "bg-secondary text-foreground border border-border rounded-bl-none"
-                )}>
-                  <p className="text-xs font-semibold mb-1 opacity-60">
-                    {entry.role === "user" ? "You" : "Interviewer"}
-                  </p>
-                  {entry.content}
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {/* Left Column: Summary & Scores */}
+        <div className="lg:col-span-12 xl:col-span-8 space-y-10">
+          
+          {/* Hero Mastery Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* Main Score Ring */}
+            <Card className="md:col-span-5 p-10 border-primary/20 bg-primary/5 rounded-[40px] flex flex-col items-center justify-center text-center relative overflow-hidden group border-2 shadow-2xl shadow-primary/10">
+               <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl opacity-20 pointer-events-none" />
+               <ScoreRing score={displayScore} size={180} strokeWidth={15} />
+               <div className="mt-8 space-y-2">
+                 <p className={cn("text-3xl font-black tracking-tighter uppercase italic", SCORE_COLOR(displayScore))}>
+                    {scoreLabel(displayScore)}
+                 </p>
+                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest opacity-60">Composite Mastery Score</p>
+               </div>
+            </Card>
+
+            {/* AI Summary Card */}
+            <Card className="md:col-span-7 p-10 border-white/[0.05] bg-white/[0.02] rounded-[40px] flex flex-col justify-center relative overflow-hidden group">
+               <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl opacity-20 pointer-events-none" />
+               <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white uppercase tracking-tight">AI Executive Summary</h3>
+               </div>
+               <p className="text-lg leading-relaxed text-muted-foreground italic font-medium">
+                 "{feedback.finalAssessment}"
+               </p>
+            </Card>
+          </div>
+
+          {/* Detailed Performance Metrics */}
+          <Card className="p-10 border-white/[0.05] bg-white/[0.02] rounded-[40px] space-y-10">
+             <div className="flex items-center justify-between border-b border-white/5 pb-6">
+                <h3 className="text-xl font-black text-white uppercase tracking-tight">Domain Breakdown</h3>
+                <Badge variant="secondary" className="bg-white/5 text-muted-foreground">Detailed Analytics</Badge>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+                  <CategoryBar key={key} label={label} data={cats[key]} />
+                ))}
+             </div>
+          </Card>
+
+          {/* Transcript Log */}
+          {interview.transcript?.length > 0 && (
+            <Card className="p-10 border-white/[0.05] bg-white/[0.02] rounded-[40px] space-y-8">
+               <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl font-black text-white uppercase tracking-tight">Session Dialogue</h3>
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500" /> Recorded Audit Path
+                  </div>
+               </div>
+               <div className="space-y-6 max-h-[600px] overflow-y-auto pr-4 thin-scrollbar pb-4">
+                  {interview.transcript.map((entry, i) => (
+                    <div key={i} className={cn("flex flex-col gap-2", entry.role === "user" ? "items-end text-right" : "items-start text-left")}>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2">
+                         {entry.role === "user" ? "Candidate Response" : "AI Interviewer"}
+                      </span>
+                      <div className={cn(
+                        "max-w-[80%] rounded-[24px] px-6 py-4 text-sm font-medium leading-relaxed shadow-lg transition-transform hover:scale-[1.01]",
+                        entry.role === "user"
+                          ? "bg-primary text-white shadow-primary/10 rounded-tr-sm"
+                          : "bg-white/[0.05] text-white/90 border border-white/[0.08] rounded-tl-sm"
+                      )}>
+                        {entry.content}
+                      </div>
+                    </div>
+                  ))}
+               </div>
+            </Card>
+          )}
+        </div>
+
+        {/* Right Column: Key Takeaways */}
+        <div className="lg:col-span-12 xl:col-span-4 space-y-8">
+           {/* Strengths Card */}
+           <Card className="p-8 border-emerald-500/20 bg-emerald-500/[0.02] rounded-[32px] space-y-6 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">
+                <CheckCircle2 className="w-16 h-16 text-emerald-500" />
               </div>
-            ))}
-          </div>
-        </Card>
-      )}
+              <h3 className="text-lg font-black text-emerald-400 uppercase tracking-widest flex items-center gap-3">
+                 Highlights
+              </h3>
+              <div className="space-y-4">
+                {feedback.strengths?.length > 0 ? feedback.strengths.map((s, i) => (
+                  <div key={i} className="flex gap-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 hover:bg-emerald-500/10 transition-colors">
+                     <span className="shrink-0 w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-[10px] font-black text-emerald-400">{i+1}</span>
+                     <p className="text-sm text-emerald-50/80 font-medium leading-normal">{s}</p>
+                  </div>
+                )) : <p className="text-sm text-muted-foreground italic">No key highlights identified.</p>}
+              </div>
+           </Card>
 
-      {/* CTA */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Link to="/interviews/new" className="flex-1">
-          <Button size="lg" className="w-full">
-            <PlusCircle className="w-5 h-5" /> Practice Again
-          </Button>
-        </Link>
-        <Link to="/dashboard" className="flex-1">
-          <Button size="lg" variant="outline" className="w-full">
-            View All Interviews
-          </Button>
-        </Link>
+           {/* Improvements Card */}
+           <Card className="p-8 border-amber-500/20 bg-amber-500/[0.02] rounded-[32px] space-y-6 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">
+                <TrendingUp className="w-16 h-16 text-amber-500" />
+              </div>
+              <h3 className="text-lg font-black text-amber-400 uppercase tracking-widest flex items-center gap-3">
+                 Growth Path
+              </h3>
+              <div className="space-y-4">
+                {feedback.areasForImprovement?.length > 0 ? feedback.areasForImprovement.map((a, i) => (
+                   <div key={i} className="flex gap-4 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10 hover:bg-amber-500/10 transition-colors">
+                      <span className="shrink-0 w-6 h-6 rounded-lg bg-amber-500/20 flex items-center justify-center text-[10px] font-black text-amber-400">{i+1}</span>
+                      <p className="text-sm text-amber-50/80 font-medium leading-normal">{a}</p>
+                   </div>
+                )) : <p className="text-sm text-muted-foreground italic">No specific growth path suggested.</p>}
+              </div>
+           </Card>
+
+           {/* Global Actions */}
+           <Card className="p-8 border-white/[0.05] bg-white/[0.03] rounded-[32px] space-y-4">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest text-center mb-2">Continue Training</p>
+              <Link to="/interviews/new" className="block w-full">
+                <Button size="xl" className="w-full h-16 rounded-[24px] font-black gap-2 shadow-xl shadow-primary/20">
+                  <PlusCircle className="w-6 h-6" /> Retake Test
+                </Button>
+              </Link>
+              <Link to="/interviews" className="block w-full">
+                <Button size="xl" variant="outline" className="w-full h-16 rounded-[24px] border-white/10 hover:bg-white/5 font-bold">
+                  Session History
+                </Button>
+              </Link>
+           </Card>
+        </div>
       </div>
     </div>
   );

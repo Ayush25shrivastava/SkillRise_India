@@ -4,6 +4,8 @@ export default function Badge({ children, className, variant = "default" }) {
   const variants = {
     default: "bg-secondary text-secondary-foreground border-border",
     primary: "bg-primary/10 text-primary border-primary/20",
+    secondary: "bg-white/5 text-muted-foreground border-white/10",
+    outline: "bg-transparent text-foreground border-white/20",
     accent: "bg-accent/10 text-accent border-accent/20",
     success: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
     warning: "bg-amber-500/10 text-amber-400 border-amber-500/20",

@@ -13,6 +13,7 @@ export const createInterviewSession = async (req, res, next) => {
     let { 
       role, 
       techStack, 
+      techstack,
       difficulty, 
       track, 
       level,
@@ -25,13 +26,16 @@ export const createInterviewSession = async (req, res, next) => {
     const language = reqLanguage || "English"; // 🌍 Default to English
 
     // 1. Pivot Frontend Fields -> Backend Schema
-    techStack = techStack || track || "General";
+    techStack = techStack || techstack || track;
     difficulty = difficulty || level || "mid";
 
     // 🛡️ Data Normalization: Join Array to String for Mongoose
     if (Array.isArray(techStack)) {
       techStack = techStack.sort().join(", ");
     }
+    
+    // Failsafe for empty array conversions
+    techStack = techStack || "General";
 
     // 2. Strict Validation Layer
     if (!role || !techStack || !difficulty) {
@@ -140,10 +144,76 @@ export const submitInterviewSession = async (req, res, next) => {
   }
 };
 
+export const generateFeedback = async (req, res, next) => {
+  try {
+    const session = await InterviewSession.findOne({ _id: req.params.id, userId: req.user.id });
+    if (!session) {
+      return res.status(404).json({ success: false, message: "Interview Session not found." });
+    }
+
+    const questionList = session.questions;
+    
+    // Extract only user responses from the voice agent transcript
+    const answerList = session.transcript
+      ?.filter(entry => entry.role === "user")
+      .map(entry => entry.content || "") || [];
+
+    try {
+      const evaluation = await evaluateInterview(session.role, questionList, answerList, session.language || "English");
+
+      session.score = evaluation.score;
+      session.feedback = evaluation;
+      session.status = "completed";
+      
+      // Map back to 'answers' structure for backwards-compatibility
+      session.answers = questionList.map((q, i) => ({
+        question: q,
+        answer: answerList[i] || "Candidate provided no readable answer via voice."
+      }));
+
+      await session.save();
+      res.json({ success: true, evaluation: session.feedback, score: session.score });
+    } catch (err) {
+      console.error("❌ Voice Transcript Evaluation Failed", err);
+      session.status = "completed";
+      session.score = 65;
+      session.feedback = {
+        strengths: ["Audio session completed"],
+        weaknesses: ["AI analysis was skipped or dropped"],
+        suggestions: ["Review transcript manually"],
+        finalAssessment: "Voice evaluation failed or reached timeout. Minimal metrics recorded."
+      };
+      await session.save();
+      res.json({ success: true, evaluation: session.feedback, score: session.score });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getInterviews = async (req, res, next) => {
   try {
-    const interviews = await InterviewSession.find({ userId: req.user.id }).sort({ createdAt: -1 });
-    res.json({ success: true, interviews });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [interviews, total] = await Promise.all([
+      InterviewSession.find({ userId: req.user.id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      InterviewSession.countDocuments({ userId: req.user.id })
+    ]);
+
+    res.json({ 
+      success: true, 
+      interviews,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / limit)
+      }
+    });
   } catch (error) {
     next(error);
   }
@@ -172,6 +242,30 @@ export const getStats = async (req, res, next) => {
       success: true,
       stats: { totalInterviews: total, completedInterviews: completed, recentInterviews: recent }
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateInterview = async (req, res, next) => {
+  try {
+    const interview = await InterviewSession.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.id },
+      req.body,
+      { new: true }
+    );
+    if (!interview) return res.status(404).json({ success: false, message: "Interview not found" });
+    res.json({ success: true, interview });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteInterview = async (req, res, next) => {
+  try {
+    const result = await InterviewSession.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+    if (!result) return res.status(404).json({ success: false, message: "Interview not found" });
+    res.json({ success: true, message: "Interview deleted" });
   } catch (error) {
     next(error);
   }

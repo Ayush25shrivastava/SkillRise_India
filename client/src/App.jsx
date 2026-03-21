@@ -61,18 +61,42 @@ function App() {
             <Route path="/new_mock" element={<InterviewPage />} />
             <Route path="/chatbot" element={<Chatbot />} />
 
-            {/* Integrate New Mock UI */}
             <Route
-              path="/interviews/*"
+              path="/interviews"
               element={
                 <MockAuthProvider>
                   <MockToastProvider>
-                    <Routes>
-                      <Route index element={<InterviewsPage />} />
-                      <Route path="new" element={<NewInterviewPage />} />
-                      <Route path=":id" element={<InterviewDetailPage />} />
-                      <Route path=":id/feedback" element={<FeedbackPage />} />
-                    </Routes>
+                    <InterviewsPage />
+                  </MockToastProvider>
+                </MockAuthProvider>
+              }
+            />
+            <Route
+              path="/interviews/new"
+              element={
+                <MockAuthProvider>
+                  <MockToastProvider>
+                    <NewInterviewPage />
+                  </MockToastProvider>
+                </MockAuthProvider>
+              }
+            />
+            <Route
+              path="/interviews/:id"
+              element={
+                <MockAuthProvider>
+                  <MockToastProvider>
+                    <InterviewDetailPage />
+                  </MockToastProvider>
+                </MockAuthProvider>
+              }
+            />
+            <Route
+              path="/interviews/:id/feedback"
+              element={
+                <MockAuthProvider>
+                  <MockToastProvider>
+                    <FeedbackPage />
                   </MockToastProvider>
                 </MockAuthProvider>
               }

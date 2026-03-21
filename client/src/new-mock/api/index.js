@@ -35,12 +35,12 @@ export const authAPI = {
 
 // Interviews
 export const interviewAPI = {
-  create: (data) => api.post("/interviews", data),
+  create: (data) => api.post("/interviews/create", data),
   getAll: (params) => api.get("/interviews", { params }),
   getOne: (id) => api.get(`/interviews/${id}`),
   update: (id, data) => api.put(`/interviews/${id}`, data),
   delete: (id) => api.delete(`/interviews/${id}`),
-  submitFeedback: (id, data) => api.post(`/interviews/${id}/feedback`, data),
+  submitFeedback: (id, choices) => api.post("/interviews/submit", { interviewId: id, answers: choices }),
   generateFeedback: (id) => api.post(`/interviews/${id}/generate-feedback`),
   generateNextQuestion: (id, transcript) => api.post(`/interviews/${id}/next-question`, { transcript }),
   getStats: () => api.get("/interviews/stats"),

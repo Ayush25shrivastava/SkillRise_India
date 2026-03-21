@@ -4,7 +4,10 @@ import {
   submitInterviewSession, 
   getInterviews, 
   getInterview,
-  getStats
+  getStats,
+  updateInterview,
+  deleteInterview,
+  generateFeedback
 } from "../controllers/interviewController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -16,7 +19,10 @@ router.use(protect); // Secure all production routes
 router.post("/create", createInterviewSession);
 router.post("/submit", submitInterviewSession);
 router.get("/", getInterviews);
-router.get("/stats", getStats); // ⚡ FIXED: Added missing stats endpoint
+router.get("/stats", getStats);
 router.get("/:id", getInterview);
+router.post("/:id/generate-feedback", generateFeedback);
+router.put("/:id", updateInterview);
+router.delete("/:id", deleteInterview);
 
 export default router;

@@ -31,6 +31,13 @@ const sessionSchema = new mongoose.Schema({
       answer: String,
     }
   ],
+  transcript: [
+    {
+      role: String,
+      content: String,
+    }
+  ],
+  duration: Number,
   score: { type: Number },
   feedback: {
     strengths: [String],

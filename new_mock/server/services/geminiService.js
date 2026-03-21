@@ -141,13 +141,21 @@ export const evaluateInterview = async (role, questions, answers, language = "En
        "strengths": [string],
        "weaknesses": [string],
        "suggestions": [string],
+       "categoryScores": {
+         "communication": { "score": number, "comment": string },
+         "technicalKnowledge": { "score": number, "comment": string },
+         "problemSolving": { "score": number, "comment": string },
+         "culturalFit": { "score": number, "comment": string },
+         "confidenceClarity": { "score": number, "comment": string }
+       },
        "questionFeedback": [
          {
            "question": string,
            "rating": number (1-10),
            "comment": string
          }
-       ]
+       ],
+       "finalAssessment": string
      }`;
 
   try {

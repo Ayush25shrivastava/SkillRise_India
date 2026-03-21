@@ -6,7 +6,8 @@ import { SCORE_COLOR, TYPE_COLOR, LEVEL_COLOR } from "../utils/constants";
 import { Clock, ChevronRight, CheckCircle2, Circle, PlayCircle } from "lucide-react";
 
 export default function InterviewCard({ interview }) {
-  const { _id, role, type, level, techstack, status, totalScore, createdAt } = interview;
+  const { _id, role, type, level, techstack, status, score, totalScore, createdAt } = interview;
+  const displayScore = score ?? totalScore;
 
   const statusIcon = {
     completed: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
@@ -56,12 +57,12 @@ export default function InterviewCard({ interview }) {
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            {totalScore !== null && totalScore !== undefined && (
+            {displayScore !== null && displayScore !== undefined && (
               <div className="text-right">
-                <div className={`text-2xl font-bold ${SCORE_COLOR(totalScore)}`}>
-                  {totalScore}
+                <div className={`text-2xl font-bold ${SCORE_COLOR(displayScore)}`}>
+                  {displayScore}
                 </div>
-                <div className="text-xs text-muted-foreground">{scoreLabel(totalScore)}</div>
+                <div className="text-xs text-muted-foreground">{scoreLabel(displayScore)}</div>
               </div>
             )}
             <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
