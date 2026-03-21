@@ -68,7 +68,7 @@
 //     { label: "Job Recommendations", icon: Briefcase, path: "/jobs" },
 //     { label: "Career Roadmap", icon: Map, path: "/learning-roadmap" },
 //     { label: "Agentic Chatbot", icon: Bot, path: "/chatbot" },
-//     { label: "Mock Interview", icon: PlayCircle, path: "/mock-interview" },
+//     { label: "Mock Interview", icon: PlayCircle, path: "/new_mock" },
 //     { label: "Feedback", icon: MessageSquare, path: "/feedback" },
 //   ];
 

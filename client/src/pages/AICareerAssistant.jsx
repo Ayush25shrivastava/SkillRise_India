@@ -243,7 +243,7 @@ const AICareerAssistant = () => {
             <RoleCard 
               key={idx} 
               {...m} 
-              onClick={() => navigate('/mock-interview', { state: { role: m.role } })}
+              onClick={() => navigate('/new_mock', { state: { role: m.role } })}
             />
           ))}
           

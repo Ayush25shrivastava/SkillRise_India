@@ -1,0 +1,36 @@
+[33md9fa1f8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fixed nested repo issue
+[33m8e53dd5[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m landing page added and UI improved
+[33m36304bf[m[33m ([m[1;31morigin/ayush[m[33m)[m landing page added and UI improved
+[33ma1fc958[m Merge pull request #6 from Shreya2776/Updated_Frontend
+[33m08f2dbe[m Leftover frontend files: authentication complete
+[33m581ff49[m Configuration files changed
+[33me505777[m Fields changed and routing done
+[33mb928063[m OTP and Email setup
+[33mf5b2564[m Final routes and controller fucntions
+[33m6817312[m Google Auth setup
+[33m84e8076[m Fix backend port alignments, parser bugs, and enhance server error handling
+[33m33e529c[m Merge pull request #5 from Shreya2776/Updated_Frontend
+[33m8b8437a[m working condition of resume analyser+mock interview + chatbot till here
+[33m55e18b5[m Merge pull request #4 from Shreya2776/Updated_Frontend
+[33m0f60820[m Chat UI changed partially
+[33m898062d[m Merge pull request #3 from Shreya2776/Updated_Frontend
+[33m058a54a[m Dependencies more installed for UI
+[33me3f8191[m Resume Frontend partially imnporved
+[33m8a77605[m Frontend dashboard UI more dynamic and responsive along with toggle sidebar
+[33m4671da9[m Merge pull request #2 from Shreya2776/integration-3
+[33m8841f97[m[33m ([m[1;31morigin/integration-3[m[33m)[m chore: add example .env files for all projects
+[33m8a9f4a7[m Merge branch 'main' of https://github.com/Shreya2776/SkillRise_India into integration-3
+[33me0c60a7[m Integration 3 changes
+[33m0f39167[m Merge pull request #1 from Shreya2776/Resume_Analyser_NEW
+[33m2ea0409[m Merge remote-tracking branch 'origin/Resume_Analyser_NEW' into interview
+[33m2d6511c[m mock  interview
+[33m70e4c05[m[33m ([m[1;31morigin/Resume_Analyser_NEW[m[33m)[m Connectivity with resume_analyser done
+[33m456dd57[m Merge branch 'main' of https://github.com/Shreya2776/SkillRise_India into Resume_Analyser_NEW
+[33m0a3af77[m working condition
+[33m3eca207[m Model changed to gemma , working  condition of analyser , frontend left
+[33mdbcbfc2[m Pdf parse error
+[33m5aabb95[m "Few bugs fixed with connectivity"
+[33mab1652c[m fixes
+[33m7780402[m ui
+[33m3c40c74[m Analyser with major features+ few bugs
+[33mc96a985[m Initial commit: MERN authentication system

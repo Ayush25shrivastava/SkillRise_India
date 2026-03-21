@@ -27,7 +27,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
     { icon: Briefcase, label: "Job Recommendations", path: "/jobs" },
     { icon: Map, label: "Career Roadmap", path: "/learning-roadmap" },
     { icon: Bot, label: "Agentic Chatbot", path: "/chatbot" },
-    { icon: Mic, label: "Mock Interview", path: "/mock-interview" },
+    { icon: Mic, label: "Mock Interview", path: "/interviews" },
     { icon: MessageSquare, label: "Feedback", path: "/feedback" }
   ];
 
