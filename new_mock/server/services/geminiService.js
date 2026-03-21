@@ -104,7 +104,8 @@ Example Output (${language}):
       return response.text();
     });
 
-    const parsed = extractJSON(rawResult);
+    const parsed = extractJSON(rawResult); 
+    
 
     if (!Array.isArray(parsed)) {
       throw new Error("AI returned non-array format");
