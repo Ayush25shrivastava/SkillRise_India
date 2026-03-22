@@ -155,7 +155,7 @@ export default function Login() {
 
           {/* Google OAuth */}
           <button
-            onClick={() => window.location.href = "http://localhost:5000/api/auth/google"}
+            onClick={() => window.location.href = "http://localhost:5050/api/auth/google"}
             className="w-full flex items-center justify-center gap-3 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white/70 font-bold hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white transition-all"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
