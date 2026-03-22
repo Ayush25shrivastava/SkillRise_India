@@ -42,7 +42,6 @@ export const getMyProfile = async (req, res) => {
     if (!profile) {
       const newProfile = new Profile({
         user: req.user,
-        role: "",
         data: {},
   });
 

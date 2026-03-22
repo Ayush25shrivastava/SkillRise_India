@@ -153,6 +153,22 @@ async function responseGenerator(state) {
     const userProfile = state.userProfile || null;
     const hasStructuredData = Object.keys(finalResponseData).length > 0;
 
+    // Build retrieved data context string for prompt injection
+    const retrievedData = state.retrievedData || {};
+    const hasRetrievedData = Object.keys(retrievedData).length > 0;
+    let retrievedDataSection = "";
+    if (hasRetrievedData) {
+      const sections = [];
+      for (const [dataset, entries] of Object.entries(retrievedData)) {
+        if (Array.isArray(entries) && entries.length > 0) {
+          sections.push(`${dataset}: ${entries.map(e => e.content || e.name || JSON.stringify(e)).join(" | ")}`);
+        }
+      }
+      if (sections.length > 0) {
+        retrievedDataSection = `\n## Retrieved Context from Real Databases (use for grounding — do NOT invent data)\n${sections.join("\n")}\n`;
+      }
+    }
+
     // Build user profile string
     let userProfileStr = "Not provided";
     if (userProfile) {
@@ -234,6 +250,7 @@ ${hasStructuredData ? `
 ${JSON.stringify(finalResponseData, null, 2)}
 \`\`\`
 ` : ""}
+${retrievedDataSection}
 
 ## User Profile
 ${userProfileStr}

@@ -12,7 +12,7 @@ const duckDuckGoSearch = require("./duckduckgoSearch");
  * @param {string|string[]} targetSkills - List of input skills (can be gaps or roles)
  * @returns {Promise<Object>} Structured JSON response with courses (max 5)
  */
-const courseFinder = async (targetSkills) => {
+const courseFinder = async (targetSkills, externalContext = null) => {
   if (!targetSkills) {
     return { status: "error", message: "Target skills missing", data: [] };
   }
@@ -22,6 +22,17 @@ const courseFinder = async (targetSkills) => {
   if (searchSkills.length === 0 || searchSkills.join('').trim() === '') {
     console.warn("[CourseFinder] Warning: Empty skill inputs. Returning empty list.");
     return { status: "no_data", message: "Empty skill inputs", data: [] };
+  }
+
+  // ─── Step 0: Use external context from RetrieverNode if provided ─────────
+  if (externalContext && Array.isArray(externalContext) && externalContext.length > 0) {
+    console.log(`[CourseFinder] Using ${externalContext.length} results from RetrieverNode (skipping local + DDG).`);
+    return {
+      status: "success",
+      data: externalContext.slice(0, 5),
+      source: "retriever_node",
+      reasoning: `Found ${externalContext.length} relevant courses from centralized retriever.`
+    };
   }
 
   console.log(`[CourseFinder] Running course matching for: ${searchSkills.join(', ')}`);

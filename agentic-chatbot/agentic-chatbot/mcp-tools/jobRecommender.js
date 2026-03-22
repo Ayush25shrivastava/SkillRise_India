@@ -76,7 +76,7 @@ async function callLLM(prompt) {
   return await structured.invoke(prompt);
 }
 
-const recommendJobs = async (userSkills) => {
+const recommendJobs = async (userSkills, externalContext = null) => {
   try {
     const skillsText = Array.isArray(userSkills) ? userSkills.join(', ') : userSkills;
     if (!skillsText?.trim()) {
@@ -95,7 +95,14 @@ const recommendJobs = async (userSkills) => {
     let jobContext = "";
     let source = "llm_generative";
 
-    // ─── Step 1: Pinecone Similarity ─────────────────────────────────────────
+    // ─── Step 0: Use external context from RetrieverNode if provided ─────────
+    if (externalContext && Array.isArray(externalContext) && externalContext.length > 0) {
+      console.log(`[JobRecommender] Using ${externalContext.length} results from RetrieverNode (skipping Pinecone + DDG).`);
+      jobContext = `JOB CONTEXT FROM CENTRALIZED RETRIEVER:\n${externalContext.map(item => item.content || item.name || JSON.stringify(item)).join('\n')}`;
+      source = "retriever_node";
+    }
+    // ─── Step 1: Pinecone Similarity (skipped if external context was used) ───
+    if (!jobContext) {
     try {
       const embedding = await getEmbedding(skillsText);
       if (embedding.length > 0) {
@@ -108,6 +115,7 @@ const recommendJobs = async (userSkills) => {
       }
     } catch (pineconeErr) {
       console.warn(`[JobRecommender] Pinecone failed: ${pineconeErr.message}`);
+    }
     }
 
     // ─── Step 2: DuckDuckGo fallback ─────────────────────────────────────────

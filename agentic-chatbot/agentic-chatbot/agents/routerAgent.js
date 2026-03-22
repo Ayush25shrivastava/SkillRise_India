@@ -10,6 +10,7 @@ const cache = require("../utils/responseCache");
 
 const routerSchema = z.object({
   agents: z.array(z.enum(["resumeAgent", "careerAgent", "skillAgent", "schemeAgent", "roadMapAgent", "chitchat"])).describe("List of agents to call"),
+  datasets: z.array(z.enum(["jobs", "courses", "skills", "gov_schemes", "career_guides"])).optional().describe("Which Pinecone datasets to search for RAG context"),
   extractedSkills: z.array(z.string()).optional().describe("Technical or soft skills mentioned by the user"),
   targetRole: z.string().optional().describe("Target job role or career goal mentioned by the user")
 });
@@ -71,6 +72,7 @@ async function routerAgent(state) {
       }
       rawResponse = {
         agents: Array.from(new Set(fallbackAgents)),
+        datasets: [],   // will be auto-inferred by buildRouterOutput
         extractedSkills: [],
         targetRole: null
       };
@@ -86,6 +88,15 @@ async function routerAgent(state) {
     return { selectedAgents: ["careerAgent"] };
   }
 }
+
+// ─── Agent-to-Dataset mapping for auto-inference ─────────────────────────────
+const AGENT_DATASET_MAP = {
+  careerAgent:  ["jobs", "courses"],
+  skillAgent:   ["skills", "jobs"],
+  schemeAgent:  ["gov_schemes"],
+  roadMapAgent: ["career_guides", "courses"],
+  resumeAgent:  ["jobs", "skills"]
+};
 
 function buildRouterOutput(rawResponse, state) {
   let agents = rawResponse.agents || [];
@@ -103,6 +114,23 @@ function buildRouterOutput(rawResponse, state) {
 
   console.log(`[RouterAgent] Selected agents: ${agents.join(", ")}`);
 
+  // ─── Dataset selection (LLM output + auto-infer from agents) ────────────
+  let datasets = rawResponse.datasets || [];
+  const validDatasets = ["jobs", "courses", "skills", "gov_schemes", "career_guides"];
+  datasets = datasets.filter(d => validDatasets.includes(d));
+
+  // Auto-infer datasets from selected agents if LLM missed them
+  for (const agent of agents) {
+    const mapped = AGENT_DATASET_MAP[agent] || [];
+    for (const ds of mapped) {
+      if (!datasets.includes(ds)) datasets.push(ds);
+    }
+  }
+  // Chitchat needs no datasets
+  if (agents.length === 1 && agents[0] === "chitchat") datasets = [];
+
+  console.log(`[RouterAgent] Selected datasets: ${datasets.join(", ") || "(none)"}`);
+
   const outputData = {};
   if (!state.resumeFilePath && rawResponse.extractedSkills?.length > 0) {
     outputData.userSkills = rawResponse.extractedSkills;
@@ -112,7 +140,7 @@ function buildRouterOutput(rawResponse, state) {
     outputData.targetRole = rawResponse.targetRole;
   }
 
-  return { selectedAgents: agents, data: outputData };
+  return { selectedAgents: agents, datasets, data: outputData };
 }
 
 module.exports = routerAgent;

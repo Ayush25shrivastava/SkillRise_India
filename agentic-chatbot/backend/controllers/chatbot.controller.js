@@ -41,7 +41,9 @@ const handleMessage = async (req, res) => {
       chatHistory: context.recentMessages || [],
       semanticContext: context.semanticMatches || [],
       datasetContext: context.datasetMatches || [],
-      resumeFilePath: req.file ? req.file.path : null
+      resumeFilePath: req.file ? req.file.path : null,
+      datasets: [],        // Will be populated by routerAgent
+      retrievedData: {}    // Will be populated by retrieverNode
     };
 
     console.log(`[ChatbotRoute] Invoking Agentic Graph for Thread ${threadId}...`);
@@ -63,6 +65,7 @@ const handleMessage = async (req, res) => {
 
       let message = `Agent evaluating...`;
       if (nodeName === 'router') message = `Router selected: ${nodeData.selectedAgents?.join(', ') || 'none'}`;
+      else if (nodeName === 'retrieverNode') message = `Retrieving relevant data from knowledge base...`;
       else if (nodeName === 'aggregator') message = `Synthesizing analyzed data...`;
       else if (nodeName === 'responseGenerator') message = `Generating conversational response...`;
       else if (nodeName !== '__start__') message = `Running ${nodeName}...`;

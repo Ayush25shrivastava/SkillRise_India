@@ -12,10 +12,21 @@ const duckDuckGoSearch = require("./duckduckgoSearch");
  * @param {string[]} searchSkills - List of input skills/gaps from the user
  * @returns {Promise<Object>} Structured JSON response with schemes (max 5)
  */
-const governmentSchemeFinder = async (searchSkills) => {
+const governmentSchemeFinder = async (searchSkills, externalContext = null) => {
   if (!searchSkills || !Array.isArray(searchSkills) || searchSkills.length === 0) {
     console.warn("[SchemeFinder] Warning: No skills provided. Returning empty list.");
     return { status: "no_data", message: "No skills provided", data: [] };
+  }
+
+  // ─── Step 0: Use external context from RetrieverNode if provided ─────────
+  if (externalContext && Array.isArray(externalContext) && externalContext.length > 0) {
+    console.log(`[SchemeFinder] Using ${externalContext.length} results from RetrieverNode (skipping local + DDG).`);
+    return {
+      status: "success",
+      data: externalContext.slice(0, 5),
+      source: "retriever_node",
+      reasoning: `Found ${externalContext.length} relevant schemes from centralized retriever.`
+    };
   }
 
   console.log(`[SchemeFinder] Running scheme matching for: ${searchSkills.join(', ')}`);

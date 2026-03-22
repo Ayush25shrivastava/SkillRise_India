@@ -1,111 +1,139 @@
 const fs = require('fs');
 const path = require('path');
-const { Pinecone } = require("@pinecone-database/pinecone");
+const { Pinecone } = require('@pinecone-database/pinecone');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const { generateEmbedding } = require('../memory/vectorMemory');
+const { createText } = require('./generateDatasetEmbeddings');
 
+// ─────────────────────────────────────────────
+// Pinecone — single shared index: chat-memory
+// ─────────────────────────────────────────────
 const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
 const index = pinecone.index(process.env.PINECONE_INDEX_NAME || 'chat-memory');
 
-function flattenDataset(filename, data) {
-  let records = [];
+const BATCH_SIZE = 50;
 
-  function processNode(node) {
-    if (Array.isArray(node)) {
-      for (const item of node) {
-        if (typeof item === 'object' && item !== null) {
-          records.push({
-            type: filename.replace('.json', ''),
-            content: JSON.stringify(item),
-            rawObject: item
-          });
-        }
-      }
-    } else if (typeof node === 'object' && node !== null) {
-      for (const [key, value] of Object.entries(node)) {
-        if (Array.isArray(value)) {
-          processNode(value);
-        } else if (typeof value === 'object') {
-          records.push({
-            type: filename.replace('.json', ''),
-            content: JSON.stringify(value),
-            rawObject: value,
-            metadata: { category: key }
-          });
-          processNode(value);
-        }
-      }
-    }
+// ─────────────────────────────────────────────
+// upsertBatch: batch upsert vectors into Pinecone
+// ─────────────────────────────────────────────
+async function upsertBatch(records) {
+  if (records.length === 0) return;
+  try {
+    await index.upsert({ records });
+  } catch (err) {
+    console.error(`  [ERROR] Batch upsert failed:`, err.message || err);
   }
-
-  processNode(data);
-  return records;
 }
 
-async function processFile(filename) {
-  console.log(`Processing ${filename} specifically for Pinecone Semantic Search...`);
+// ─────────────────────────────────────────────
+// processDataset: reads, embeds, and upserts
+// all items from a given JSON file into Pinecone
+// ─────────────────────────────────────────────
+async function processDataset(filename, type) {
   const filePath = path.join(__dirname, filename);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[SKIP] File not found: ${filename}`);
+    return;
+  }
+
+  console.log(`\n[START] Embedding ${filename} → Pinecone (type=${type})`);
   const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  
-  const records = flattenDataset(filename, data);
-  console.log(`Extracted ${records.length} items from ${filename}`);
 
-  let totalUpserted = 0;
-  
-  for (let i = 0; i < records.length; i++) {
-    const item = records[i];
-    
-    // We expect generateDatasetEmbeddings was already run or we run it now
-    let vector = item.rawObject.embedding;
-    
-    if (!vector) {
-      vector = await generateEmbedding(item.content);
+  if (!Array.isArray(data)) {
+    console.warn(`[WARN] ${filename} is not a flat array — skipping.`);
+    return;
+  }
+
+  console.log(`  Items found: ${data.length}`);
+
+  let totalEmbeddings = 0;
+  let totalUpserted   = 0;
+  let skipped         = 0;
+  let batch           = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const item = data[i];
+
+    if (!item.id) {
+      skipped++;
+      continue;
     }
-    
-    if (!vector || vector.length === 0) continue;
 
-    // Build the pinecone record
-    const recordId = `${item.type}_${Date.now()}_${i}`;
-    const pRecord = {
-      id: recordId,
-      values: vector,
+    // Generate clean semantic text (no raw JSON)
+    const text = createText(item, type);
+
+    // Generate embedding
+    const embedding = await generateEmbedding(text);
+    if (!embedding || embedding.length === 0) {
+      console.warn(`  [WARN] Empty embedding for id=${item.id} — skipping.`);
+      skipped++;
+      continue;
+    }
+
+    totalEmbeddings++;
+
+    // Build Pinecone record
+    // Use stable item.id so re-runs upsert (update) rather than duplicate
+    const record = {
+      id: `${type}_${item.id}`,
+      values: embedding,
       metadata: {
-        type: "dataset_" + item.type,
-        content: item.content,
-        timestamp: Date.now()
+        type: type,
+        name: item.role || item.name || item.id,
+        // Store condensed content for retrieval context
+        content: text.substring(0, 500),
       }
     };
-    
-    if (item.metadata?.category) {
-      pRecord.metadata.category = item.metadata.category;
-    }
 
-    try {
-      await index.upsert({ records: [pRecord] });
-      totalUpserted++;
-    } catch (err) {
-      console.error(`Failed to upsert to Pinecone for ${filename}:`, err);
+    batch.push(record);
+
+    // Flush batch when it hits BATCH_SIZE
+    if (batch.length >= BATCH_SIZE) {
+      await upsertBatch(batch);
+      totalUpserted += batch.length;
+      console.log(`  [BATCH] Upserted ${totalUpserted}/${data.length - skipped} vectors...`);
+      batch = [];
     }
   }
 
-  console.log(`Saved ${totalUpserted} embedded items from ${filename} to Pinecone index.`);
+  // Flush remaining records
+  if (batch.length > 0) {
+    await upsertBatch(batch);
+    totalUpserted += batch.length;
+    batch = [];
+  }
+
+  console.log(
+    `[DONE] ${filename}:\n` +
+    `  Items processed : ${data.length - skipped}\n` +
+    `  Embeddings made : ${totalEmbeddings}\n` +
+    `  Vectors upserted: ${totalUpserted}\n` +
+    `  Skipped         : ${skipped}`
+  );
 }
 
+// ─────────────────────────────────────────────
+// main: runs all datasets in sequence
+// ─────────────────────────────────────────────
 async function main() {
+  const datasets = [
+    { file: 'jobs.json',          type: 'job'    },
+    { file: 'job-skill.json',     type: 'skill'  },
+    { file: 'courses.json',       type: 'course' },
+    { file: 'govSchemes.json',    type: 'scheme' },
+    { file: 'career-growth.json', type: 'path'   },
+  ];
+
   try {
-    const files = ['courses.json', 'govSchemes.json', 'skillRoadmap.json'];
-    for (const file of files) {
-      if (fs.existsSync(path.join(__dirname, file))) {
-        await processFile(file);
-      } else {
-        console.warn(`File ${file} not found. Skipping.`);
-      }
+    for (const { file, type } of datasets) {
+      await processDataset(file, type);
     }
-    console.log("All datasets embedded into Pinecone permanently globally successfully!");
+
+    console.log('\n✅ All datasets embedded and upserted into Pinecone (chat-memory index) successfully!');
     process.exit(0);
   } catch (error) {
-    console.error("Error generating/upserting vector embeddings:", error);
+    console.error('❌ Error during embedding/upserting:', error);
     process.exit(1);
   }
 }

@@ -75,7 +75,7 @@ async function callLLMForGapAnalysis(prompt) {
   return await structured.invoke(prompt);
 }
 
-const matchSkills = async (userSkills) => {
+const matchSkills = async (userSkills, externalContext = null) => {
   try {
     const skillsText = Array.isArray(userSkills) ? userSkills.join(', ') : userSkills;
     if (!skillsText?.trim()) {
@@ -94,7 +94,15 @@ const matchSkills = async (userSkills) => {
     let jobContextStr = "No similar database entries found. Use general industry knowledge.";
     let source = "llm_generative";
 
-    // ─── Step 1: Pinecone Similarity ─────────────────────────────────────────
+    // ─── Step 0: Use external context from RetrieverNode if provided ─────────
+    if (externalContext && Array.isArray(externalContext) && externalContext.length > 0) {
+      console.log(`[SkillMatcher] Using ${externalContext.length} results from RetrieverNode (skipping Pinecone).`);
+      jobContextStr = `JOB/SKILL CONTEXT FROM CENTRALIZED RETRIEVER:\n${externalContext.map(item => item.content || item.name || JSON.stringify(item)).join('\n')}`;
+      source = "retriever_node";
+    }
+
+    // ─── Step 1: Pinecone Similarity (skipped if external context was used) ───
+    if (source !== "retriever_node") {
     try {
       const embedding = await getEmbedding(skillsText);
       if (embedding.length > 0) {
@@ -107,6 +115,7 @@ const matchSkills = async (userSkills) => {
       }
     } catch (pineconeErr) {
       console.warn(`[SkillMatcher] Pinecone failed: ${pineconeErr.message}`);
+    }
     }
 
     // ─── Step 2: LLM Gap Analysis ─────────────────────────────────────────────

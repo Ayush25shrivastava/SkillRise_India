@@ -15,7 +15,7 @@ export default function ProfileSetup() {
   const [formData, setFormData] = useState({});
   const [isEdit, setIsEdit] = useState(true);
   const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+    setFormData({ ...(formData || {}), [field]: value });
   };
  const fetchProfile = async () => {
   try {
@@ -35,7 +35,7 @@ export default function ProfileSetup() {
     const data = await res.json();
 
     if (data?.profile) {
-      setFormData(data.profile.data);
+      setFormData(data.profile.data || {});
       setIsEdit(false);
     } else {
       setIsEdit(true);
@@ -48,9 +48,13 @@ export default function ProfileSetup() {
 useEffect(() => {
   const local = localStorage.getItem("profile");
 
-  if (local) {
-    setFormData(JSON.parse(local));
-    setIsEdit(false);
+  if (local && local !== "undefined") {
+    try {
+      setFormData(JSON.parse(local) || {});
+      setIsEdit(false);
+    } catch {
+      setFormData({});
+    }
   }
 
   // then try backend
@@ -86,7 +90,7 @@ const handleSubmit = async () => {
     }
 
     // ✅ IMPORTANT: update state with saved data
-    setFormData(data.profile.data || formData);
+    setFormData(data.profile.data || formData || {});
 
     alert("Profile Saved ✅");
     setIsEdit(false);
@@ -112,7 +116,7 @@ const handleSubmit = async () => {
 
           <div className="grid grid-cols-2 gap-4">
 
-            {Object.entries(formData).map(([key, value]) => (
+            {Object.entries(formData || {}).map(([key, value]) => (
               <div key={key} className="bg-white/5 p-3 rounded-xl">
                 <p className="text-gray-400 text-xs">{key}</p>
                 <p>{value || "-"}</p>
