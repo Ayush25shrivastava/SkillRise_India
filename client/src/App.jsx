@@ -8,7 +8,10 @@ import AICareerAssistant from "./pages/AICareerAssistant.jsx";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer.jsx";
 import SkillGapAnalysis from "./pages/SkillGapAnalysis.jsx";
 import CareerExplorer from "./pages/CareerExplorer.jsx";
-import LearningRoadmap from "./pages/LearningRoadmap.jsx";
+
+import LearningRoadmap from "./pages/RoadmapPage.jsx";
+
+
 import JobsAndInternships from "./pages/JobsAndInternships.jsx";
 import GovernmentSchemes from "./pages/GovernmentSchemes.jsx";
 import SkillProgress from "./pages/SkillProgress.jsx";
