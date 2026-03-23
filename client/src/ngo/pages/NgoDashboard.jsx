@@ -7,7 +7,7 @@ import BlogForm from "../components/BlogForm";
 import BlogCard from "../components/BlogCard";
 
 // Base API configuration
-const API_URL = import.meta.env.VITE_API_URL.replace("/auth", "/blogs");
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5050/api/auth").replace("/auth", "/blogs");
 
 export default function NgoDashboard() {
   const [blogs, setBlogs] = useState([]);
