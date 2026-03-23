@@ -1,12 +1,5 @@
-// import axios from "axios";
-
-// export const generateRoadmap = async (data) => {
-//   const res = await axios.post("http://localhost:5000/api/roadmap/generate", data);
-//   return res.data;
-// };
-
 import axios from "axios";
-
+const API_URL = "http://localhost:5000/api/roadmap";
 export const generateRoadmap = async (data) => {
   try {
     const res = await axios.post("http://localhost:5000/api/roadmap/generate", data, {
@@ -15,6 +8,36 @@ export const generateRoadmap = async (data) => {
     return res.data;
   } catch (err) {
     // Pass through the exact error from backend
+    if (err.response?.data) {
+      throw err.response.data;
+    }
+    throw { error: true, message: err.message };
+  }
+};
+
+export const updateRoadmap = async (formData) => {
+  try {
+    const res = await axios.post(`${API_URL}/update`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      timeout: 90000,
+    });
+    return res.data;
+  } catch (err) {
+    if (err.response?.data) {
+      throw err.response.data;
+    }
+    throw { error: true, message: err.message };
+  }
+};
+
+export const careerSwitchRoadmap = async (formData) => {
+  try {
+    const res = await axios.post(`${API_URL}/career-switch`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      timeout: 90000,
+    });
+    return res.data;
+  } catch (err) {
     if (err.response?.data) {
       throw err.response.data;
     }
