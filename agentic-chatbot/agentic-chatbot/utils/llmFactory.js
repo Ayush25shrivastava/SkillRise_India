@@ -73,7 +73,7 @@ function createLLM(options = {}) {
   console.log(`[LLMFactory] ${caller} → ${keyLabel} (temp: ${temperature})`);
 
   const geminiLlm = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.0-flash",
     apiKey,
     temperature,
     maxRetries,
@@ -120,7 +120,7 @@ function createStructuredLLM(schema, options = {}) {
   console.log(`[LLMFactory] ${caller} (structured) → ${keyLabel}`);
 
   const geminiLlm = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.0-flash",
     apiKey,
     temperature,
     maxRetries,
