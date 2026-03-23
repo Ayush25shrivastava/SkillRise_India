@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { analyzeResume } from "../services/resumeAnalyzerService";
 import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
-import { UploadCloud, Sparkles, FileText, CheckCircle, AlertCircle } from "lucide-react";
+import { UploadCloud, Sparkles, FileText, CheckCircle, AlertCircle, Rocket, X } from "lucide-react";
 import FlowVisualizer from "../components/FlowVisualizer";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
@@ -21,6 +22,7 @@ const ResumeAnalyzer = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -40,6 +42,13 @@ const ResumeAnalyzer = () => {
         ...response,
         atsScore,
       });
+
+      // Save skills for recommendations
+      if (response.skills && response.skills.length > 0) {
+        localStorage.setItem("analyzedSkills", JSON.stringify(response.skills));
+      }
+      
+      setShowModal(true);
     } catch (error) {
       console.error(error);
     }
@@ -48,7 +57,52 @@ const ResumeAnalyzer = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-100px)] bg-[#06060a] text-white flex flex-col items-center pb-24">
+    <div className="min-h-[calc(100vh-100px)] bg-[#06060a] text-white flex flex-col items-center pb-24 relative">
+      
+      {/* SUCCESS TOAST NOTIFICATION */}
+      {showModal && (
+        <div className="fixed bottom-10 right-10 z-[100] flex items-center justify-center p-4 animate-in slide-in-from-right-12 duration-500">
+           <div className="w-full max-w-sm bg-[#0a101f] border border-white/10 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden space-y-6">
+              <div className="absolute -top-10 -right-10 w-24 h-24 bg-purple-600/20 blur-[40px]" />
+              
+              <button 
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-white/20 hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                   <Rocket size={24} className="animate-bounce" />
+                </div>
+                
+                <div className="space-y-1">
+                   <h3 className="text-xl font-black tracking-tight text-white uppercase italic">Audit Complete</h3>
+                   <p className="text-xs text-white/30 font-medium leading-relaxed">
+                     Your skills have been extracted.
+                   </p>
+                </div>
+              </div>
+
+              <div className="w-full pt-2 space-y-2">
+                 <Link 
+                   to="/recommendations"
+                   className="w-full py-3.5 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-400 transition-all flex items-center justify-center gap-2"
+                 >
+                   View Recommendations
+                   <Sparkles size={14} />
+                 </Link>
+                 <button 
+                   onClick={() => setShowModal(false)}
+                   className="w-full py-2.5 text-white/20 rounded-xl font-black text-[9px] uppercase tracking-widest hover:text-white transition-all"
+                 >
+                   Dismiss
+                 </button>
+              </div>
+           </div>
+        </div>
+      )}
       <div className="w-full max-w-[1200px] flex flex-col items-center space-y-24">
         
         {/* HEADER */}

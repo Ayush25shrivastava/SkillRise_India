@@ -2,8 +2,8 @@
  * Login Page — Dark futuristic design matching the landing page
  * Features: Email/password login, Google OAuth, forgot password link
  */
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Sparkles, Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-react";
 import API from "../services/authService";
@@ -14,6 +14,27 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    const role = params.get("role");
+
+    if (token && role) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      
+      if (role === "admin") {
+        window.location.href = "/admin";
+      } else if (role === "ngo") {
+        window.location.href = "/ngo";
+      } else {
+        window.location.href = "/dashboard";
+      }
+    }
+  }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

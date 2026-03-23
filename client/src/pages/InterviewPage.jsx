@@ -30,7 +30,7 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
 
-const BASE_URL = "http://localhost:5005/api/interview";
+const BASE_URL = "http://localhost:5050/api/interview";
 
 // ── Components ──
 

@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import passport from "passport";
+import "./config/Passport.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import roadmapRoutes from "./routes/roadmap.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -14,10 +16,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-
-app.use("/api/roadmap", roadmapRoutes);
+app.use(passport.initialize());
 
 // Routes
+app.use("/api/roadmap", roadmapRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/blogs", blogRoutes);
