@@ -36,10 +36,7 @@ const LearningRoadmap = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-8 px-4 md:px-8 lg:px-10 pb-10 relative">
-
       {/* Background Subtle Gradient Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-purple-600/5 blur-[120px] pointer-events-none rounded-full" />
-
       {/* Header / Title Section */}
       <div className="shrink-0 mt-4 flex flex-col items-center justify-center text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/5 border border-purple-500/10 mb-4 animate-in fade-in slide-in-from-top-4 duration-700">
