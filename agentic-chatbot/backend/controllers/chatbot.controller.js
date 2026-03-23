@@ -1,7 +1,9 @@
 // Chatbot Controller
 // Handles incoming requests securely to coordinate memory and graph execution
+// UPGRADED: Integrates Hybrid Memory System (getUserMemory → personalizeContext → graph → updateUserMemory)
 
 const { createThread, saveMessage, getRelevantContext } = require('../../agentic-chatbot/memory/memoryManager');
+const { getUserMemory, updateUserMemory, personalizeContext } = require('../../agentic-chatbot/memory/memoryEngine');
 const app = require('../../agentic-chatbot/graph/langgraph'); // The compiled StateGraph
 
 const handleMessage = async (req, res) => {
@@ -33,17 +35,26 @@ const handleMessage = async (req, res) => {
     // 3. Fetch Hybrid Context (Short-term chat history + Semantic long-term overlaps)
     const context = await getRelevantContext(threadId, messageText);
 
+    // ─── 3.5 Hybrid Memory: Fetch user memory + personalize ─────────────────
+    const uid = userId || "anonymous-user";
+    const userMemory = await getUserMemory(uid);
+    const { enhancedQuery, userPreferences } = personalizeContext(messageText, userMemory);
+
+    console.log(`[ChatbotRoute] Enhanced query: "${enhancedQuery.slice(0, 100)}..."`);
+
     // 4. Initialize LangGraph State
     const initialState = {
       threadId,
-      userQuery: messageText,
+      userQuery: enhancedQuery,          // Use personalized query
       userProfile: userProfile || null,
       chatHistory: context.recentMessages || [],
       semanticContext: context.semanticMatches || [],
       datasetContext: context.datasetMatches || [],
       resumeFilePath: req.file ? req.file.path : null,
       datasets: [],        // Will be populated by routerAgent
-      retrievedData: {}    // Will be populated by retrieverNode
+      retrievedData: {},   // Will be populated by retrieverNode
+      // Inject user memory preferences into state for agents to consume
+      userPreferences: userPreferences || {}
     };
 
     console.log(`[ChatbotRoute] Invoking Agentic Graph for Thread ${threadId}...`);
@@ -76,6 +87,12 @@ const handleMessage = async (req, res) => {
     // 6. Save Assistant Response back to Hybrid Memory
     const finalAnswer = finalState.conversationalResponse || "Sorry, I couldn't formulate a response right now.";
     await saveMessage(threadId, "assistant", finalAnswer);
+
+    // ─── 6.5 Hybrid Memory: Update user memory asynchronously ───────────────
+    // Fire-and-forget to avoid delaying the response
+    updateUserMemory(uid, messageText, finalState.finalResponse || {})
+      .then(() => console.log(`[ChatbotRoute] User memory updated for ${uid}`))
+      .catch(err => console.error(`[ChatbotRoute] Memory update failed: ${err.message}`));
 
     // 7. Send final standard payload to Frontend
     res.write(`data: ${JSON.stringify({ 

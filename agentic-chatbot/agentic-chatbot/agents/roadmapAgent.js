@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const { createLLM } = require("../utils/llmFactory");
 const getAgentPrompt = require("../prompts/agentPrompt");
 
 /**
@@ -155,14 +155,8 @@ ${JSON.stringify(toolOutput, null, 2)}
 
       const finalPrompt = getAgentPrompt(state, agentSpecificTask);
 
-      const geminiLlm = new ChatGoogleGenerativeAI({
-        model: "gemini-2.5-flash",
-        apiKey: process.env.GOOGLE_API_KEY,
-        temperature: 0.3,
-        maxRetries: 1
-      });
-
-      const response = await geminiLlm.invoke(finalPrompt);
+      const llm = createLLM({ temperature: 0.3, caller: "roadmapAgent" });
+      const response = await llm.invoke(finalPrompt);
       const text = response.content || "";
 
       const jsonMatch = text.match(/\{[\s\S]*\}/);

@@ -5,8 +5,7 @@
 
 const { Pinecone } = require('@pinecone-database/pinecone');
 const { pipeline } = require('@xenova/transformers');
-const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
-const { ChatOpenAI } = require('@langchain/openai');
+const { createStructuredLLM } = require('../utils/llmFactory');
 const { z } = require('zod');
 const cache = require('../utils/responseCache');
 
@@ -60,18 +59,14 @@ async function querySimilarJobs(embedding, topK = 3) {
 }
 
 /**
- * Call LLM for skill gap analysis
- * Groq ONLY — no Gemini (save quota for resume parsing)
+ * Call LLM for skill gap analysis using round-robin Gemini + Grok fallback.
  */
 async function callLLMForGapAnalysis(prompt) {
-  const groqLlm = new ChatOpenAI({
-    model: "llama-3.3-70b-versatile",
+  const structured = createStructuredLLM(gapAnalysisSchema, {
     temperature: 0.2,
-    apiKey: process.env.GROK_API_KEY,
-    configuration: { baseURL: "https://api.groq.com/openai/v1" },
-    maxRetries: 2  // Retry on Groq side directly, no need for Gemini
+    caller: "skillMatcher",
+    name: "matchSkills",
   });
-  const structured = groqLlm.withStructuredOutput(gapAnalysisSchema, { method: "functionCalling", name: "matchSkills" });
   return await structured.invoke(prompt);
 }
 

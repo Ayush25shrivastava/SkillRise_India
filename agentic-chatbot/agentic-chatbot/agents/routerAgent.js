@@ -1,9 +1,8 @@
 // Router Agent
-// PRIMARY: Groq (llama-3.3-70b) — fast classification, no latency overhead
-// FALLBACK: Safe hardcoded default (careerAgent) — Gemini NOT used here (save quota)
+// Uses llmFactory for round-robin Gemini key rotation + Grok fallback
 // CACHE: 2-minute TTL on routing decisions for identical queries
 
-const { ChatOpenAI } = require("@langchain/openai");
+const { createStructuredLLM } = require("../utils/llmFactory");
 const routerPrompt = require("../prompts/routerPrompt");
 const { z } = require("zod");
 const cache = require("../utils/responseCache");
@@ -50,18 +49,16 @@ async function routerAgent(state) {
     let rawResponse;
 
     try {
-      console.log("[RouterAgent] Calling Gemini (primary)...");
-      const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
-      const geminiLlm = new ChatGoogleGenerativeAI({
-        modelName: "gemini-2.5-flash",
-        apiKey: process.env.GOOGLE_API_KEY,
+      console.log("[RouterAgent] Calling LLM (round-robin + fallback)...");
+      const structuredLlm = createStructuredLLM(routerSchema, {
         temperature: 0,
+        caller: "routerAgent",
+        name: "router",
       });
-      const structuredGemini = geminiLlm.withStructuredOutput(routerSchema, { name: "router" });
-      rawResponse = await structuredGemini.invoke(promptText);
-      console.log("[RouterAgent] Gemini routing succeeded.");
-    } catch (geminiErr) {
-      console.warn(`[RouterAgent] Gemini failed (${geminiErr.message}). Using safe default routing.`);
+      rawResponse = await structuredLlm.invoke(promptText);
+      console.log("[RouterAgent] LLM routing succeeded.");
+    } catch (llmErr) {
+      console.warn(`[RouterAgent] LLM failed (${llmErr.message}). Using safe default routing.`);
       // Robust Regex Fallback
       let fallbackAgents = state.resumeFilePath ? ["resumeAgent", "careerAgent", "skillAgent"] : ["careerAgent", "skillAgent"];
       if (query.toLowerCase().includes("scheme") || query.toLowerCase().includes("government") || query.toLowerCase().includes("gov")) {
@@ -72,7 +69,7 @@ async function routerAgent(state) {
       }
       rawResponse = {
         agents: Array.from(new Set(fallbackAgents)),
-        datasets: [],   // will be auto-inferred by buildRouterOutput
+        datasets: [],
         extractedSkills: [],
         targetRole: null
       };

@@ -50,6 +50,7 @@ const graphState = {
   reasoning: { value: (x, y) => y ? y : x, default: () => null },
   error: { value: (x, y) => y ? y : x, default: () => null },
   userContext: { value: (x, y) => Object.keys(y || {}).length ? y : x, default: () => ({}) },
+  userPreferences: { value: (x, y) => Object.keys(y || {}).length ? y : x, default: () => ({}) },
 
   // The unified data object where all agents output their findings
   data: { 
