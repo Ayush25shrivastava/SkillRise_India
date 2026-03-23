@@ -40,25 +40,24 @@ function findMatchingCourses(keywords, maxResults = 6) {
     expanded.push("cloud computing", "software development");
   }
 
-  for (const [categoryName, courses] of Object.entries(coursesData)) {
-    const catLower = categoryName.toLowerCase();
-    const isMatch = expanded.some(kw => catLower.includes(kw) || kw.includes(catLower));
-    if (isMatch && Array.isArray(courses)) {
-      for (const course of courses) {
-        if (course && course.name && course.link && !seen.has(course.link)) {
-          seen.set(course.link, course);
-        }
-        if (seen.size >= maxResults) break;
-      }
+  for (const course of coursesData) {
+    if (!course || !course.name || !course.link) continue;
+    
+    // Check if course matches any keyword via its tags, name, or roles
+    const searchString = `${course.name} ${(course.tags || []).join(" ")} ${(course.roles || []).join(" ")}`.toLowerCase();
+    const isMatch = expanded.some(kw => searchString.includes(kw));
+    
+    if (isMatch && !seen.has(course.link)) {
+      seen.set(course.link, course);
     }
     if (seen.size >= maxResults) break;
   }
 
-  // Fallback: if nothing matched, grab from "Software Development" or first category
+  // Fallback: if nothing matched, just grab the first few courses
   if (seen.size === 0) {
-    const fallbackCategory = coursesData["Software Development"] || coursesData["Other"] || Object.values(coursesData)[0] || [];
-    for (const course of fallbackCategory) {
-      if (course && course.name && course.link && !seen.has(course.link)) {
+    for (const course of coursesData) {
+      if (!course || !course.name || !course.link) continue;
+      if (!seen.has(course.link)) {
         seen.set(course.link, course);
       }
       if (seen.size >= maxResults) break;
@@ -67,7 +66,7 @@ function findMatchingCourses(keywords, maxResults = 6) {
 
   return Array.from(seen.values())
     .slice(0, maxResults)
-    .map(c => `- [${c.name}](${c.link}) — *${c.provider}*`);
+    .map(c => `- [${c.name}](${c.link})`);
 }
 
 /**
@@ -93,24 +92,36 @@ function findMatchingSchemes(keywords, maxResults = 5) {
     expanded.push("cloud computing", "kubernetes");
   }
 
-  for (const entry of govSchemesData) {
-    const required = (entry.required_skills || []).map(s => s.toLowerCase());
-    const matches = expanded.some(kw => required.some(r => r.includes(kw) || kw.includes(r)));
-    if (matches && Array.isArray(entry.recommended_government_schemes)) {
-      for (const scheme of entry.recommended_government_schemes) {
-        if (scheme && scheme.name && scheme.link) {
-          const key = scheme.name + scheme.link;
-          if (!seen.has(key)) seen.set(key, scheme);
-        }
-        if (seen.size >= maxResults) break;
-      }
+  for (const scheme of govSchemesData) {
+    if (!scheme || !scheme.name || !scheme.link) continue;
+    
+    // Check if scheme matches any keyword via its tags, roles, or skills
+    const schemeSkills = scheme.supports?.skills || [];
+    const schemeRoles = scheme.supports?.roles || [];
+    const searchString = `${scheme.name} ${(scheme.tags || []).join(" ")} ${schemeSkills.join(" ")} ${schemeRoles.join(" ")}`.toLowerCase();
+    
+    const isMatch = expanded.some(kw => searchString.includes(kw));
+    
+    if (isMatch) {
+      const key = scheme.name + scheme.link;
+      if (!seen.has(key)) seen.set(key, scheme);
     }
     if (seen.size >= maxResults) break;
   }
 
+  // Fallback if no specific topic match
+  if (seen.size === 0) {
+    for (const scheme of govSchemesData) {
+      if (!scheme || !scheme.name || !scheme.link) continue;
+      const key = scheme.name + scheme.link;
+      if (!seen.has(key)) seen.set(key, scheme);
+      if (seen.size >= maxResults) break;
+    }
+  }
+
   return Array.from(seen.values())
     .slice(0, maxResults)
-    .map(s => `- [${s.name}](${s.link}) — *${s.provider}*`);
+    .map(s => `- [${s.name}](${s.link})`);
 }
 
 /**
@@ -131,9 +142,9 @@ function extractKeywordsFromQuery(query, knownSkills = []) {
     "cybersecurity", "blockchain", "web development"
   ];
 
-  const queryLower = query.toLowerCase();
+  const queryLower = (query || "").toLowerCase();
   const found = techTerms.filter(term => queryLower.includes(term));
-  const combined = [...new Set([...found, ...knownSkills.map(s => s.toLowerCase())])];
+  const combined = [...new Set([...found, ...(knownSkills || []).filter(Boolean).map(s => String(s).toLowerCase())])];
   return combined.length > 0 ? combined : ["software development"];
 }
 
