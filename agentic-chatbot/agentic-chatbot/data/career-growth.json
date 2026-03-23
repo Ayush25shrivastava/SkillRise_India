@@ -1,0 +1,802 @@
+[
+  {
+    "id": "path_001",
+    "role": "Industrial Electrician",
+    "path": ["Electrician Helper", "Junior Electrician", "Senior Electrician", "Electrical Contractor"],
+    "steps": ["Complete ITI in Electrician trade", "Complete 1-year NAPS Apprenticeship", "Obtain State Wireman License", "Clear PWD Contractor Licensing Exam"],
+    "skills": ["Industrial Wiring", "Fault Troubleshooting"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "8-10 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_002",
+    "role": "Mechanical Fitter",
+    "path": ["Fitter Trainee", "Maintenance Fitter", "Fitter Supervisor", "Plant Maintenance Manager"],
+    "steps": ["Complete ITI Fitter course", "Join manufacturing plant as trainee", "Gain 5 years experience in machine overhauling", "Complete Diploma in Mechanical Engineering (Distance)"],
+    "skills": ["Machine Assembly", "Preventive Maintenance"],
+    "edu": ["10th", "ITI", "Diploma"],
+    "growth_time": "7-9 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_003",
+    "role": "Structural Welder",
+    "path": ["Tack Welder", "Arc Welder", "TIG/MIG Specialist", "Welding Inspector"],
+    "steps": ["Complete ITI Welding trade", "Clear basic trade test at a workshop", "Gain certification in TIG/MIG welding", "Pass AWS/CSWIP Welding Inspector exam"],
+    "skills": ["Arc Welding", "Blueprint Reading"],
+    "edu": ["8th", "ITI"],
+    "growth_time": "6-8 years",
+    "tags": ["career growth", "promotion", "future", "manufacturing"]
+  },
+  {
+    "id": "path_004",
+    "role": "CNC Machinist",
+    "path": ["CNC Operator", "CNC Setter", "CNC Programmer", "Machine Shop In-charge"],
+    "steps": ["Complete ITI Machinist or Turner", "Learn basic G-code and M-code execution", "Take advanced CAD/CAM programming course", "Manage shift production and workforce"],
+    "skills": ["G-Code Programming", "Precision Measurement"],
+    "edu": ["10th", "ITI", "Diploma"],
+    "growth_time": "5-7 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_005",
+    "role": "Commercial Plumber",
+    "path": ["Plumber Helper", "Independent Plumber", "Plumbing Supervisor", "Plumbing Contractor"],
+    "steps": ["Apprentice under an experienced plumber", "Learn PVC/CPVC and GI pipe fitting", "Handle large commercial building contracts", "Register as a licensed contractor and hire teams"],
+    "skills": ["Pipe Fitting", "Water Systems Design"],
+    "edu": ["8th", "10th", "ITI"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "construction"]
+  },
+  {
+    "id": "path_006",
+    "role": "HVAC Technician",
+    "path": ["AC Mechanic Trainee", "HVAC Technician", "Senior HVAC Engineer", "HVAC Service Agency Owner"],
+    "steps": ["Complete ITI in MRAC", "Work with OEM service centers (e.g., Voltas, Blue Star)", "Learn Chiller and VRV/VRF system installations", "Start independent AC maintenance agency"],
+    "skills": ["Refrigeration Cycle", "Brazing & Gas Charging"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_007",
+    "role": "Automobile Mechanic",
+    "path": ["Garage Helper", "Junior Mechanic", "Master Mechanic", "Workshop Owner"],
+    "steps": ["Work in a local unorganized garage", "Join authorized service center (Maruti/Hyundai)", "Master engine diagnostics and ECM scanning", "Invest capital to open an independent garage"],
+    "skills": ["Engine Diagnostics", "Vehicle Servicing"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "automotive"]
+  },
+  {
+    "id": "path_008",
+    "role": "Furniture Carpenter",
+    "path": ["Carpenter Assistant", "Finishing Carpenter", "Interior Woodwork Specialist", "Furniture Business Owner"],
+    "steps": ["Assist in wood cutting and laminating", "Master modular kitchen and wardrobe installation", "Learn AutoCAD basics for interior design", "Set up a modular furniture manufacturing unit"],
+    "skills": ["Woodworking", "Lamination"],
+    "edu": ["8th", "10th"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_009",
+    "role": "Industrial Painter",
+    "path": ["Painter Helper", "Spray Painter", "Coating Inspector", "Paint Shop Manager"],
+    "steps": ["Learn surface preparation and sanding", "Master powder coating and spray painting", "Complete NACE/FROSIO coating inspector course", "Manage automotive or industrial paint shop"],
+    "skills": ["Spray Painting", "Surface Coating"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "manufacturing"]
+  },
+  {
+    "id": "path_010",
+    "role": "Construction Mason",
+    "path": ["Construction Laborer", "Brick Mason", "Head Mason (Mistri)", "Civil Contractor"],
+    "steps": ["Work as a daily wage laborer", "Learn bricklaying, plastering, and leveling", "Lead a team of laborers and junior masons", "Procure materials and take independent housing contracts"],
+    "skills": ["Bricklaying", "Concrete Mixing"],
+    "edu": ["8th"],
+    "growth_time": "10-15 years",
+    "tags": ["career growth", "promotion", "future", "construction"]
+  },
+  {
+    "id": "path_011",
+    "role": "Crane Operator",
+    "path": ["Rigger/Signalman", "Mobile Crane Operator", "Tower Crane Operator", "Heavy Equipment Supervisor"],
+    "steps": ["Learn hand signals and load rigging", "Obtain heavy motor vehicle (HMV) license", "Complete specialized tower crane training", "Oversee site logistics and safety compliances"],
+    "skills": ["Heavy Machinery Operation", "Load Chart Reading"],
+    "edu": ["10th", "12th"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_012",
+    "role": "Boiler Operator",
+    "path": ["Boiler Attendant", "Second Class Boiler Operator", "First Class Boiler Operator", "Utility Manager"],
+    "steps": ["Assist in coal/fuel feeding and monitoring", "Clear 2nd Class Boiler Attendant exam", "Gain 3 years experience and clear 1st Class exam", "Manage overall plant utilities and safety"],
+    "skills": ["Steam Generation", "Pressure Monitoring"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "manufacturing"]
+  },
+  {
+    "id": "path_013",
+    "role": "Sheet Metal Worker",
+    "path": ["Fabrication Helper", "Sheet Metal Technician", "Ducting Specialist", "Fabrication Contractor"],
+    "steps": ["Learn metal cutting and grinding", "Master sheet bending and folding machines", "Specialize in HVAC duct fabrication", "Take independent commercial fabrication contracts"],
+    "skills": ["Metal Cutting", "Bending & Shaping"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_014",
+    "role": "Lift Technician",
+    "path": ["Elevator Mechanic Trainee", "Maintenance Technician", "Installation Engineer", "Zone Service Manager"],
+    "steps": ["Join OEM (Otis/Schindler/Kone) as trainee", "Perform routine maintenance and rescue ops", "Handle end-to-end installation of new elevators", "Manage service teams across a city zone"],
+    "skills": ["Electrical Troubleshooting", "Mechanical Assembly"],
+    "edu": ["ITI", "Diploma"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "blue collar"]
+  },
+  {
+    "id": "path_015",
+    "role": "Scaffold Erector",
+    "path": ["Scaffolding Helper", "Certified Scaffolder", "Scaffolding Inspector", "Scaffolding Business Owner"],
+    "steps": ["Carry materials and learn tube-and-coupler basics", "Complete safety certification (e.g., OSHA basics)", "Clear specialized scaffolding inspector training", "Start scaffolding rental and erection business"],
+    "skills": ["Height Safety", "Structural Assembly"],
+    "edu": ["8th", "10th"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "construction"]
+  },
+  {
+    "id": "path_016",
+    "role": "Injection Molding Operator",
+    "path": ["Machine Helper", "Molding Operator", "Molding Setter", "Production Shift In-charge"],
+    "steps": ["Assist in raw material feeding", "Operate plastic injection molding machines", "Learn mold changing and parameter setting", "Oversee production output and quality for a shift"],
+    "skills": ["Machine Operation", "Plastic Processing"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "manufacturing"]
+  },
+  {
+    "id": "path_017",
+    "role": "Delivery Executive",
+    "path": ["Delivery Partner", "Shift Lead", "Hub Manager", "City Logistics Head"],
+    "steps": ["Join food/grocery delivery app with 2-wheeler", "Maintain 4.8+ rating and assist onboarding", "Transition to off-roll hub management", "Complete graduation to secure corporate logistics role"],
+    "skills": ["Route Optimization", "Time Management"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "4-6 years",
+    "tags": ["career growth", "promotion", "future", "grey collar"]
+  },
+  {
+    "id": "path_018",
+    "role": "Retail Sales Associate",
+    "path": ["Sales Associate", "Department Supervisor", "Store Manager", "Area Retail Manager"],
+    "steps": ["Join organized retail (Reliance/Shoppers Stop)", "Achieve sales targets and learn inventory handling", "Manage P&L and operations for a single store", "Oversee operations across 5-10 regional stores"],
+    "skills": ["Customer Service", "Inventory Management"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "retail"]
+  },
+  {
+    "id": "path_019",
+    "role": "Private Security Guard",
+    "path": ["Security Guard", "Head Guard", "Security Supervisor", "Security Agency Entrepreneur"],
+    "steps": ["Complete basic PSARA training", "Gain 3 years experience in commercial premises", "Learn CCTV monitoring and fire safety protocols", "Obtain PSARA license and open private agency"],
+    "skills": ["Vigilance", "Emergency Response"],
+    "edu": ["10th", "12th"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "grey collar"]
+  },
+  {
+    "id": "path_020",
+    "role": "Housekeeping Supervisor",
+    "path": ["Housekeeping Attendant", "Floor Supervisor", "Executive Housekeeper", "Facility Manager"],
+    "steps": ["Work in a 3-star hotel or corporate office", "Learn chemical dilutions and team management", "Manage inventory and shift rosters for entire property", "Complete facility management diploma/certification"],
+    "skills": ["Hygiene Management", "Team Coordination"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "hospitality"]
+  },
+  {
+    "id": "path_021",
+    "role": "F&B Steward",
+    "path": ["Busboy/Runner", "Steward", "Captain", "Restaurant Manager"],
+    "steps": ["Assist in table clearance and setup", "Take orders and master menu knowledge", "Supervise a section of the restaurant and handle VIPs", "Manage overall restaurant operations and P&L"],
+    "skills": ["Order Taking", "Guest Relations"],
+    "edu": ["10th", "12th", "Diploma"],
+    "growth_time": "6-8 years",
+    "tags": ["career growth", "promotion", "future", "grey collar"]
+  },
+  {
+    "id": "path_022",
+    "role": "BPO Customer Care Executive",
+    "path": ["Process Associate", "Subject Matter Expert (SME)", "Team Leader", "Operations Manager"],
+    "steps": ["Handle inbound/outbound customer queries", "Master process knowledge and assist floor queries", "Manage a team of 15-20 associates and KPIs", "Handle client escalations and overall process SLA"],
+    "skills": ["Communication", "Problem Solving"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "5-7 years",
+    "tags": ["career growth", "promotion", "future", "BPO"]
+  },
+  {
+    "id": "path_023",
+    "role": "Warehouse Picker",
+    "path": ["Picker/Packer", "Inventory Checker", "Warehouse Supervisor", "Fulfillment Center Manager"],
+    "steps": ["Scan and pack items using RF scanners", "Learn SAP/ERP basics for inventory reconciliation", "Manage inbound/outbound docks and labor", "Oversee entire warehouse metrics and transport logistics"],
+    "skills": ["Barcode Scanning", "Inventory Tracking"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "logistics"]
+  },
+  {
+    "id": "path_024",
+    "role": "Hospital Ward Boy/Aya",
+    "path": ["Ward Boy", "Senior Orderly", "Patient Care Coordinator", "Hospital Admin Assistant"],
+    "steps": ["Assist in patient movement and hygiene", "Learn basic CPR and emergency protocols", "Coordinate between nursing staff and patient families", "Complete basic computer course for front desk/admin"],
+    "skills": ["Patient Handling", "First Aid Basics"],
+    "edu": ["8th", "10th", "12th"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "healthcare"]
+  },
+  {
+    "id": "path_025",
+    "role": "Cafe Barista",
+    "path": ["Trainee Barista", "Senior Barista", "Cafe Manager", "Coffee Roaster/Consultant"],
+    "steps": ["Learn espresso extraction and milk frothing", "Master latte art and specialty coffee brewing", "Manage inventory, sales, and cafe staff", "Complete SCA certification to become a coffee consultant"],
+    "skills": ["Coffee Brewing", "Customer Interaction"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "4-7 years",
+    "tags": ["career growth", "promotion", "future", "grey collar"]
+  },
+  {
+    "id": "path_026",
+    "role": "Salon Hairstylist",
+    "path": ["Salon Assistant", "Junior Stylist", "Senior Stylist / Colorist", "Salon Owner"],
+    "steps": ["Assist in hair washing and salon cleanup", "Complete basic hairdressing diploma/certification", "Build a loyal client base and master chemical treatments", "Rent a commercial space and open own salon brand"],
+    "skills": ["Hair Cutting", "Chemical Treatments"],
+    "edu": ["10th", "12th"],
+    "growth_time": "5-10 years",
+    "tags": ["career growth", "promotion", "future", "beauty"]
+  },
+  {
+    "id": "path_027",
+    "role": "Field Sales Executive",
+    "path": ["Sales Promoter", "Territory Sales Executive", "Area Sales Manager", "Regional Sales Head"],
+    "steps": ["Perform door-to-door or shop-to-shop sales", "Manage a designated pincode/territory for an FMCG brand", "Lead a team of executives and manage distributors", "Complete MBA (Executive) for regional leadership"],
+    "skills": ["Persuasion", "Target Achievement"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "sales"]
+  },
+  {
+    "id": "path_028",
+    "role": "Toll Booth Operator",
+    "path": ["Toll Collector", "Shift Supervisor", "Plaza Auditor", "Toll Plaza Manager"],
+    "steps": ["Collect cash and process FASTag transactions", "Manage cash handling and shift disputes", "Audit daily collections and resolve FASTag backend errors", "Manage overall plaza operations and highway coordination"],
+    "skills": ["Cash Handling", "Data Entry"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "grey collar"]
+  },
+  {
+    "id": "path_029",
+    "role": "Commercial Cab Driver",
+    "path": ["Driver App Partner", "Fleet Supervisor", "Fleet Owner", "Travel Agency Founder"],
+    "steps": ["Drive for Ola/Uber on a rented/leased car", "Purchase own car and attach to corporate travel desk", "Buy 3-4 cars and hire other drivers", "Establish a formal B2B employee transport company"],
+    "skills": ["Safe Driving", "Navigation"],
+    "edu": ["10th", "12th"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "transport"]
+  },
+  {
+    "id": "path_030",
+    "role": "Forklift Operator",
+    "path": ["Warehouse Helper", "Forklift Operator", "Equipment Maintenance Lead", "Warehouse Operations Manager"],
+    "steps": ["Work in a factory or warehouse setting", "Obtain forklift operator certification and license", "Learn minor repairs and battery maintenance for MHE", "Transition to overall warehouse floor management"],
+    "skills": ["Material Handling", "Forklift Driving"],
+    "edu": ["10th", "12th"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "logistics"]
+  },
+  {
+    "id": "path_031",
+    "role": "Phlebotomist",
+    "path": ["Lab Attendant", "Home Collection Phlebotomist", "Lab Technician", "Diagnostic Center Manager"],
+    "steps": ["Assist in lab cleaning and sample sorting", "Complete DMLT and do home blood collections", "Perform tests using automated lab analyzers", "Manage operations, quality control, and staff for a lab"],
+    "skills": ["Blood Drawing", "Sample Processing"],
+    "edu": ["12th", "Diploma", "graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "healthcare"]
+  },
+  {
+    "id": "path_032",
+    "role": "Front Desk Receptionist",
+    "path": ["Front Office Trainee", "Receptionist", "Front Office Manager", "Rooms Division Manager"],
+    "steps": ["Learn basic telephone etiquette and check-in software", "Handle guest queries, check-ins, and billing independently", "Manage front desk roster and resolve guest escalations", "Oversee front office, housekeeping, and reservations"],
+    "skills": ["Communication", "Guest Software (Opera)"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "hospitality"]
+  },
+  {
+    "id": "path_033",
+    "role": "Data Entry Operator",
+    "path": ["Data Entry Clerk", "MIS Executive", "Data Analyst", "MIS Manager"],
+    "steps": ["Perform basic typing and data digitizing", "Master Advanced Excel, VLOOKUP, and Pivot Tables", "Learn PowerBI/Tableau and basic SQL for reporting", "Head the reporting department for a corporate firm"],
+    "skills": ["Typing Speed", "Microsoft Excel"],
+    "edu": ["12th", "graduate"],
+    "growth_time": "5-7 years",
+    "tags": ["career growth", "promotion", "future", "white collar"]
+  },
+  {
+    "id": "path_034",
+    "role": "HR Assistant",
+    "path": ["HR Intern", "HR Generalist", "HR Business Partner", "Head of HR"],
+    "steps": ["Handle joining formalities and document collection", "Manage payroll, grievances, and basic recruitment", "Align HR strategies with business unit goals", "Complete MBA in HR and lead organizational strategy"],
+    "skills": ["Recruitment", "Employee Relations"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "HR"]
+  },
+  {
+    "id": "path_035",
+    "role": "Junior Accountant",
+    "path": ["Accounts Assistant", "Senior Accountant", "Finance Manager", "Chief Financial Officer (CFO)"],
+    "steps": ["Learn Tally ERP and basic voucher entry", "Handle GST returns, TDS filing, and balance sheets", "Clear CA Inter or complete CMA/MBA Finance", "Manage company-wide financial planning and compliance"],
+    "skills": ["Tally ERP/Prime", "Tax Compliance"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "finance"]
+  },
+  {
+    "id": "path_036",
+    "role": "Office Administrator",
+    "path": ["Admin Executive", "Senior Admin Officer", "Facility Manager", "Head of Administration"],
+    "steps": ["Manage stationery, courier, and pantry supplies", "Handle vendor negotiations and AMC renewals", "Oversee multiple office spaces and real estate compliance", "Formulate corporate admin policies and lead expansions"],
+    "skills": ["Vendor Management", "Organizing"],
+    "edu": ["graduate"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "admin"]
+  },
+  {
+    "id": "path_037",
+    "role": "Sales Manager",
+    "path": ["Management Trainee", "Key Account Manager", "Zonal Sales Head", "VP of Sales"],
+    "steps": ["Learn product pitches and shadow senior reps", "Handle top 20% of high-value corporate B2B clients", "Manage P&L and sales teams across multiple states", "Drive national revenue strategy and board reporting"],
+    "skills": ["B2B Sales", "Negotiation"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "white collar"]
+  },
+  {
+    "id": "path_038",
+    "role": "Marketing Executive",
+    "path": ["Marketing Assistant", "Brand Manager", "Marketing Director", "Chief Marketing Officer (CMO)"],
+    "steps": ["Coordinate print material and social media posts", "Handle campaign budgets, PR, and product launches", "Lead digital and offline strategy for the brand", "Oversee global marketing vision and market positioning"],
+    "skills": ["Campaign Management", "Market Research"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "marketing"]
+  },
+  {
+    "id": "path_039",
+    "role": "Supply Chain Analyst",
+    "path": ["Logistics Coordinator", "Supply Chain Analyst", "Supply Chain Manager", "Head of Supply Chain"],
+    "steps": ["Track shipments and coordinate with transporters", "Analyze freight costs and optimize routing models", "Implement ERP systems and manage end-to-end flow", "Design global sourcing strategies and risk mitigation"],
+    "skills": ["Data Analysis", "Logistics Planning"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "supply chain"]
+  },
+  {
+    "id": "path_040",
+    "role": "Operations Executive",
+    "path": ["Operations Associate", "Operations Lead", "Operations Head", "Chief Operating Officer (COO)"],
+    "steps": ["Monitor daily metrics and resolve ground-level bottlenecks", "Standardize SOPs and reduce process turnaround time", "Manage cross-functional teams and department budgets", "Ensure business scalability and overall efficiency"],
+    "skills": ["Process Optimization", "SOP Creation"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "9-14 years",
+    "tags": ["career growth", "promotion", "future", "white collar"]
+  },
+  {
+    "id": "path_041",
+    "role": "Legal Assistant",
+    "path": ["Paralegal / Clerk", "Junior Associate", "Senior Legal Counsel", "General Counsel"],
+    "steps": ["Draft basic affidavits and manage case files", "Complete LLB, pass Bar Council, and handle litigation", "Draft complex corporate contracts and M&A agreements", "Head the legal department of a multinational corporation"],
+    "skills": ["Legal Drafting", "Contract Review"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-15 years",
+    "tags": ["career growth", "promotion", "future", "legal"]
+  },
+  {
+    "id": "path_042",
+    "role": "Public Relations Executive",
+    "path": ["PR Assistant", "Media Relations Specialist", "PR Manager", "Head of Corporate Communications"],
+    "steps": ["Build media contact lists and draft press releases", "Pitch stories to journalists and manage crisis media", "Design PR campaigns and influencer collaborations", "Protect brand reputation and manage stakeholder messaging"],
+    "skills": ["Media Relations", "Copywriting"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "PR"]
+  },
+  {
+    "id": "path_043",
+    "role": "Procurement Officer",
+    "path": ["Purchase Assistant", "Procurement Specialist", "Category Manager", "Chief Procurement Officer"],
+    "steps": ["Release POs and follow up on material delivery", "Negotiate rates and onboard new reliable vendors", "Manage a specific budget category (e.g., IT, Raw Materials)", "Lead global procurement strategy and cost reduction"],
+    "skills": ["Negotiation", "Vendor Sourcing"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "white collar"]
+  },
+  {
+    "id": "path_044",
+    "role": "Financial Analyst",
+    "path": ["Junior Analyst", "Financial Modeler", "Investment Manager", "Portfolio Director"],
+    "steps": ["Clean financial data and update basic models", "Build complex DCF models and prepare pitch books", "Complete CFA and manage specific investment funds", "Oversee large-scale asset allocation and client wealth"],
+    "skills": ["Financial Modeling", "Valuation"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "7-11 years",
+    "tags": ["career growth", "promotion", "future", "finance"]
+  },
+  {
+    "id": "path_045",
+    "role": "Quality Assurance Inspector",
+    "path": ["QA Trainee", "Quality Inspector", "Quality Assurance Manager", "Director of Quality"],
+    "steps": ["Perform random sampling and visual checks", "Use micrometers/CMMs and write CAPA reports", "Implement Six Sigma and ISO 9001 standards", "Drive zero-defect culture across all manufacturing plants"],
+    "skills": ["Quality Control", "Root Cause Analysis"],
+    "edu": ["Diploma", "graduate"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "quality"]
+  },
+  {
+    "id": "path_046",
+    "role": "Event Coordinator",
+    "path": ["Event Assistant", "Event Executive", "Client Servicing Manager", "Event Agency Owner"],
+    "steps": ["Manage registration desks and backstage logistics", "Coordinate with decorators, AV teams, and caterers", "Pitch to corporate clients and close large event deals", "Start an independent event management firm"],
+    "skills": ["Project Management", "Vendor Coordination"],
+    "edu": ["graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "events"]
+  },
+  {
+    "id": "path_047",
+    "role": "Business Development Executive",
+    "path": ["BDE", "B2B Sales Manager", "Director of Partnerships", "Chief Revenue Officer"],
+    "steps": ["Cold call prospects and fix meetings", "Close B2B deals and manage sales pipelines", "Form strategic alliances and channel partnerships", "Own total company revenue and growth strategy"],
+    "skills": ["Cold Calling", "B2B Sales"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "white collar"]
+  },
+  {
+    "id": "path_048",
+    "role": "Payroll Executive",
+    "path": ["Payroll Data Clerk", "Payroll Executive", "Compensation & Benefits Manager", "Head of Total Rewards"],
+    "steps": ["Collect attendance and leave data", "Process monthly salaries and PF/ESIC compliances", "Design employee increment structures and bonus plans", "Strategize holistic employee benefits at a global level"],
+    "skills": ["Statutory Compliance", "Excel"],
+    "edu": ["graduate"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "HR"]
+  },
+  {
+    "id": "path_049",
+    "role": "Social Media Manager",
+    "path": ["Social Media Intern", "Social Media Executive", "Digital Marketing Manager", "Head of Digital"],
+    "steps": ["Schedule posts and reply to comments", "Create content calendars and run basic ad campaigns", "Manage budget allocation for Meta/Google ads", "Lead omnichannel digital strategy for the brand"],
+    "skills": ["Content Creation", "Social Media Ads"],
+    "edu": ["graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "new collar"]
+  },
+  {
+    "id": "path_050",
+    "role": "Graphic Designer",
+    "path": ["Junior Designer", "Senior Visualizer", "Art Director", "Creative Director"],
+    "steps": ["Create social media templates and resizing", "Conceptualize brand identities and complex layouts", "Lead a team of designers and direct photo shoots", "Own the creative vision for top-tier ad campaigns"],
+    "skills": ["Adobe Creative Suite", "Typography"],
+    "edu": ["12th", "graduate", "Diploma"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "design"]
+  },
+  {
+    "id": "path_051",
+    "role": "Frontend Web Developer",
+    "path": ["Junior Coder", "React/Angular Developer", "Frontend Lead", "Chief Technology Officer (CTO)"],
+    "steps": ["Build static HTML/CSS/JS pages", "Master modern frameworks like React or Vue", "Architect scalable UI systems and mentor juniors", "Direct overall technology stack and engineering teams"],
+    "skills": ["JavaScript", "React.js"],
+    "edu": ["graduate", "Diploma"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "tech"]
+  },
+  {
+    "id": "path_052",
+    "role": "Content Writer",
+    "path": ["Freelance Writer", "SEO Content Strategist", "Managing Editor", "Head of Content"],
+    "steps": ["Write 500-word blog posts on Upwork/Fiverr", "Learn SEO tools (Ahrefs) and write pillar pages", "Manage a team of writers and edit final drafts", "Align content strategy with business revenue goals"],
+    "skills": ["Copywriting", "SEO Basics"],
+    "edu": ["graduate"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "new collar"]
+  },
+  {
+    "id": "path_053",
+    "role": "Video Editor",
+    "path": ["Junior Editor", "Motion Graphics Artist", "Post-Production Supervisor", "Creative Studio Owner"],
+    "steps": ["Cut raw footage and sync audio for YouTube", "Learn After Effects for complex 2D animations", "Oversee coloring, sound mixing, and final export", "Start an independent ad-film production house"],
+    "skills": ["Premiere Pro", "After Effects"],
+    "edu": ["12th", "Diploma", "graduate"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "media"]
+  },
+  {
+    "id": "path_054",
+    "role": "SEO Specialist",
+    "path": ["SEO Executive", "Technical SEO Expert", "Growth Marketer", "VP of Growth"],
+    "steps": ["Perform keyword research and build backlinks", "Optimize site speed, schema markup, and crawlability", "Combine SEO with conversion rate optimization (CRO)", "Drive millions in user acquisition across all organic channels"],
+    "skills": ["Keyword Research", "Google Analytics"],
+    "edu": ["graduate"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "digital marketing"]
+  },
+  {
+    "id": "path_055",
+    "role": "UI/UX Designer",
+    "path": ["UX Intern", "UI/UX Designer", "Product Design Lead", "VP of Product"],
+    "steps": ["Create basic wireframes in Figma", "Conduct user research and build high-fidelity prototypes", "Establish design systems and manage design sprints", "Align design strategy with product roadmap and business goals"],
+    "skills": ["Figma", "User Research"],
+    "edu": ["graduate", "Diploma"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "tech"]
+  },
+  {
+    "id": "path_056",
+    "role": "Performance Marketing Freelancer",
+    "path": ["Media Buyer", "Performance Marketer", "Agency Founder", "E-commerce Brand Owner"],
+    "steps": ["Run basic Facebook/Google ads for local clients", "Master ROAS optimization and scaling ad budgets", "Hire a team and start a performance marketing agency", "Use marketing skills to launch an independent D2C brand"],
+    "skills": ["Ad Copywriting", "Data Analytics"],
+    "edu": ["graduate"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "new collar"]
+  },
+  {
+    "id": "path_057",
+    "role": "Python Developer",
+    "path": ["Junior Developer", "Backend Engineer", "Software Architect", "Engineering Director"],
+    "steps": ["Write simple Python scripts and APIs (Django/Flask)", "Build scalable microservices and manage databases", "Design high-availability cloud architectures", "Manage multiple tech teams and engineering budgets"],
+    "skills": ["Python", "API Development"],
+    "edu": ["graduate"],
+    "growth_time": "7-12 years",
+    "tags": ["career growth", "promotion", "future", "software"]
+  },
+  {
+    "id": "path_058",
+    "role": "Data Analyst",
+    "path": ["Data Intern", "Data Analyst", "Data Scientist", "Head of Data"],
+    "steps": ["Clean data sets using Excel and basic SQL", "Build automated dashboards in PowerBI/Tableau", "Learn Machine Learning (Python/R) for predictive modeling", "Drive enterprise-wide AI and data strategy"],
+    "skills": ["SQL", "Data Visualization"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "tech"]
+  },
+  {
+    "id": "path_059",
+    "role": "Cloud Support Engineer",
+    "path": ["L1 Support", "Cloud Migration Engineer", "Cloud Architect", "Cloud Practice Head"],
+    "steps": ["Resolve basic AWS/Azure server issues and tickets", "Execute on-premise to cloud migration projects", "Design multi-cloud enterprise architectures", "Lead cloud consulting business unit for an IT service firm"],
+    "skills": ["AWS/Azure", "Linux Administration"],
+    "edu": ["graduate"],
+    "growth_time": "7-11 years",
+    "tags": ["career growth", "promotion", "future", "IT"]
+  },
+  {
+    "id": "path_060",
+    "role": "Mobile App Developer",
+    "path": ["Junior App Developer", "Senior Mobile Engineer", "Mobile Tech Lead", "Indie App Publisher"],
+    "steps": ["Build basic Android/iOS screens using Flutter/React Native", "Integrate complex APIs, push notifications, and local databases", "Set up CI/CD pipelines and mentor junior devs", "Build and monetize own applications on Play Store/App Store"],
+    "skills": ["Flutter / React Native", "State Management"],
+    "edu": ["graduate", "Diploma"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "new collar"]
+  },
+  {
+    "id": "path_061",
+    "role": "Prompt Engineer",
+    "path": ["AI QA Tester", "Prompt Engineer", "AI Operations Lead", "AI Solutions Architect"],
+    "steps": ["Test LLM outputs for hallucinations and safety", "Craft complex prompts to automate business workflows", "Manage teams integrating AI APIs into core products", "Design enterprise AI infrastructure and RAG systems"],
+    "skills": ["LLM Knowledge", "Critical Thinking"],
+    "edu": ["graduate"],
+    "growth_time": "3-6 years",
+    "tags": ["career growth", "promotion", "future", "AI"]
+  },
+  {
+    "id": "path_062",
+    "role": "3D Animator",
+    "path": ["3D Modeler", "Animator", "VFX Supervisor", "Animation Studio Head"],
+    "steps": ["Create basic 3D assets in Maya/Blender", "Animate characters with proper rigging and keyframes", "Oversee lighting, texturing, and final rendering pipelines", "Direct full animation projects and manage client relations"],
+    "skills": ["Blender/Maya", "Keyframe Animation"],
+    "edu": ["12th", "Diploma", "graduate"],
+    "growth_time": "7-12 years",
+    "tags": ["career growth", "promotion", "future", "design"]
+  },
+  {
+    "id": "path_063",
+    "role": "Cybersecurity Analyst",
+    "path": ["SOC Analyst L1", "Penetration Tester", "Security Architect", "Chief Information Security Officer (CISO)"],
+    "steps": ["Monitor SIEM alerts and categorize threats", "Perform ethical hacking and vulnerability assessments", "Design zero-trust network architectures", "Govern enterprise security policies and compliance"],
+    "skills": ["Network Security", "Ethical Hacking"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "8-12 years",
+    "tags": ["career growth", "promotion", "future", "cybersecurity"]
+  },
+  {
+    "id": "path_064",
+    "role": "IT Helpdesk Technician",
+    "path": ["Desktop Support", "System Administrator", "IT Manager", "IT Director"],
+    "steps": ["Fix printer issues and format Windows OS", "Manage Active Directory, Office 365, and local networks", "Procure IT assets and manage vendor AMCs", "Align IT infrastructure with global corporate strategy"],
+    "skills": ["Hardware Troubleshooting", "Windows Server"],
+    "edu": ["12th", "Diploma", "graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "IT"]
+  },
+  {
+    "id": "path_065",
+    "role": "Solar Panel Installer",
+    "path": ["Solar Helper", "Installation Technician", "Site Supervisor", "Solar EPC Contractor"],
+    "steps": ["Assist in mounting structures and carrying panels", "Learn series/parallel wiring and inverter connections", "Manage a team of installers and assure site safety", "Start own solar installation business taking government tenders"],
+    "skills": ["Electrical Wiring", "Roof Mounting"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  },
+  {
+    "id": "path_066",
+    "role": "EV Charging Station Technician",
+    "path": ["Maintenance Trainee", "Service Technician", "Commissioning Engineer", "Network Operations Manager"],
+    "steps": ["Perform basic cleaning and visual checks of EV chargers", "Troubleshoot software glitches and replace CCS2 cables", "Install and configure fast DC chargers at new sites", "Monitor health of hundreds of chargers via a central dashboard"],
+    "skills": ["High Voltage Safety", "Software Troubleshooting"],
+    "edu": ["ITI", "Diploma"],
+    "growth_time": "4-7 years",
+    "tags": ["career growth", "promotion", "future", "EV"]
+  },
+  {
+    "id": "path_067",
+    "role": "Wind Turbine Technician",
+    "path": ["Tower Climber", "Maintenance Technician", "Blade Repair Specialist", "Wind Farm Site Manager"],
+    "steps": ["Complete GWO safety training and perform greasing", "Troubleshoot gearboxes, yaw systems, and generators", "Specialize in composite material repair for wind blades", "Oversee maintenance schedules and grid compliance for a wind farm"],
+    "skills": ["Working at Heights", "Electromechanical Troubleshooting"],
+    "edu": ["ITI", "Diploma"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  },
+  {
+    "id": "path_068",
+    "role": "Organic Farming Supervisor",
+    "path": ["Farm Laborer", "Organic Farm Supervisor", "Agri-Tech Consultant", "Organic Food Entrepreneur"],
+    "steps": ["Assist in composting and natural pest control application", "Manage crop cycles, soil testing, and labor deployment", "Consult traditional farmers on transitioning to organic/hydroponics", "Start a D2C brand selling certified organic produce"],
+    "skills": ["Soil Management", "Pest Control"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "agriculture"]
+  },
+  {
+    "id": "path_069",
+    "role": "Waste Management Supervisor",
+    "path": ["Waste Sorter", "Plant Supervisor", "Recycling Plant Manager", "Circular Economy Consultant"],
+    "steps": ["Manually segregate dry/wet and recyclable waste", "Supervise baling machines and daily dispatch of plastics", "Manage entire MRF (Material Recovery Facility) operations", "Advise corporates on EPR (Extended Producer Responsibility) compliance"],
+    "skills": ["Waste Segregation", "Process Management"],
+    "edu": ["10th", "12th", "graduate"],
+    "growth_time": "7-10 years",
+    "tags": ["career growth", "promotion", "future", "sustainability"]
+  },
+  {
+    "id": "path_070",
+    "role": "Water Treatment Plant Operator",
+    "path": ["Plant Helper", "RO/STP Operator", "Water Quality Analyst", "Environmental Plant Head"],
+    "steps": ["Assist in cleaning filters and adding dosing chemicals", "Operate pumps, blowers, and monitor flow meters independently", "Test water samples for BOD/COD and adjust dosing rates", "Ensure state pollution control board compliance for large industries"],
+    "skills": ["Chemical Dosing", "Equipment Operation"],
+    "edu": ["10th", "ITI", "Diploma"],
+    "growth_time": "6-9 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  },
+  {
+    "id": "path_071",
+    "role": "Sustainability Consultant",
+    "path": ["Research Analyst", "Sustainability Consultant", "ESG Manager", "Chief Sustainability Officer (CSO)"],
+    "steps": ["Gather data on company carbon emissions and water usage", "Write sustainability reports (GRI/BRSR frameworks)", "Implement ESG strategies across global supply chains", "Lead corporate transition to Net Zero emissions"],
+    "skills": ["Carbon Accounting", "ESG Reporting"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "7-12 years",
+    "tags": ["career growth", "promotion", "future", "ESG"]
+  },
+  {
+    "id": "path_072",
+    "role": "Energy Auditor",
+    "path": ["Junior Auditor", "Certified Energy Auditor", "Energy Strategy Lead", "Independent Consultant"],
+    "steps": ["Record power consumption data using lux meters and analyzers", "Pass the BEE (Bureau of Energy Efficiency) certification exam", "Design massive energy-saving retrofits for manufacturing plants", "Run a private ESCO (Energy Service Company) consulting firm"],
+    "skills": ["Energy Analytics", "HVAC Efficiency"],
+    "edu": ["Diploma", "graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "energy"]
+  },
+  {
+    "id": "path_073",
+    "role": "Biogas Plant Operator",
+    "path": ["Feedstock Handler", "Plant Operator", "Anaerobic Digestion Specialist", "Bio-Energy Plant Manager"],
+    "steps": ["Load organic waste into the digester system", "Monitor pH levels, temperature, and gas pressure", "Optimize bacterial mix to maximize methane yield", "Oversee production of CBG (Compressed Biogas) and organic fertilizer"],
+    "skills": ["Process Monitoring", "Gas Safety"],
+    "edu": ["10th", "ITI", "Diploma"],
+    "growth_time": "5-8 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  },
+  {
+    "id": "path_074",
+    "role": "E-Waste Recycling Technician",
+    "path": ["Dismantler", "Refurbishment Technician", "Precious Metal Recovery Specialist", "E-Waste Facility Manager"],
+    "steps": ["Manually unscrew and dismantle old electronics", "Test and repair reusable parts (RAM, hard drives)", "Extract copper/gold using chemical or mechanical processes safely", "Manage a certified e-waste recycling plant and government audits"],
+    "skills": ["Electronic Dismantling", "Hardware Testing"],
+    "edu": ["10th", "ITI"],
+    "growth_time": "5-9 years",
+    "tags": ["career growth", "promotion", "future", "sustainability"]
+  },
+  {
+    "id": "path_075",
+    "role": "Hydroponics Technician",
+    "path": ["Greenhouse Assistant", "Hydroponic Grower", "Farm Manager", "Agri-Business Founder"],
+    "steps": ["Monitor water levels and clean growing trays", "Mix exact nutrient solutions (EC/pH) for specific crops", "Manage climate control systems and harvest cycles for a commercial farm", "Set up independent high-tech urban farms and sell to premium retail"],
+    "skills": ["Nutrient Management", "Crop Monitoring"],
+    "edu": ["12th", "Diploma", "graduate"],
+    "growth_time": "4-8 years",
+    "tags": ["career growth", "promotion", "future", "agriculture"]
+  },
+  {
+    "id": "path_076",
+    "role": "Green Building Assessor",
+    "path": ["Site Inspector", "IGBC/LEED Accredited Professional", "Green Design Architect", "Sustainability Director"],
+    "steps": ["Inspect construction sites for waste management and material use", "Clear IGBC or LEED AP exams to certify buildings", "Integrate passive cooling and daylighting into building blueprints", "Direct sustainability portfolios for top real estate developers"],
+    "skills": ["LEED/IGBC Standards", "Energy Modeling"],
+    "edu": ["graduate", "Post Graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  },
+  {
+    "id": "path_077",
+    "role": "Solar Plant Operations Manager",
+    "path": ["SCADA Operator", "O&M Engineer", "Solar Park Manager", "Asset Management Director"],
+    "steps": ["Monitor remote solar farms using SCADA dashboards", "Coordinate field teams to fix inverter faults and string failures", "Ensure 99% uptime and manage PPA (Power Purchase Agreement) compliance", "Oversee profitability and technical health of multi-gigawatt portfolios"],
+    "skills": ["SCADA Systems", "Performance Analytics"],
+    "edu": ["Diploma", "graduate"],
+    "growth_time": "7-11 years",
+    "tags": ["career growth", "promotion", "future", "solar"]
+  },
+  {
+    "id": "path_078",
+    "role": "Environmental Health & Safety (EHS) Officer",
+    "path": ["Safety Steward", "EHS Executive", "EHS Manager", "Regional Head of EHS"],
+    "steps": ["Conduct morning safety toolbox talks for laborers", "Perform hazard identification and risk assessments (HIRA)", "Implement ISO 14001/45001 and manage factory safety audits", "Drive zero-harm culture across multiple corporate manufacturing sites"],
+    "skills": ["Risk Assessment", "Safety Compliance"],
+    "edu": ["Diploma", "graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "safety"]
+  },
+  {
+    "id": "path_079",
+    "role": "EV Battery Repair Technician",
+    "path": ["Battery Tester", "Cell Replacement Technician", "BMS Programming Expert", "Battery Lab Manager"],
+    "steps": ["Use multimeters to test voltage of incoming degraded battery packs", "Safely open packs, identify dead cells, and spot-weld replacements", "Diagnose and reprogram faulty Battery Management System (BMS) boards", "Run a certified second-life battery refurbishing laboratory"],
+    "skills": ["Lithium-Ion Handling", "Spot Welding"],
+    "edu": ["ITI", "Diploma"],
+    "growth_time": "4-8 years",
+    "tags": ["career growth", "promotion", "future", "EV"]
+  },
+  {
+    "id": "path_080",
+    "role": "Smart Grid Technician",
+    "path": ["Smart Meter Installer", "Grid Data Analyst", "Smart Grid Engineer", "Utilities Network Director"],
+    "steps": ["Replace traditional electric meters with IoT-enabled smart meters", "Analyze AMI (Advanced Metering Infrastructure) data for theft detection", "Configure automated distribution systems and demand response networks", "Lead modernization initiatives for state electricity distribution boards"],
+    "skills": ["IoT Devices", "Electrical Networks"],
+    "edu": ["ITI", "Diploma", "graduate"],
+    "growth_time": "6-10 years",
+    "tags": ["career growth", "promotion", "future", "green collar"]
+  }
+]

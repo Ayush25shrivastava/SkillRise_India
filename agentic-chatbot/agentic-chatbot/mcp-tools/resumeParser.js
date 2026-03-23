@@ -7,8 +7,7 @@
 const path = require('path');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
-const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
-const { ChatOpenAI } = require("@langchain/openai");
+const { createStructuredLLM } = require("../utils/llmFactory");
 const { z } = require("zod");
 const cache = require('../utils/responseCache');
 
@@ -38,35 +37,19 @@ const resumeSchema = z.object({
 
 /**
  * Call LLM for resume extraction
- * PRIMARY: Gemini 2.5-flash — the ONLY place we use Gemini as primary.
- *          Cached per file (60 min) so real-world call rate is very low.
- * FALLBACK: Groq — takes over on quota exhaustion
+ * Uses llmFactory for round-robin Gemini + automatic Grok fallback.
+ * Cached per file (60 min) so real-world call rate is very low.
  */
 async function callLLMForResumeParsing(prompt) {
-  // ─── Primary: Gemini 2.5-flash ──────────────────────────────────────────────
-  try {
-    console.log("[ResumeParser] Calling Gemini 2.5-flash (primary — best PDF comprehension)...");
-    const geminiLlm = new ChatGoogleGenerativeAI({
-      model: "gemini-2.5-flash",
-      temperature: 0,
-      apiKey: process.env.GOOGLE_API_KEY,
-      maxRetries: 0
-    });
-    return await geminiLlm.withStructuredOutput(resumeSchema).invoke(prompt);
-  } catch (geminiErr) {
-    console.warn(`[ResumeParser] Gemini 2.5-flash failed (${geminiErr.message}). Falling back to Groq...`);
-  }
-
-  // ─── Fallback: Groq ─────────────────────────────────────────────────────────
-  const groqLlm = new ChatOpenAI({
-    model: "llama-3.3-70b-versatile",
+  console.log("[ResumeParser] Calling LLM (round-robin + fallback)...");
+  const structuredLlm = createStructuredLLM(resumeSchema, {
     temperature: 0,
-    apiKey: process.env.GROK_API_KEY,
-    configuration: { baseURL: "https://api.groq.com/openai/v1" },
-    maxRetries: 2
+    caller: "resumeParser",
+    name: "parseResume",
   });
-  return await groqLlm.withStructuredOutput(resumeSchema, { method: "functionCalling", name: "parseResume" }).invoke(prompt);
+  return await structuredLlm.invoke(prompt);
 }
+
 
 const parseResume = async (filePath) => {
   try {

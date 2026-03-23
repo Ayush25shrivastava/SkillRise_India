@@ -1,10 +1,12 @@
 // LangGraph - Agentic Chatbot Orchestrator
 // Coordinates the multi-step agent workflow using LangGraph's StateGraph.
+// FLOW: START → Router → RetrieverNode → [Agents...] → Aggregator → ResponseGenerator → END
 
 const { StateGraph, START, END } = require("@langchain/langgraph");
 
 // Import all agents
 const routerAgent = require("../agents/routerAgent");
+const retrieverNode = require("../agents/retrieverNode");
 const resumeAgent = require("../agents/resumeAgent");
 const careerAgent = require("../agents/careerAgent");
 const skillAgent = require("../agents/skillAgent");
@@ -28,6 +30,15 @@ const graphState = {
   userProfile: { value: (x, y) => y ? y : x, default: () => null },
   selectedAgents: { value: (x, y) => y ? y : x, default: () => [] },
   
+  // Dataset selection from routerAgent (which Pinecone datasets to query)
+  datasets: { value: (x, y) => y ? y : x, default: () => [] },
+  
+  // Retrieved data from Pinecone (populated by retrieverNode)
+  retrievedData: { 
+    value: (x, y) => y ? { ...x, ...y } : x, 
+    default: () => ({}) 
+  },
+
   // Memory Contexts injected for reasoning logic
   chatHistory: { value: (x, y) => y ? y : x, default: () => [] },
   semanticContext: { value: (x, y) => y ? y : x, default: () => [] },
@@ -38,6 +49,8 @@ const graphState = {
   source: { value: (x, y) => y ? y : x, default: () => null },
   reasoning: { value: (x, y) => y ? y : x, default: () => null },
   error: { value: (x, y) => y ? y : x, default: () => null },
+  userContext: { value: (x, y) => Object.keys(y || {}).length ? y : x, default: () => ({}) },
+  userPreferences: { value: (x, y) => Object.keys(y || {}).length ? y : x, default: () => ({}) },
 
   // The unified data object where all agents output their findings
   data: { 
@@ -59,6 +72,7 @@ const workflow = new StateGraph({
 
 // Add nodes for each agent
 workflow.addNode("router", routerAgent);
+workflow.addNode("retrieverNode", retrieverNode);
 workflow.addNode("resumeAgent", resumeAgent);
 workflow.addNode("careerAgent", careerAgent);
 workflow.addNode("skillAgent", skillAgent);
@@ -67,14 +81,21 @@ workflow.addNode("roadMapAgent", roadMapAgent);
 workflow.addNode("aggregator", aggregator);
 workflow.addNode("responseGenerator", responseGenerator);
 
+// ═══════════════════════════════════════════════════════════════════════════════
 // Define the workflow edges (Execution pipeline)
+// NEW FLOW: Router → RetrieverNode → Agents → Aggregator → ResponseGenerator
+// ═══════════════════════════════════════════════════════════════════════════════
 
 // Connect the special START node to the router agent
 workflow.addEdge(START, "router");
 
-// Dynamic routing via conditional edges
+// After routing, ALWAYS run the retriever to fetch RAG context
+// (except for chitchat — handled inside retrieverNode which returns empty data)
+workflow.addEdge("router", "retrieverNode");
+
+// Dynamic routing FROM retrieverNode to the appropriate agents
 workflow.addConditionalEdges(
-  "router",
+  "retrieverNode",
   (state) => {
     // If resumeAgent is selected, enforce it runs first sequentially to populate userSkills
     if (state.selectedAgents.includes("resumeAgent")) {

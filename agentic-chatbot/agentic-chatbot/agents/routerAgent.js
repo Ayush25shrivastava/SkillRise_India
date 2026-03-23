@@ -1,15 +1,15 @@
 // Router Agent
-// PRIMARY: Groq (llama-3.3-70b) — fast classification, no latency overhead
-// FALLBACK: Safe hardcoded default (careerAgent) — Gemini NOT used here (save quota)
+// Uses llmFactory for round-robin Gemini key rotation + Grok fallback
 // CACHE: 2-minute TTL on routing decisions for identical queries
 
-const { ChatOpenAI } = require("@langchain/openai");
+const { createStructuredLLM } = require("../utils/llmFactory");
 const routerPrompt = require("../prompts/routerPrompt");
 const { z } = require("zod");
 const cache = require("../utils/responseCache");
 
 const routerSchema = z.object({
   agents: z.array(z.enum(["resumeAgent", "careerAgent", "skillAgent", "schemeAgent", "roadMapAgent", "chitchat"])).describe("List of agents to call"),
+  datasets: z.array(z.enum(["jobs", "courses", "skills", "gov_schemes", "career_guides"])).optional().describe("Which Pinecone datasets to search for RAG context"),
   extractedSkills: z.array(z.string()).optional().describe("Technical or soft skills mentioned by the user"),
   targetRole: z.string().optional().describe("Target job role or career goal mentioned by the user")
 });
@@ -49,18 +49,16 @@ async function routerAgent(state) {
     let rawResponse;
 
     try {
-      console.log("[RouterAgent] Calling Gemini (primary)...");
-      const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
-      const geminiLlm = new ChatGoogleGenerativeAI({
-        modelName: "gemini-2.5-flash",
-        apiKey: process.env.GOOGLE_API_KEY,
+      console.log("[RouterAgent] Calling LLM (round-robin + fallback)...");
+      const structuredLlm = createStructuredLLM(routerSchema, {
         temperature: 0,
+        caller: "routerAgent",
+        name: "router",
       });
-      const structuredGemini = geminiLlm.withStructuredOutput(routerSchema, { name: "router" });
-      rawResponse = await structuredGemini.invoke(promptText);
-      console.log("[RouterAgent] Gemini routing succeeded.");
-    } catch (geminiErr) {
-      console.warn(`[RouterAgent] Gemini failed (${geminiErr.message}). Using safe default routing.`);
+      rawResponse = await structuredLlm.invoke(promptText);
+      console.log("[RouterAgent] LLM routing succeeded.");
+    } catch (llmErr) {
+      console.warn(`[RouterAgent] LLM failed (${llmErr.message}). Using safe default routing.`);
       // Robust Regex Fallback
       let fallbackAgents = state.resumeFilePath ? ["resumeAgent", "careerAgent", "skillAgent"] : ["careerAgent", "skillAgent"];
       if (query.toLowerCase().includes("scheme") || query.toLowerCase().includes("government") || query.toLowerCase().includes("gov")) {
@@ -71,6 +69,7 @@ async function routerAgent(state) {
       }
       rawResponse = {
         agents: Array.from(new Set(fallbackAgents)),
+        datasets: [],
         extractedSkills: [],
         targetRole: null
       };
@@ -86,6 +85,15 @@ async function routerAgent(state) {
     return { selectedAgents: ["careerAgent"] };
   }
 }
+
+// ─── Agent-to-Dataset mapping for auto-inference ─────────────────────────────
+const AGENT_DATASET_MAP = {
+  careerAgent:  ["jobs", "courses"],
+  skillAgent:   ["skills", "jobs"],
+  schemeAgent:  ["gov_schemes"],
+  roadMapAgent: ["career_guides", "courses"],
+  resumeAgent:  ["jobs", "skills"]
+};
 
 function buildRouterOutput(rawResponse, state) {
   let agents = rawResponse.agents || [];
@@ -103,6 +111,23 @@ function buildRouterOutput(rawResponse, state) {
 
   console.log(`[RouterAgent] Selected agents: ${agents.join(", ")}`);
 
+  // ─── Dataset selection (LLM output + auto-infer from agents) ────────────
+  let datasets = rawResponse.datasets || [];
+  const validDatasets = ["jobs", "courses", "skills", "gov_schemes", "career_guides"];
+  datasets = datasets.filter(d => validDatasets.includes(d));
+
+  // Auto-infer datasets from selected agents if LLM missed them
+  for (const agent of agents) {
+    const mapped = AGENT_DATASET_MAP[agent] || [];
+    for (const ds of mapped) {
+      if (!datasets.includes(ds)) datasets.push(ds);
+    }
+  }
+  // Chitchat needs no datasets
+  if (agents.length === 1 && agents[0] === "chitchat") datasets = [];
+
+  console.log(`[RouterAgent] Selected datasets: ${datasets.join(", ") || "(none)"}`);
+
   const outputData = {};
   if (!state.resumeFilePath && rawResponse.extractedSkills?.length > 0) {
     outputData.userSkills = rawResponse.extractedSkills;
@@ -112,7 +137,7 @@ function buildRouterOutput(rawResponse, state) {
     outputData.targetRole = rawResponse.targetRole;
   }
 
-  return { selectedAgents: agents, data: outputData };
+  return { selectedAgents: agents, datasets, data: outputData };
 }
 
 module.exports = routerAgent;

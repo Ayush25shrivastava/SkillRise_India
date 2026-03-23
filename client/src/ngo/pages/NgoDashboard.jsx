@@ -13,7 +13,7 @@ import SkillsPanel from "../components/SkillsPanel";
 import Suggestions from "../components/Suggestions";
 
 // Base API configuration
-const API_URL = import.meta.env.VITE_API_URL.replace("/auth", "/blogs");
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5050/api/auth").replace("/auth", "/blogs");
 
 const NAV_TABS = [
   { id: "blogs",     label: "Blog Posts",        icon: BookOpen },

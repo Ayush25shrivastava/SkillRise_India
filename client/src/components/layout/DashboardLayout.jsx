@@ -32,18 +32,6 @@ const DashboardLayout = ({ children, noSidebar }) => {
   return (
     <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans relative">
       <IconGradient />
-      
-      {/* Dynamic Background Mesh */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-screen opacity-70">
-        <div 
-          className="absolute w-[800px] h-[800px] bg-indigo-500/15 blur-[120px] rounded-full transition-transform duration-[1200ms] ease-out will-change-transform"
-          style={{ transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)`, top: '10%', left: '-10%' }}
-        />
-        <div 
-          className="absolute w-[600px] h-[600px] bg-purple-600/15 blur-[120px] rounded-full transition-transform duration-[1200ms] ease-out will-change-transform"
-          style={{ transform: `translate(${mousePos.x * -40}px, ${mousePos.y * -40}px)`, bottom: '5%', right: '-5%' }}
-        />
-      </div>
 
       <div className="z-10 flex w-full h-full relative">
         {!noSidebar && <Sidebar />}

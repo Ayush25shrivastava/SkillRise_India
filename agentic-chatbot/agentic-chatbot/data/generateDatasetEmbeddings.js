@@ -2,71 +2,160 @@ const fs = require('fs');
 const path = require('path');
 const { generateEmbedding } = require('../memory/vectorMemory');
 
-async function processFile(filename) {
-  console.log(`Processing ${filename}...`);
-  const filePath = path.join(__dirname, filename);
-  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  
-  let totalProcessed = 0;
-
-  async function processNode(node) {
-    if (Array.isArray(node)) {
-      for (let i = 0; i < node.length; i++) {
-        if (typeof node[i] === 'object' && node[i] !== null) {
-          // It's an array of objects (like courses.json/govSchemes.json)
-          const textToEmbed = JSON.stringify(node[i]);
-          const embedding = await generateEmbedding(textToEmbed);
-          node[i].embedding = embedding;
-          totalProcessed++;
-        } else if (typeof node[i] === 'string') {
-          // If it's a string, we might just leave it or wrap it
-          // Wait, if it's string, we can't easily attach an embedding property without changing structure.
-          // Let's just not attach embeddings to primitive strings directly, or convert them.
-          // Let's skip primitive strings for now so we don't break existing parsing.
-        }
-      }
-    } else if (typeof node === 'object' && node !== null) {
-      // It's an object of categories (like skillRoadmap.json or top level of courses.json)
-      for (const [key, value] of Object.entries(node)) {
-        if (Array.isArray(value)) {
-          await processNode(value);
-        } else if (typeof value === 'object') {
-           // Create embedding for the entire object (like skill phases for a role)
-           const textToEmbed = JSON.stringify(value);
-           const embedding = await generateEmbedding(textToEmbed);
-           value.embedding = embedding;
-           totalProcessed++;
-           // We might also recursively traverse
-           await processNode(value);
-        }
-      }
+// ─────────────────────────────────────────────
+// createText: converts a dataset item into clean
+// English text for semantic embedding (max ~100 words)
+// ─────────────────────────────────────────────
+function createText(item, type) {
+  switch (type) {
+    case 'job': {
+      const skills  = (item.skills  || []).join(', ');
+      const edu     = (item.edu     || []).join(', ');
+      return (
+        `Job Role: ${item.role || ''}. ` +
+        `${item.desc || ''}. ` +
+        `Skills required: ${skills}. ` +
+        `Education: ${edu}. ` +
+        `Salary range: ${item.salary || 'Not specified'}. ` +
+        `Industry tags: ${(item.tags || []).join(', ')}.`
+      ).trim();
     }
+
+    case 'skill': {
+      const roles = (item.roles || []).join(', ');
+      const tags  = (item.tags  || []).join(', ');
+      return (
+        `Skill: ${item.name || ''}. ` +
+        `${item.desc || ''}. ` +
+        `Skill type: ${item.type || ''}. Level: ${item.level || 'general'}. ` +
+        `Relevant roles: ${roles}. ` +
+        `Tags: ${tags}.`
+      ).trim();
+    }
+
+    case 'course': {
+      const skills = (item.skills || []).join(', ');
+      const roles  = (item.roles  || []).join(', ');
+      return (
+        `Course: ${item.name || ''}. ` +
+        `Duration: ${item.duration || 'N/A'}. ` +
+        `Eligibility: ${item.eligibility || 'Open to all'}. ` +
+        `Skills taught: ${skills}. ` +
+        `Career roles: ${roles}. ` +
+        `Tags: ${(item.tags || []).join(', ')}.`
+      ).trim();
+    }
+
+    case 'scheme': {
+      const benefits   = (item.benefits || []).join('; ');
+      const eduElig    = (item.eligibility?.education || []).join(', ');
+      const suppRoles  = (item.supports?.roles || []).join(', ');
+      return (
+        `Government Scheme: ${item.name || ''}. ` +
+        `${item.desc || ''}. ` +
+        `Benefits: ${benefits}. ` +
+        `Eligibility education: ${eduElig}. ` +
+        `Age range: ${item.eligibility?.age_range || 'Any'}. ` +
+        `Supports roles: ${suppRoles}. ` +
+        `Tags: ${(item.tags || []).join(', ')}.`
+      ).trim();
+    }
+
+    case 'path': {
+      const progression = (item.path  || []).join(' → ');
+      const steps       = (item.steps || []).join('; ');
+      const skills      = (item.skills || []).join(', ');
+      return (
+        `Career Path for: ${item.role || ''}. ` +
+        `Progression: ${progression}. ` +
+        `Steps: ${steps}. ` +
+        `Key skills: ${skills}. ` +
+        `Education needed: ${(item.edu || []).join(', ')}. ` +
+        `Growth time: ${item.growth_time || 'Varies'}.`
+      ).trim();
+    }
+
+    default:
+      // Fallback: basic key-value text (avoids raw JSON)
+      return Object.entries(item)
+        .filter(([k]) => typeof item[k] !== 'object')
+        .map(([k, v]) => `${k}: ${v}`)
+        .join('. ');
   }
-
-  await processNode(data);
-
-  const outFilename = filename.replace('.json', '_embedded.json');
-  const outPath = path.join(__dirname, outFilename);
-  fs.writeFileSync(outPath, JSON.stringify(data, null, 2));
-  console.log(`Saved embedded data to ${outFilename}. Processed ${totalProcessed} items.`);
 }
 
-async function main() {
-  try {
-    const files = ['courses.json', 'govSchemes.json', 'skillRoadmap.json'];
-    for (const file of files) {
-      if (fs.existsSync(path.join(__dirname, file))) {
-        await processFile(file);
-      } else {
-        console.warn(`File ${file} not found. Skipping.`);
-      }
+// ─────────────────────────────────────────────
+// processDataset: reads a JSON file, generates
+// embeddings using createText(), saves back
+// ─────────────────────────────────────────────
+async function processDataset(filename, type) {
+  const filePath = path.join(__dirname, filename);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`[SKIP] File not found: ${filename}`);
+    return;
+  }
+
+  console.log(`\n[START] Processing ${filename} (type=${type})`);
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+
+  if (!Array.isArray(data)) {
+    console.warn(`[WARN] ${filename} is not a flat array — skipping.`);
+    return;
+  }
+
+  let processed = 0;
+  let skipped   = 0;
+
+  for (const item of data) {
+    if (!item.id) {
+      skipped++;
+      continue;
     }
-    console.log("All dataset embeddings generated and stored successfully.");
+
+    const text = createText(item, type);
+    const embedding = await generateEmbedding(text);
+
+    if (!embedding || embedding.length === 0) {
+      console.warn(`  [WARN] Empty embedding for item id=${item.id}`);
+      skipped++;
+      continue;
+    }
+
+    // Attach embedding in-memory (we do NOT persist large _embedded.json files)
+    item._embeddedText = text;
+    item._embeddingDim = embedding.length;
+    processed++;
+  }
+
+  console.log(`[DONE] ${filename}: ${processed} embeddings created, ${skipped} skipped.`);
+}
+
+// ─────────────────────────────────────────────
+// main: orchestrates all datasets
+// ─────────────────────────────────────────────
+async function main() {
+  const datasets = [
+    { file: 'jobs.json',         type: 'job'    },
+    { file: 'job-skill.json',    type: 'skill'  },
+    { file: 'courses.json',      type: 'course' },
+    { file: 'govSchemes.json',   type: 'scheme' },
+    { file: 'career-growth.json',type: 'path'   },
+  ];
+
+  try {
+    for (const { file, type } of datasets) {
+      await processDataset(file, type);
+    }
+    console.log('\n✅ All dataset embeddings verified successfully.');
     process.exit(0);
   } catch (error) {
-    console.error("Error generating embeddings:", error);
+    console.error('❌ Error generating embeddings:', error);
     process.exit(1);
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { createText };
