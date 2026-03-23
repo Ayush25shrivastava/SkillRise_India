@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from "react";
+import { useLocation } from "react-router-dom";
 import { Send, User, Bot, Paperclip, X, Copy, Check, MessageSquare, Briefcase, Code, Sparkles, FileText, ArrowUp } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -286,6 +287,7 @@ ChatInput.displayName = "ChatInput";
 
 // ─── <ChatUI /> (main) ──────────────────────────────────────────────────────
 const ChatUI = () => {
+  const location = useLocation();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -300,6 +302,24 @@ const ChatUI = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  // Auto-submit initial message passed from Dashboard
+  const hasAutoSubmitted = useRef(false);
+  useEffect(() => {
+    const initialMessage = location.state?.initialMessage;
+    if (initialMessage && !hasAutoSubmitted.current) {
+      hasAutoSubmitted.current = true;
+      setInput(initialMessage);
+      // Use a small timeout so state is set before submit fires
+      setTimeout(() => {
+        // We need to manually trigger the submit logic here
+        // since handleSubmit depends on `input` state which won't be updated yet in the same tick
+        autoSubmitMessage(initialMessage);
+      }, 100);
+      // Clean up location state so refreshing doesn't re-send
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleFileChange = useCallback((e) => {
     if (e.target.files.length > 0) setSelectedFile(e.target.files[0]);
@@ -397,6 +417,85 @@ const ChatUI = () => {
     }
     setLoading(false);
   }, [input, selectedFile, threadId, removeFile]);
+
+  // Auto-submit helper that takes the message directly (used for Dashboard handoff)
+  const autoSubmitMessage = useCallback(async (messageText) => {
+    if (!messageText?.trim()) return;
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: messageText, timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) },
+    ]);
+
+    setInput("");
+    setLoading(true);
+    setLoadingText("Analyzing request...");
+
+    try {
+      const formData = new FormData();
+      formData.append("message", messageText.trim());
+      if (threadId) formData.append("threadId", threadId);
+      formData.append("userId", "local-test-user");
+
+      const response = await fetch("http://localhost:5002/api/chatbot/message", {
+        method: "POST",
+        body: formData,
+      });
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let assistantText = "";
+      let buffer = "";
+
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "", isStreaming: true, timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) },
+      ]);
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const chunks = buffer.split("\n\n");
+        buffer = chunks.pop() || "";
+
+        for (const chunk of chunks) {
+          const trimmed = chunk.trim();
+          if (trimmed.startsWith("data: ")) {
+            try {
+              const data = JSON.parse(trimmed.replace("data: ", ""));
+              if (data.type === "progress") setLoadingText(data.message);
+              if (data.type === "complete") {
+                assistantText += data.reply;
+                setMessages((prev) => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { ...updated[updated.length - 1], content: assistantText, isStreaming: false };
+                  return updated;
+                });
+                if (data.threadId) setThreadId(data.threadId);
+              }
+            } catch (parseErr) {
+              console.error("[ChatUI] Parse error:", parseErr);
+            }
+          }
+        }
+      }
+    } catch (err) {
+      setMessages((prev) => {
+        const updated = [...prev];
+        if (updated[updated.length - 1]?.isStreaming) updated.pop();
+        updated.push({
+          role: "assistant",
+          content: "Sorry, I couldn't connect to the server. Please try again.",
+          isError: true,
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        });
+        return updated;
+      });
+    }
+    setLoading(false);
+  }, [threadId]);
 
   return (
     <>

@@ -2,12 +2,12 @@ import { cn } from "../../utils/helpers";
 import { Loader2 } from "lucide-react";
 
 const variants = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary/90 glow-primary",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-  outline: "border border-border bg-transparent hover:bg-secondary text-foreground",
-  ghost: "bg-transparent hover:bg-secondary text-foreground",
-  destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-  accent: "bg-accent text-accent-foreground hover:bg-accent/90 glow-accent",
+  primary: "bg-primary text-primary-foreground hover:bg-primary/90 glow-primary hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:-translate-y-0.5 transition-all text-white",
+  outline: "border border-border bg-transparent hover:bg-primary/[0.08] hover:border-primary/50 text-foreground hover:-translate-y-0.5 transition-all",
+  ghost: "bg-transparent hover:bg-white/5 text-foreground hover:text-primary transition-all",
+  destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:scale-[1.02] active:scale-[0.98] transition-all",
+  accent: "bg-accent text-accent-foreground hover:bg-accent/90 glow-accent hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_20px_rgba(56,139,253,0.5)] transition-all text-white",
 };
 
 const sizes = {

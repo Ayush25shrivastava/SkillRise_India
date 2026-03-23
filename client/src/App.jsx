@@ -37,6 +37,7 @@ import NewInterviewPage from "./new-mock/pages/NewInterviewPage";
 import InterviewsPage from "./new-mock/pages/InterviewsPage";
 import InterviewDetailPage from "./new-mock/pages/InterviewDetailPage";
 import FeedbackPage from "./new-mock/pages/FeedbackPage";
+import "./new-mock/index.css";
 
 // Admin Dashboard Imports
 import AdminLayout from "./admin/AdminLayout";
@@ -90,7 +91,9 @@ function App() {
               element={
                 <MockAuthProvider>
                   <MockToastProvider>
-                    <InterviewsPage />
+                    <div className="mock-interview-theme relative w-full h-full min-h-screen">
+                      <InterviewsPage />
+                    </div>
                   </MockToastProvider>
                 </MockAuthProvider>
               }
@@ -100,7 +103,9 @@ function App() {
               element={
                 <MockAuthProvider>
                   <MockToastProvider>
-                    <NewInterviewPage />
+                    <div className="mock-interview-theme relative w-full h-full min-h-screen">
+                      <NewInterviewPage />
+                    </div>
                   </MockToastProvider>
                 </MockAuthProvider>
               }
@@ -110,7 +115,9 @@ function App() {
               element={
                 <MockAuthProvider>
                   <MockToastProvider>
-                    <InterviewDetailPage />
+                    <div className="mock-interview-theme relative w-full h-full min-h-screen">
+                      <InterviewDetailPage />
+                    </div>
                   </MockToastProvider>
                 </MockAuthProvider>
               }
@@ -120,7 +127,9 @@ function App() {
               element={
                 <MockAuthProvider>
                   <MockToastProvider>
-                    <FeedbackPage />
+                    <div className="mock-interview-theme relative w-full h-full min-h-screen">
+                      <FeedbackPage />
+                    </div>
                   </MockToastProvider>
                 </MockAuthProvider>
               }

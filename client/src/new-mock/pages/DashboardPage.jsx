@@ -9,8 +9,8 @@ import { Loader2, PlusCircle, TrendingUp, Target, Award, BarChart3, ChevronRight
 
 function StatCard({ label, value, icon: Icon, color = "text-primary", sub }) {
   return (
-    <Card className="flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-current/10 shrink-0 ${color}`}>
+    <Card hover className="flex items-center gap-4 transition-transform duration-300 hover:scale-105">
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-current/10 shrink-0 ${color} group-hover:scale-110 transition-transform duration-300`}>
         <Icon className="w-6 h-6" />
       </div>
       <div>
@@ -123,14 +123,15 @@ export default function DashboardPage() {
 
       {/* CTA banner */}
       {interviews.length > 0 && (
-        <div className="glass rounded-2xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border border-primary/20 glow-primary">
-          <div>
+        <div className="glass rounded-2xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border border-primary/20 glow-primary hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all duration-500 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+          <div className="relative z-10">
             <h3 className="text-xl font-bold text-foreground">Ready for another round?</h3>
             <p className="text-muted-foreground mt-1">Consistent practice is the key to interview success.</p>
           </div>
           <Link to="/interviews/new">
-            <Button size="lg" className="shrink-0">
-              <PlusCircle className="w-5 h-5" /> New Interview
+            <Button size="lg" className="shrink-0 relative z-10">
+              <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" /> New Interview
             </Button>
           </Link>
         </div>

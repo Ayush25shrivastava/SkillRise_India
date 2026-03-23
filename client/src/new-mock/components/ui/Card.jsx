@@ -1,11 +1,11 @@
 import { cn } from "../../utils/helpers";
 
-export function Card({ children, className, hover = false, ...props }) {
+export function Card({ children, className, hover = true, ...props }) {
   return (
     <div
       className={cn(
-        "glass rounded-xl p-6",
-        hover && "hover:border-primary/30 hover:glow-primary transition-all duration-300 cursor-pointer",
+        "glass rounded-xl p-6 transition-all duration-300",
+        hover && "hover:-translate-y-1.5 hover:border-primary/50 hover:glow-primary hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] cursor-pointer",
         className
       )}
       {...props}

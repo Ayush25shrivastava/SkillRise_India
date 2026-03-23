@@ -26,8 +26,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-            <Mic className="w-4 h-4 text-primary" />
+          <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all duration-300">
+            <Mic className="w-4 h-4 text-primary group-hover:animate-pulse" />
           </div>
           <span className="font-bold text-foreground text-lg tracking-tight">
             Interview<span className="text-primary">AI</span>
@@ -41,13 +41,13 @@ export default function Navbar() {
               key={to}
               to={to}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                "group flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300",
                 location.pathname === to
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  ? "bg-primary/10 text-primary shadow-[0_0_10px_rgba(139,92,246,0.2)]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/5 hover:-translate-y-0.5"
               )}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               {label}
             </Link>
           ))}
@@ -57,7 +57,7 @@ export default function Navbar() {
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-secondary transition-colors"
+            className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg hover:bg-white/5 hover:scale-105 transition-all duration-300"
           >
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-bold">
               {getInitials(user?.name)}

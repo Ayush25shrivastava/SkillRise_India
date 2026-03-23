@@ -262,7 +262,7 @@ export default function VoiceAgent({ interview, onFinished }) {
         
         <div className={cn(
           "w-32 h-32 rounded-full flex items-center justify-center transition-all duration-500 border-2 shadow-2xl z-10",
-          status === CALL_STATUS.ACTIVE && (isSpeaking ? "bg-primary border-primary scale-110 shadow-glow-primary" : "bg-secondary border-border")
+          status === CALL_STATUS.ACTIVE && (isSpeaking ? "bg-primary border-primary scale-110 glow-primary" : "bg-secondary border-border")
         )}>
           {status === CALL_STATUS.IDLE && <Mic className="w-12 h-12 text-muted-foreground" />}
           {status === CALL_STATUS.CONNECTING && <Loader2 className="w-12 h-12 text-primary animate-spin" />}
@@ -273,7 +273,7 @@ export default function VoiceAgent({ interview, onFinished }) {
       {/* Start/Stop Controls */}
       <div className="text-center w-full max-w-md">
         {status === CALL_STATUS.IDLE && (
-          <Button size="lg" onClick={startInterview} className="px-10 py-8 rounded-full shadow-glow-primary hover:scale-105 active:scale-95 transition-all w-full">
+          <Button size="lg" onClick={startInterview} className="px-10 py-8 rounded-full glow-primary hover:scale-105 active:scale-95 transition-all w-full">
             Begin Interview Session
           </Button>
         )}

@@ -1,58 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 @layer base {
-  :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 6%;
-    --card-foreground: 213 31% 91%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --primary: 210 100% 56%;
+  .mock-interview-theme {
+    /* Match global theme: #06060a (240 25% 3%), #12121a (240 18% 9%), texts */
+    --background: 240 25% 3%;
+    --foreground: 0 0% 100%;
+    --card: 240 18% 7%;
+    --card-foreground: 0 0% 100%;
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --primary: 258 90% 66%; /* purple: 8b5cf6 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 213 31% 91%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215 20% 55%;
-    --accent: 262 83% 68%;
+    --secondary: 240 15% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 15% 15%;
+    --muted-foreground: 240 5% 65%; /* a1a1aa */
+    --accent: 217 91% 60%; /* blue: 3b82f6 */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 63% 55%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 210 100% 56%;
-    --radius: 0.75rem;
+    --ring: 258 90% 66%;
+    --radius: 1rem;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
+
+  .mock-interview-theme {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 139, 253, 0.08), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.06), transparent);
+      radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(56, 139, 253, 0.15), transparent 25%),
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.2), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56, 139, 253, 0.15), transparent);
+    background-color: var(--background);
     min-height: 100vh;
   }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { @apply bg-transparent; }
-  ::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
+  .mock-interview-theme ::-webkit-scrollbar { width: 6px; }
+  .mock-interview-theme ::-webkit-scrollbar-track { background: transparent; }
+  .mock-interview-theme ::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.5); border-radius: 9999px; }
+  .mock-interview-theme ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
 }
 
 @layer components {
   .glass {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+    background-color: hsl(var(--card) / 0.4);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   .glow-primary {
-    box-shadow: 0 0 30px rgba(56, 139, 253, 0.15);
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(139, 92, 246, 0.1);
   }
   .glow-accent {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 0 40px rgba(56, 139, 253, 0.3), inset 0 0 20px rgba(56, 139, 253, 0.1);
   }
   .score-ring {
-    @apply relative flex items-center justify-center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .animate-fade-in {
     animation: fade-in 0.4s ease-out both;
@@ -60,6 +67,6 @@
   .shimmer-bg {
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
     background-size: 200% 100%;
-    @apply animate-shimmer;
+    animation: shimmer 2s infinite linear;
   }
 }

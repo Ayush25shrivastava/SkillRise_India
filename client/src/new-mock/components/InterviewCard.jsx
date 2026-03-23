@@ -40,12 +40,12 @@ export default function InterviewCard({ interview }) {
             {techstack?.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
                 {techstack.slice(0, 4).map((tech) => (
-                  <span key={tech} className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded">
+                  <span key={tech} className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(139,92,246,0.1)]">
                     {tech}
                   </span>
                 ))}
                 {techstack.length > 4 && (
-                  <span className="text-xs text-muted-foreground">+{techstack.length - 4}</span>
+                  <span className="text-xs text-muted-foreground ml-1 py-0.5">+{techstack.length - 4} more</span>
                 )}
               </div>
             )}

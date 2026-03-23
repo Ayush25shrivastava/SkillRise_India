@@ -142,6 +142,12 @@ useEffect(() => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const handleChatSubmit = () => {
+    if (!inputValue.trim()) return;
+    navigate("/chatbot", { state: { initialMessage: inputValue.trim() } });
+    setInputValue("");
+  };
+
   return (
     <>
       {/* Vibrant Background Gradients */}
@@ -244,6 +250,12 @@ useEffect(() => {
                 <input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleChatSubmit();
+                    }
+                  }}
                   placeholder="Ask anything, format resume, try a module..."
                   className="flex-1 bg-transparent text-white text-base font-medium placeholder:text-white/20 outline-none h-14 px-2"
                 />
@@ -253,7 +265,7 @@ useEffect(() => {
                   <button className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all">
                     <Mic size={20} strokeWidth={2} />
                   </button>
-                  <Button variant="primary" size="icon" className="w-12 h-12 rounded-[1.2rem] shadow-none hover:shadow-lg">
+                  <Button variant="primary" size="icon" className="w-12 h-12 rounded-[1.2rem] shadow-none hover:shadow-lg" onClick={handleChatSubmit}>
                     <ArrowRight size={20} strokeWidth={2.5} />
                   </Button>
                 </div>
