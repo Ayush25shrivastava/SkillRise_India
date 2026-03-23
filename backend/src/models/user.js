@@ -23,12 +23,17 @@ const userSchema = new mongoose.Schema(
             minlength: [8, "Password must be at least 8 characters"],
             select: false,
         },
+        role: {
+            type: String,
+            enum: ["admin", "ngo", "user"],
+            default: "user"
+        },
 
         otp: String,
         otpExpire: Date,
         isVerified: {
-        type: Boolean,
-        default: false
+            type: Boolean,
+            default: false
         }
     },
     { timestamps: true }

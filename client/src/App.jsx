@@ -8,7 +8,10 @@ import AICareerAssistant from "./pages/AICareerAssistant.jsx";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer.jsx";
 import SkillGapAnalysis from "./pages/SkillGapAnalysis.jsx";
 import CareerExplorer from "./pages/CareerExplorer.jsx";
-import LearningRoadmap from "./pages/LearningRoadmap.jsx";
+
+import LearningRoadmap from "./pages/RoadmapPage.jsx";
+
+
 import JobsAndInternships from "./pages/JobsAndInternships.jsx";
 import GovernmentSchemes from "./pages/GovernmentSchemes.jsx";
 import SkillProgress from "./pages/SkillProgress.jsx";
@@ -33,6 +36,12 @@ import InterviewsPage from "./new-mock/pages/InterviewsPage";
 import InterviewDetailPage from "./new-mock/pages/InterviewDetailPage";
 import FeedbackPage from "./new-mock/pages/FeedbackPage";
 
+// Admin Dashboard Imports
+import AdminLayout from "./admin/AdminLayout";
+import AdminDashboard from "./admin/pages/Dashboard";
+import NgoRegister from "./admin/pages/NgoRegister";
+import NgoDashboard from "./ngo/pages/NgoDashboard";
+
 
 function App() {
 
@@ -48,7 +57,15 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         {/* Removed duplicate /profile route that used the legacy Layout component */}
-        <Route element={<ProtectedRoute />}>
+        <Route
+          path="/profile/dashboard"
+          element={
+            <Layout>
+              <ProfileDashboard />
+            </Layout>
+          }
+        />
+        <Route element={<ProtectedRoute allowedRoles={["user", "admin", "ngo"]} />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
@@ -105,6 +122,19 @@ function App() {
               }
             />
           </Route>
+        </Route>
+
+        {/* Admin Dashboard Routes */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="ngo-register" element={<NgoRegister />} />
+          </Route>
+        </Route>
+
+        {/* NGO Dashboard Routes */}
+        <Route element={<ProtectedRoute allowedRoles={["ngo"]} />}>
+          <Route path="/ngo" element={<NgoDashboard />} />
         </Route>
 
       </Routes>

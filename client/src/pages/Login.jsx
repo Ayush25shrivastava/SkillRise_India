@@ -21,8 +21,19 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await API.post("/login", form);
-      localStorage.setItem("token", res.data.token);
-      window.location.href = "/dashboard";
+      const { token, user } = res.data;
+      
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
+
+      // Role-based redirection
+      if (user.role === "admin") {
+        window.location.href = "/admin";
+      } else if (user.role === "ngo") {
+        window.location.href = "/ngo";
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
@@ -155,7 +166,7 @@ export default function Login() {
 
           {/* Google OAuth */}
           <button
-            onClick={() => window.location.href = "http://localhost:5000/api/auth/google"}
+            onClick={() => window.location.href = "http://localhost:8000/api/auth/google"}
             className="w-full flex items-center justify-center gap-3 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white/70 font-bold hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white transition-all"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

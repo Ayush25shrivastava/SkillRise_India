@@ -3,8 +3,9 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import profileRoutes from "./routes/profileRoutes.js";
-
+import roadmapRoutes from "./routes/roadmap.js";
 import authRoutes from "./routes/authRoutes.js";
+import blogRoutes from "./routes/blog.routes.js";
 
 const app = express();
 
@@ -13,10 +14,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/api/roadmap", roadmapRoutes);
+app.get("/", (req, res) => {
+  res.send("Roadmap API running...");
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/blogs", blogRoutes);
 
 // Test route
 app.get("/", (req, res) => {

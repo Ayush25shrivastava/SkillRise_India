@@ -1,17 +1,21 @@
 import React from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRoles }) => {
   const token = localStorage.getItem('token');
-  const location = useLocation();
+  const role = localStorage.getItem('role');
 
-  // if (!token) {
-  //   // Redirect to login but save the current location so we can redirect back after login
-  //   return <Navigate to="/login" state={{ from: location }} replace />;
-  // }
-  if (token === null) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
+
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    // Redirect unauthorized roles back to respective dashboards or home
+    if (role === 'admin') return <Navigate to="/admin" replace />;
+    if (role === 'ngo') return <Navigate to="/ngo" replace />;
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return <Outlet />;
 };
 
