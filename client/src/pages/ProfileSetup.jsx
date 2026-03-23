@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState  } from "react";
 import { useEffect } from "react";
 import { useSwipeable } from "react-swipeable";
 import {
@@ -8,12 +8,19 @@ import {
   BookOpen,
   GraduationCap,
   Target,
+  CheckCircle,
+  Rocket,
+  X,
+  LayoutDashboard
 } from "lucide-react";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
+import { Link } from "react-router-dom";
 export default function ProfileSetup() {
   const [index, setIndex] = useState(0);
   const [formData, setFormData] = useState({});
   const [isEdit, setIsEdit] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
@@ -21,6 +28,13 @@ export default function ProfileSetup() {
   try {
     const token = localStorage.getItem("token");
     console.log("TOKEN:", token);
+
+    if (!token) {
+        setIsEdit(true);
+        //setLoading(false);
+        return;
+      }
+
     const res = await fetch("http://localhost:8000/api/profile/me", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,9 +49,10 @@ export default function ProfileSetup() {
     const data = await res.json();
 
     if (data?.profile) {
-      setFormData(data.profile.data);
+      setFormData(data?.profile?.data || {});
       setIsEdit(false);
     } else {
+      
       setIsEdit(true);
     }
   } catch (err) {
@@ -88,7 +103,7 @@ const handleSubmit = async () => {
     // ✅ IMPORTANT: update state with saved data
     setFormData(data.profile.data || formData);
 
-    alert("Profile Saved ✅");
+    setShowSuccess(true);
     setIsEdit(false);
 
   } catch (err) {
@@ -104,7 +119,43 @@ const handleSubmit = async () => {
 
   if (!isEdit) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#0f0f1a] to-black text-white">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#0f0f1a] to-black text-white relative">
+        
+        {/* SUCCESS NOTIFICATION */}
+        {showSuccess && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
+             <div className="w-full max-w-lg bg-[#0a101f] border border-white/10 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden text-center space-y-8 animate-in zoom-in-95 duration-500">
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-600/20 blur-[60px]" />
+                
+                <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
+                   <Rocket size={40} className="animate-bounce" />
+                </div>
+
+                <div className="space-y-4">
+                   <h3 className="text-3xl font-black tracking-tight text-white uppercase italic">Profile Initialized!</h3>
+                   <p className="text-white/40 font-medium leading-relaxed">
+                     Your professional vector has been saved. We've updated your recommendations based on your new skills.
+                   </p>
+                </div>
+
+                <div className="w-full pt-4 space-y-3 px-6">
+                   <Link 
+                     to="/dashboard"
+                     className="w-full py-4 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/10"
+                   >
+                     Enter Dashboard
+                     <LayoutDashboard size={16} />
+                 </Link>
+                 <button 
+                   onClick={() => setShowSuccess(false)}
+                   className="w-full py-3.5 bg-white/5 text-white/50 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-white/10 hover:text-white transition-all font-bold border border-white/5"
+                 >
+                   Stay on Profile
+                 </button>
+              </div>
+           </div>
+        </div>
+      )}
 
         <div className="w-[800px] p-6 rounded-3xl bg-white/5 border border-white/10">
 
@@ -112,7 +163,7 @@ const handleSubmit = async () => {
 
           <div className="grid grid-cols-2 gap-4">
 
-            {Object.entries(formData).map(([key, value]) => (
+            {Object.entries(formData || {}).map(([key, value]) => (
               <div key={key} className="bg-white/5 p-3 rounded-xl">
                 <p className="text-gray-400 text-xs">{key}</p>
                 <p>{value || "-"}</p>
@@ -206,6 +257,7 @@ const handleSubmit = async () => {
             <Select options={["Year","1st","2nd","3rd","4th"]} onChange={(v)=>handleChange("year",v)} />
 
             <Full><Input icon={<Target />} value={formData.interests} placeholder="Interests" onChange={(e)=>handleChange("interests",e.target.value)} /></Full>
+            <Full><Input icon={<Target />} value={formData.skills} placeholder="Skills (comma separated)" onChange={(e)=>handleChange("skills",e.target.value)} /></Full>
             <Full><Input icon={<Target />} value={formData.goal} placeholder="Career Goal" onChange={(e)=>handleChange("goal",e.target.value)} /></Full>
 
             <Full>
@@ -335,12 +387,13 @@ function Full({ children }) {
   return <div className="col-span-2">{children}</div>;
 }
 
-function Input({ icon, placeholder, onChange }) {
+function Input({ icon, value, placeholder, onChange }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10">
       <div className="text-gray-400">{icon}</div>
       <input
         type="text"
+        value={value || ""}
         placeholder={placeholder}
         onChange={onChange}
         className="bg-transparent outline-none w-full text-white placeholder-gray-400 text-sm"
@@ -350,10 +403,11 @@ function Input({ icon, placeholder, onChange }) {
 }
 
 /* 🔥 CUSTOM SELECT */
-function Select({ options, onChange }) {
+function Select({ options,value, onChange }) {
   return (
     <div className="relative">
       <select
+        value={value  || ""}
         onChange={(e)=>onChange(e.target.value)}
         className="input appearance-none pr-8"
       >

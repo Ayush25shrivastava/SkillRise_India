@@ -45,6 +45,9 @@ import AdminDashboard from "./admin/pages/Dashboard";
 import NgoRegister from "./admin/pages/NgoRegister";
 import NgoDashboard from "./ngo/pages/NgoDashboard";
 
+import AdminLogin from "./pages/AdminLogin";
+
+import RecommendationPage from "./pages/RecommendationPage.jsx";
 
 function App() {
 
@@ -58,19 +61,29 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         {/* Removed duplicate /profile route that used the legacy Layout component */}
         <Route
-          path="/profile/dashboard"
-          element={
-            <Layout>
-              <ProfileDashboard />
-            </Layout>
-          }
-        />
+          path="/profile"
+  element={
+    <Layout>
+      <ProfileSetup />
+    </Layout>
+  }
+/>
+        <Route
+  path="/profile/dashboard"
+  element={
+    <Layout>
+      <ProfileDashboard />
+    </Layout>
+  }
+/>
         <Route element={<ProtectedRoute allowedRoles={["user", "admin", "ngo"]} />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/recommendations" element={<RecommendationPage />} />
             <Route path="/profile" element={<Profile />} />
 
             <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />

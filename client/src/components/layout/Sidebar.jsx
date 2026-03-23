@@ -9,6 +9,7 @@ import {
   Bot,
   Mic,
   MessageSquare,
+  Sparkles,
   User,
   LogOut,
   ChevronLeft,
@@ -23,6 +24,7 @@ const username = user?.name || "User";
 const Sidebar = ({ isCollapsed, toggleSidebar }) => {
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
+    { icon: Sparkles, label: "AI Recommendations", path: "/recommendations" },
     { icon: FileSearch, label: "Resume Analyzer", path: "/resume-analyzer" },
     { icon: Compass, label: "Personalized Feed", path: "/feed" },
     { icon: Map, label: "Career Roadmap", path: "/learning-roadmap" },

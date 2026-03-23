@@ -58,7 +58,7 @@ app.use("*", (req, res) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log("VAPI KEY:", process.env.VAPI_PRIVATE_KEY || process.env.VAPI_API_KEY);
