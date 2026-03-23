@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generateRoadmap, updateRoadmap, careerSwitchRoadmap } from "../services/roadmapApi";
 
 export const useRoadmap = () => {
   const [roadmap, setRoadmap] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const savedRoadmap = localStorage.getItem("roadmap");
+    if (savedRoadmap) {
+      try {
+        setRoadmap(JSON.parse(savedRoadmap));
+      } catch (err) {
+        console.error("Failed to parse saved roadmap:", err);
+      }
+    }
+  }, []);
+
+  // Save roadmap to localStorage whenever it changes
+  useEffect(() => {
+    if (roadmap && roadmap.length > 0) {
+      localStorage.setItem("roadmap", JSON.stringify(roadmap));
+    }
+  }, [roadmap]);
 
   const generate = async (data) => {
     try {
@@ -95,7 +113,11 @@ export const useRoadmap = () => {
       setLoading(false);
     }
   };
+  const clearRoadmap = () => {
+    setRoadmap(null);
+    localStorage.removeItem("roadmap");
+  };
 
 
-  return { roadmap, generate, update, careerSwitchGenerate, error, loading};
+  return { roadmap, generate, update, careerSwitchGenerate, error, loading, clearRoadmap};
 };
