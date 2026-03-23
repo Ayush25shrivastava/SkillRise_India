@@ -1,33 +1,49 @@
+
 import User from "../models/user.js";
 import Profile from "../models/Profile.js";
+import { resolveLocationToState } from "../utils/LocationResolver.js";
 
 export const getAdminStats = async (req, res) => {
   try {
-    // Total users count
-    const totalUsers = await User.countDocuments({ role: "user" });
+    console.log("📊 Fetching admin stats...");
     
-    // Total NGOs count
+    const totalUsers = await User.countDocuments({ role: "user" });
     const totalNgos = await User.countDocuments({ role: "ngo" });
     
-    // Get all profiles with location data
     const profiles = await Profile.find({}).populate("user", "name email createdAt");
+    console.log(`Total profiles: ${profiles.length}`);
     
-    // Active states (states with users)
+    // Extract all locations
+    const rawLocations = profiles
+      .map(p => p.data?.location || p.data?.state)
+      .filter(Boolean);
+    
+    console.log(`Raw locations:`, rawLocations);
+    
+    // Resolve locations to states with rate limiting
     const stateMap = {};
-    profiles.forEach(profile => {
-      const location = profile.data?.location || profile.data?.state;
-      if (location) {
-        stateMap[location] = (stateMap[location] || 0) + 1;
+    
+    for (const location of rawLocations) {
+      // Add delay to respect API rate limits
+      await new Promise(resolve => setTimeout(resolve, 1100));
+      
+      const state = await resolveLocationToState(location);
+      
+      if (state) {
+        stateMap[state] = (stateMap[state] || 0) + 1;
       }
-    });
+    }
+    
+    console.log(`Resolved states:`, Object.keys(stateMap));
     
     const activeStates = Object.keys(stateMap).length;
-    const stateAnalytics = Object.entries(stateMap).map(([state, count]) => ({
-      state,
-      count
-    }));
+    const stateAnalytics = Object.entries(stateMap)
+      .map(([state, count]) => ({ state, count }))
+      .sort((a, b) => b.count - a.count);
     
-    // Extract skills from all profiles
+    console.log(`State analytics:`, stateAnalytics);
+    
+    // Extract skills
     const skillMap = {};
     profiles.forEach(profile => {
       const skills = profile.data?.skills;
@@ -44,17 +60,16 @@ export const getAdminStats = async (req, res) => {
       }
     });
     
-    // Top skills sorted by count
     const topSkills = Object.entries(skillMap)
       .map(([skill, count]) => ({
         skill,
         count,
-        percentage: Math.round((count / profiles.length) * 100)
+        percentage: profiles.length > 0 ? Math.round((count / profiles.length) * 100) : 0
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
     
-    // Recent registrations (last 7 days)
+    // Recent registrations
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
@@ -63,7 +78,7 @@ export const getAdminStats = async (req, res) => {
       createdAt: { $gte: sevenDaysAgo }
     });
     
-    // User growth by day (last 30 days)
+    // User growth
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
@@ -87,6 +102,8 @@ export const getAdminStats = async (req, res) => {
       }
     ]);
     
+    console.log("✅ Stats fetched successfully");
+    
     res.json({
       success: true,
       data: {
@@ -102,7 +119,7 @@ export const getAdminStats = async (req, res) => {
     });
     
   } catch (error) {
-    console.error("Admin stats error:", error);
+    console.error("❌ Admin stats error:", error);
     res.status(500).json({
       success: false,
       message: error.message
