@@ -45,6 +45,8 @@ import NgoRegister from "./admin/pages/NgoRegister";
 import NgoDashboard from "./ngo/pages/NgoDashboard";
 
 
+import RecommendationPage from "./pages/RecommendationPage.jsx";
+
 function App() {
 
   return (
@@ -70,6 +72,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={["user", "admin", "ngo"]} />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/recommendations" element={<RecommendationPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/ai-assistant" element={<AICareerAssistant />} />
             <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
