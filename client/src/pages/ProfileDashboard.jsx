@@ -12,7 +12,7 @@ export default function ProfileDashboard() {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "http://localhost:5050/api/profile/me",
+          "http://localhost:8000/api/profile/me",
           {
             headers: {
               Authorization: `Bearer ${token}`,

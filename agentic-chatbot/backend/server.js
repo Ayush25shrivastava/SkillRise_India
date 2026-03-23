@@ -17,7 +17,7 @@ app.use('/api/chatbot', chatbotRoutes);
 
 app.get('/health', (req, res) => res.status(200).send('OK'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/agentic-chatbot";
 
 // MongoDB Connection and Server Start

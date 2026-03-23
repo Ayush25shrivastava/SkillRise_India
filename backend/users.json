@@ -1,0 +1,256 @@
+[
+  {
+    "_id": "69b42a21e4148d65e3585eca",
+    "name": "Jhalak Yadav",
+    "email": "yadavjhalak3211@gmail.com",
+    "password": "$2b$10$JDZTuTMsweJwFBFUSyJsiOQvg3FOvAxWnrFPZ7K6yaDWgNf70ZPkK",
+    "createdAt": "2026-03-13T15:15:45.039Z",
+    "updatedAt": "2026-03-21T05:30:27.385Z",
+    "__v": 0,
+    "averageScore": 72,
+    "interviewCount": 3,
+    "isVerified": false,
+    "otp": "490431",
+    "otpExpire": "2026-03-21T05:40:27.379Z"
+  },
+  {
+    "_id": "69b5318ef80cf855a080f680",
+    "name": "Harsh",
+    "email": "harshvardhanchauhan719@gmail.com",
+    "password": "$2b$10$Z8lBdXuZ2J5xaS.2rOgBVuYoO6nZBgrpmyJbNybYzZNNBR3KUb8a.",
+    "createdAt": "2026-03-14T09:59:42.552Z",
+    "updatedAt": "2026-03-14T09:59:42.552Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b55b409df35527a7b2aa44",
+    "name": "Alana",
+    "email": "itsalana774@gmail.com",
+    "password": "$2b$10$DwW7eu2C2fynl/43NCjr0.9EWQEiK5ja.fuLhVHfAQ1/osh8951qa",
+    "createdAt": "2026-03-14T12:57:36.927Z",
+    "updatedAt": "2026-03-20T19:47:17.093Z",
+    "__v": 0,
+    "isVerified": false,
+    "otp": null,
+    "otpExpire": null,
+    "profile": {
+      "skills": [
+        "jdbsnc",
+        "sma"
+      ],
+      "college": "mnnit",
+      "degree": "btech",
+      "interests": [
+        "dksjfn"
+      ],
+      "careerGoal": "Engineer",
+      "year": "1st Year"
+    },
+    "userType": "student"
+  },
+  {
+    "_id": "69b641e7e4beb20b79f654ad",
+    "name": "Test User",
+    "email": "test12@example.com",
+    "password": "$2b$10$UW/hySI5F3uEI8HoXjtzUe4pLzqqj5cOJrLoTZRTNcN7XKh9BAtyu",
+    "createdAt": "2026-03-15T05:21:43.440Z",
+    "updatedAt": "2026-03-15T05:21:43.440Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b64217e4beb20b79f654b0",
+    "name": "Test User",
+    "email": "test12@example.cotest13@example.comm",
+    "password": "$2b$10$MJR7aIVSE7Gltd2aHjbj/etIYLhkAWf8/hZ.vdvBWUfCot/oUDlsi",
+    "createdAt": "2026-03-15T05:22:31.479Z",
+    "updatedAt": "2026-03-15T05:22:31.479Z",
+    "__v": 0
+  },
+  {
+    "_id": "69b808f1831017845484e1de",
+    "name": "Test User",
+    "email": "test@example.com",
+    "password": "$2b$10$VZepC5lNsGdvr9LxEDTc4erSJJ.UG7PTXTDDaNXYRfAnc7gSvYJLO",
+    "createdAt": "2026-03-16T13:43:13.070Z",
+    "updatedAt": "2026-03-16T13:43:13.070Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bb0a5ccc37885588cbd478",
+    "email": "",
+    "__v": 0,
+    "createdAt": "2026-03-18T20:26:03.340Z",
+    "isVerified": false,
+    "otp": "807206",
+    "otpExpire": "2026-03-18T20:36:03.336Z",
+    "updatedAt": "2026-03-18T20:26:03.340Z"
+  },
+  {
+    "_id": "69bb0a71cc37885588cbd479",
+    "email": "saxenashreya315@gmail.com",
+    "__v": 0,
+    "createdAt": "2026-03-18T20:26:25.121Z",
+    "isVerified": false,
+    "otp": "941001",
+    "otpExpire": "2026-03-18T20:36:26.517Z",
+    "updatedAt": "2026-03-20T20:45:30.180Z",
+    "profile": {
+      "college": "dkjvn",
+      "degree": "dfjc ",
+      "interests": [
+        "dshkbjmna"
+      ],
+      "careerGoal": "esfndm"
+    },
+    "userType": "student"
+  },
+  {
+    "_id": "69bb0c3c8f50591566167e8f",
+    "name": "temp",
+    "email": "test@gmail.com",
+    "password": "$2b$10$h.XCQSPRqtsZAxSC6ym0Yup6vdhPa2JMutT3Y6J11dzEXlx5ZZfzm",
+    "isVerified": false,
+    "otp": "817021",
+    "otpExpire": "2026-03-18T20:52:45.886Z",
+    "createdAt": "2026-03-18T20:34:04.629Z",
+    "updatedAt": "2026-03-18T20:42:45.888Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bc25586510f99358394509",
+    "name": "temp",
+    "email": "dogifax403@onbap.com",
+    "password": "$2b$10$0N0Vu2D7kx90w8wbCAVoOOfc2SdMRmVxofRgmZDwFyKSV.54OGFiu",
+    "isVerified": false,
+    "otp": "722490",
+    "otpExpire": "2026-03-19T20:02:08.193Z",
+    "createdAt": "2026-03-19T16:33:28.713Z",
+    "updatedAt": "2026-03-19T19:52:08.194Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bc2f661f4aebaa11d11084",
+    "name": "vardhan",
+    "email": "fakeharsh567@gmail.com",
+    "password": "$2b$10$6OB4yJYA7QqSxyzyHQgkQecOS1WzUdrg8GPGgm27cXKNwBo4DDzkC",
+    "createdAt": "2026-03-19T17:16:22.078Z",
+    "updatedAt": "2026-03-22T05:22:15.388Z",
+    "__v": 0,
+    "isVerified": true,
+    "otp": "441439",
+    "otpExpire": "2026-03-22T05:31:57.963Z"
+  },
+  {
+    "_id": "69bc417a93e18e50d70331d0",
+    "name": "Ayush Shrivastava",
+    "email": "ayushshrivastava2505@gmail.com",
+    "password": "$2b$10$YrK1nw5Fbc17DM1kVCUBi.SvOd0GxMs2FptAnmcLnMDW.GbOryMAS",
+    "createdAt": "2026-03-19T18:33:30.166Z",
+    "updatedAt": "2026-03-19T18:33:30.166Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bc61ca666f9f7c9f64f4cd",
+    "name": "Shreya",
+    "email": "ikx7mdhbbm@xkxkud.com",
+    "password": "$2b$10$e0T4nLUWeWrnts/tRVZzuu9jkx6L0xutOEoGAHPwcfRGbesB.Dzdq",
+    "isVerified": true,
+    "createdAt": "2026-03-19T20:51:22.495Z",
+    "updatedAt": "2026-03-19T20:51:22.495Z",
+    "__v": 0
+  },
+  {
+    "_id": "6673f0000000000000000000",
+    "name": "Guest User",
+    "email": "guest@interviewai.com",
+    "password": "$2a$12$MQxVRF3UeaBlgsDPZFy7DuVa7tO4S646sPe6KI1x0RpUgUhhTq2GO",
+    "avatar": "",
+    "interviewCount": 0,
+    "averageScore": 0,
+    "createdAt": "2026-03-20T05:02:08.655Z",
+    "updatedAt": "2026-03-20T05:02:08.655Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bd99e638b7293a0fffb4d8",
+    "name": "Ayush",
+    "email": "iron25man30@gmail.com",
+    "password": "$2b$10$UOYXt.tVENrIhq710Pon9uJdOcXbqYOT5uyigz22LoowNrlbpJXl2",
+    "isVerified": true,
+    "createdAt": "2026-03-20T19:03:02.327Z",
+    "updatedAt": "2026-03-20T19:03:02.327Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bed7f2d54c38a058934660",
+    "name": "Skill_India_Project",
+    "email": "skillindiaproejct057@gmail.com",
+    "password": "$2b$10$bdBsZw044X3jMXKaoknNVO4i7ELPkLSgEadYCPdbEJj3.kb/86eLu",
+    "isVerified": false,
+    "createdAt": "2026-03-21T17:40:02.531Z",
+    "updatedAt": "2026-03-21T17:40:02.531Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bed8acd54c38a058934667",
+    "name": "SkiLLriseIndia",
+    "email": "nk4qdbieuq@xkxkud.com",
+    "password": "$2b$10$wOFh64AEjjyb5Ws6pm1.eewv.G0jGxkjqQMr/6nVpinlndZf27NRW",
+    "isVerified": true,
+    "createdAt": "2026-03-21T17:43:08.138Z",
+    "updatedAt": "2026-03-21T17:45:27.609Z",
+    "__v": 0,
+    "otp": "311864",
+    "otpExpire": "2026-03-21T17:55:27.605Z"
+  },
+  {
+    "_id": "69bedaded54c38a058934672",
+    "name": "SkillRISE",
+    "email": "t1btkulp6j@ruutukf.com",
+    "password": "$2b$10$vRf8PR.6X7qM7wYnwByIAeFz2QnTR2fGX5O95GOghKBwxe5FdNMPe",
+    "isVerified": true,
+    "createdAt": "2026-03-21T17:52:30.695Z",
+    "updatedAt": "2026-03-21T17:52:30.695Z",
+    "__v": 0
+  },
+  {
+    "_id": "69beeab4d54c38a05893468a",
+    "name": "Pikachu",
+    "email": "shreya.20244153@mnnit.ac.in",
+    "password": "$2b$10$CRbYa.jt/CFR74OkhUUQdOXIIHIHgHOCvAgnuxAtPTr48UelaMWEy",
+    "isVerified": true,
+    "createdAt": "2026-03-21T19:00:04.401Z",
+    "updatedAt": "2026-03-21T19:00:04.401Z",
+    "__v": 0
+  },
+  {
+    "_id": "69bf78fdd2d4361412c8df9f",
+    "name": "Test User",
+    "email": "testing123@gmail.com",
+    "password": "$2b$10$RQK6hYnHbEZe4260BEQO.edEqu000OCmK.O6/p5WGgjLqLklf2CIy",
+    "isVerified": true,
+    "createdAt": "2026-03-22T05:07:09.902Z",
+    "updatedAt": "2026-03-22T05:07:09.902Z",
+    "__v": 0
+  },
+  {
+    "_id": "69c04103c3cd02f766f41e2a",
+    "name": "Shalini Chauhan",
+    "email": "shalinic331@gmail.com",
+    "password": "$2b$10$S6ZKFWmc0MP8Iyt67VzO8OWPJ3SwuuAPc.UCU2zPnxPjY3gj82pKe",
+    "isVerified": true,
+    "createdAt": "2026-03-22T19:20:35.231Z",
+    "updatedAt": "2026-03-22T19:20:35.231Z",
+    "__v": 0
+  },
+  {
+    "_id": "69c0b48640df554927c16695",
+    "name": "admin",
+    "email": "admin@skillrise.com",
+    "password": "$2b$10$vuAwD5bxxpXvIu0UiQSNPeWYemXG97tMEfYBUEOYcDqWVcafSHXSO",
+    "role": "admin",
+    "isVerified": true,
+    "createdAt": "2026-03-23T00:00:00.000Z",
+    "updatedAt": "2026-03-23T00:00:00.000Z"
+  }
+]

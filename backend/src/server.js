@@ -6,29 +6,26 @@ import profileRoutes from "./routes/profileRoutes.js";
 import roadmapRoutes from "./routes/roadmap.js";
 import authRoutes from "./routes/authRoutes.js";
 import blogRoutes from "./routes/blog.routes.js";
+import programRoutes from "./routes/program.routes.js";
 
 const app = express();
-
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
 app.use("/api/roadmap", roadmapRoutes);
-app.get("/", (req, res) => {
-  res.send("Roadmap API running...");
-});
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/programs", programRoutes);
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Auth API Running");
+  res.send("SkillRise API Running");
 });
-
 
 // MongoDB Connection
 mongoose
@@ -44,5 +41,3 @@ mongoose
   .catch((error) => {
     console.error("MongoDB connection error:", error);
   });
-
-  

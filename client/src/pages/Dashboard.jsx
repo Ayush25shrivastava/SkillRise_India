@@ -13,7 +13,8 @@ import {
   X,
   FileText,
   Sparkles,
-  Zap
+  Zap,
+  Compass
 } from "lucide-react";
 
 import FeatureModal from "../components/common/FeatureModal";
@@ -123,7 +124,7 @@ useEffect(() => {
 }, []);
   const features = [
     { title: "Resume Analyzer", description: "Instant ATS feedback & structure review", icon: FileSearch, path: "/resume-analyzer", colorName: "indigo" },
-    { title: "Job Recommendations", description: "High-match roles at top companies", icon: Briefcase, path: "/jobs", colorName: "emerald" },
+    { title: "Personalized Feed", description: "Curated blogs & learning content for you", icon: Compass, path: "/feed", colorName: "emerald" },
     { title: "Career Roadmap", description: "Month-by-month journey to success", icon: Map, path: "/learning-roadmap", colorName: "amber" },
     { title: "Mock Interview", description: "High-pressure AI-driven simulations", icon: PlayCircle, path: "/ai-assistant", colorName: "rose" },
     { title: "Skill Gap Analysis", description: "Find missing skills for your target role", icon: Binary, path: "/skill-gap", colorName: "cyan" },

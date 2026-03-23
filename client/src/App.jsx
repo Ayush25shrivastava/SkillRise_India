@@ -16,6 +16,8 @@ import JobsAndInternships from "./pages/JobsAndInternships.jsx";
 import GovernmentSchemes from "./pages/GovernmentSchemes.jsx";
 import SkillProgress from "./pages/SkillProgress.jsx";
 import Feedback from "./pages/Feedback.jsx";
+import CommunityPage from "./pages/CommunityPage.jsx";
+import FeedPage from "./pages/FeedPage.jsx";
 import InterviewPage from "./pages/InterviewPage.jsx";
 import Chatbot from "./pages/Chatbot/Chatbot.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -80,6 +82,8 @@ function App() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/new_mock" element={<InterviewPage />} />
             <Route path="/chatbot" element={<Chatbot />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/feed" element={<FeedPage />} />
 
             <Route
               path="/interviews"

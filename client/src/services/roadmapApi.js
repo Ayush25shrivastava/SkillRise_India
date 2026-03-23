@@ -1,8 +1,8 @@
 import axios from "axios";
-const API_URL = "http://localhost:5000/api/roadmap";
+const API_URL = "http://localhost:8000/api/roadmap";
 export const generateRoadmap = async (data) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/roadmap/generate", data, {
+    const res = await axios.post("http://localhost:8000/api/roadmap/generate", data, {
       timeout: 60000, // 60 seconds timeout - wait for LLM response
     });
     return res.data;

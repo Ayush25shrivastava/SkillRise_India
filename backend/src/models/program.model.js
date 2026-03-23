@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const blogSchema = new mongoose.Schema(
+const programSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -9,30 +9,31 @@ const blogSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Description is required"],
+    },
+    type: {
+      type: String,
+      enum: ["training", "job_drive", "workshop", "camp"],
+      required: [true, "Program type is required"],
     },
     skills: {
       type: [String],
-      required: [true, "At least one skill is required"],
+      default: [],
     },
     location: {
       type: String,
+      required: [true, "Location is required"],
     },
-    region: {
+    eligibility: {
       type: String,
-      default: "India",
     },
-    tags: {
-      type: [String],
-      default: [],
+    deadline: {
+      type: Date,
     },
-    likes: {
-      type: Number,
-      default: 0,
+    contactInfo: {
+      type: String,
     },
-    views: {
-      type: Number,
-      default: 0,
+    applyLink: {
+      type: String,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -43,4 +44,4 @@ const blogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Blog", blogSchema);
+export default mongoose.model("Program", programSchema);

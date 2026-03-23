@@ -30,7 +30,7 @@ const DashboardLayout = ({ children, noSidebar }) => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans relative">
+    <div className="flex h-screen bg-[#080005] text-white overflow-hidden font-sans relative">
       <IconGradient />
 
       <div className="z-10 flex w-full h-full relative">

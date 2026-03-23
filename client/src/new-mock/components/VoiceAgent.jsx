@@ -149,7 +149,7 @@ export default function VoiceAgent({ interview, onFinished }) {
   }, [interview._id, interview.questions, isDemoMode, stopInterview, toast]);
 
   const getVapiToken = async () => {
-    const res = await fetch("http://localhost:5050/api/vapi/token", {
+    const res = await fetch("http://localhost:5005/api/vapi/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

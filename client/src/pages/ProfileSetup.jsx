@@ -21,7 +21,7 @@ export default function ProfileSetup() {
   try {
     const token = localStorage.getItem("token");
     console.log("TOKEN:", token);
-    const res = await fetch("http://localhost:5050/api/profile/me", {
+    const res = await fetch("http://localhost:8000/api/profile/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -61,7 +61,7 @@ const handleSubmit = async () => {
   try {
     const token = localStorage.getItem("token");
     console.log("TOKEN:", token);
-    const res = await fetch("http://localhost:5050/api/profile/save", {
+    const res = await fetch("http://localhost:8000/api/profile/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

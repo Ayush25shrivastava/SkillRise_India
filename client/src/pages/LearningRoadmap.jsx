@@ -122,7 +122,7 @@
 
 //                 {/* Path Marker */}
 //                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center z-20">
-//                   <div className="w-2.5 h-2.5 rounded-full bg-[#05050a] border-2 border-white/20 group-hover:border-cyan-500 group-hover:scale-125 transition-all duration-500 shadow-[0_0_15px_rgba(34,211,238,0.4)]" />
+//                   <div className="w-2.5 h-2.5 rounded-full bg-[#08000a] border-2 border-white/20 group-hover:border-cyan-500 group-hover:scale-125 transition-all duration-500 shadow-[0_0_15px_rgba(34,211,238,0.4)]" />
 //                 </div>
 //               </div>
 //             );
