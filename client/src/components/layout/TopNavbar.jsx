@@ -20,7 +20,7 @@ const TopNavbar = () => {
 
   const navLinks = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Assistant', path: '/ai-assistant', icon: Bot },
+    { name: 'Mock Interview', path: '/interviews/new', icon: Bot },
     { name: 'Profile', path: '/profile', icon: User },
   ];
 
