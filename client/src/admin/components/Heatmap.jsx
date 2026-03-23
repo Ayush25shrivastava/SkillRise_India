@@ -1,3 +1,5 @@
+
+
 // import { useState, useEffect } from "react";
 // import {
 //   ComposableMap,
@@ -14,6 +16,7 @@
 //   const [tooltip, setTooltip] = useState(null);
 //   const [selectedState, setSelectedState] = useState(null);
 //   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+//   const [geoLoaded, setGeoLoaded] = useState(false);
 
 //   // Create flexible state data map
 //   const stateDataMap = {};
@@ -37,8 +40,14 @@
 
 //   useEffect(() => {
 //     console.log("📊 Heatmap received state data:", propStateData);
-//     console.log("🗺️ State data map created with keys:", Object.keys(stateDataMap).filter((k, i, arr) => arr.indexOf(k) === i).slice(0, 10));
+//     console.log("🗺️ State data map keys:", Object.keys(stateDataMap).slice(0, 10));
 //   }, [propStateData]);
+
+//   const getStateName = (geo) => {
+//     // The GeoJSON uses 'st_nm' property (lowercase)
+//     const geoProps = geo.properties;
+//     return geoProps.st_nm || geoProps.ST_NM || geoProps.name || geoProps.NAME || geoProps.state || geoProps.STATE || null;
+//   };
 
 //   const getData = (geoName) => {
 //     if (!geoName) return null;
@@ -61,7 +70,7 @@
 //   };
 
 //   const handleMouseEnter = (geo, evt) => {
-//     const name = geo.properties.ST_NM;
+//     const name = getStateName(geo);
 //     const data = getData(name);
     
 //     console.log(`🖱️ Hovering: "${name}" | Data found:`, data ? `✅ ${data.totalUsers} users` : "❌ No data");
@@ -114,14 +123,20 @@
 //             <ZoomableGroup zoom={1} minZoom={0.8} maxZoom={4}>
 //               <Geographies geography={INDIA_TOPO_JSON}>
 //                 {({ geographies }) => {
-//                   // Log GeoJSON state names once for debugging
-//                   if (geographies.length > 0) {
-//                     const geoNames = geographies.map(g => g.properties.ST_NM);
+//                   // Log GeoJSON properties once for debugging
+//                   if (!geoLoaded && geographies.length > 0) {
+//                     setGeoLoaded(true);
+//                     const firstGeo = geographies[0];
+//                     console.log("🗺️ GeoJSON first item properties:", firstGeo.properties);
+//                     console.log("🗺️ All property keys:", Object.keys(firstGeo.properties));
+                    
+//                     const geoNames = geographies.map(g => getStateName(g));
 //                     console.log("🗺️ GeoJSON state names:", geoNames);
 //                   }
                   
 //                   return geographies.map((geo) => {
-//                     const name = geo.properties.ST_NM;
+//                     const name = getStateName(geo);
+                    
 //                     return (
 //                       <Geography
 //                         key={geo.rsmKey}
@@ -154,7 +169,7 @@
 //             </ZoomableGroup>
 //           </ComposableMap>
 
-//           {tooltip && (
+//           {tooltip && tooltip.name && (
 //             <div
 //               className="fixed z-50 pointer-events-none bg-[#12121a]/95 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-4 shadow-2xl min-w-[220px]"
 //               style={{
@@ -182,7 +197,7 @@
 //           )}
 //         </div>
 
-//         {selectedState && (
+//         {selectedState && selectedState.name && (
 //           <div className="w-80 shrink-0 bg-white/[0.03] border border-white/[0.08] rounded-3xl p-6 animate-in slide-in-from-right-5 space-y-5 relative">
 //             <button
 //               onClick={() => setSelectedState(null)}
@@ -230,7 +245,7 @@
 
 
 // client/src/admin/components/Heatmap.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -246,6 +261,7 @@ export default function Heatmap({ stateData: propStateData = [] }) {
   const [tooltip, setTooltip] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const geoLoggedRef = useRef(false);
 
   // Create flexible state data map
   const stateDataMap = {};
@@ -269,8 +285,14 @@ export default function Heatmap({ stateData: propStateData = [] }) {
 
   useEffect(() => {
     console.log("📊 Heatmap received state data:", propStateData);
-    console.log("🗺️ State data map created with keys:", Object.keys(stateDataMap).filter((k, i, arr) => arr.indexOf(k) === i).slice(0, 10));
+    console.log("🗺️ State data map keys:", Object.keys(stateDataMap).slice(0, 10));
   }, [propStateData]);
+
+  const getStateName = (geo) => {
+    // The GeoJSON uses 'st_nm' property (lowercase)
+    const geoProps = geo.properties;
+    return geoProps.st_nm || geoProps.ST_NM || geoProps.name || geoProps.NAME || geoProps.state || geoProps.STATE || null;
+  };
 
   const getData = (geoName) => {
     if (!geoName) return null;
@@ -293,13 +315,25 @@ export default function Heatmap({ stateData: propStateData = [] }) {
   };
 
   const handleMouseEnter = (geo, evt) => {
-    const name = geo.properties.ST_NM;
+    const name = getStateName(geo);
     const data = getData(name);
     
     console.log(`🖱️ Hovering: "${name}" | Data found:`, data ? `✅ ${data.totalUsers} users` : "❌ No data");
     
     setTooltip({ name, data });
     setTooltipPos({ x: evt.clientX, y: evt.clientY });
+  };
+
+  const logGeoData = (geographies) => {
+    if (!geoLoggedRef.current && geographies.length > 0) {
+      geoLoggedRef.current = true;
+      const firstGeo = geographies[0];
+      console.log("🗺️ GeoJSON first item properties:", firstGeo.properties);
+      console.log("🗺️ All property keys:", Object.keys(firstGeo.properties));
+      
+      const geoNames = geographies.map(g => getStateName(g));
+      console.log("🗺️ GeoJSON state names:", geoNames);
+    }
   };
 
   return (
@@ -346,14 +380,12 @@ export default function Heatmap({ stateData: propStateData = [] }) {
             <ZoomableGroup zoom={1} minZoom={0.8} maxZoom={4}>
               <Geographies geography={INDIA_TOPO_JSON}>
                 {({ geographies }) => {
-                  // Log GeoJSON state names once for debugging
-                  if (geographies.length > 0) {
-                    const geoNames = geographies.map(g => g.properties.ST_NM);
-                    console.log("🗺️ GeoJSON state names:", geoNames);
-                  }
+                  // Log GeoJSON properties once for debugging (using ref to avoid setState during render)
+                  logGeoData(geographies);
                   
                   return geographies.map((geo) => {
-                    const name = geo.properties.ST_NM;
+                    const name = getStateName(geo);
+                    
                     return (
                       <Geography
                         key={geo.rsmKey}
@@ -386,7 +418,7 @@ export default function Heatmap({ stateData: propStateData = [] }) {
             </ZoomableGroup>
           </ComposableMap>
 
-          {tooltip && (
+          {tooltip && tooltip.name && (
             <div
               className="fixed z-50 pointer-events-none bg-[#12121a]/95 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-4 shadow-2xl min-w-[220px]"
               style={{
@@ -414,7 +446,7 @@ export default function Heatmap({ stateData: propStateData = [] }) {
           )}
         </div>
 
-        {selectedState && (
+        {selectedState && selectedState.name && (
           <div className="w-80 shrink-0 bg-white/[0.03] border border-white/[0.08] rounded-3xl p-6 animate-in slide-in-from-right-5 space-y-5 relative">
             <button
               onClick={() => setSelectedState(null)}

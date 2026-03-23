@@ -1,3 +1,4 @@
+
 // import { useState, useEffect } from "react";
 // import { io } from "socket.io-client";
 // import StatsCard from "../components/StatsCard";
@@ -5,6 +6,7 @@
 // import SkillChart from "../components/SkillChart";
 // import Insights from "../components/Insights";
 // import TrendingSkills from "../components/TrendingSkills";
+// import UserGrowthChart from "../components/UserGrowthChart";
 // import { getAdminStats } from "../../services/adminApi";
 
 // export default function Dashboard() {
@@ -14,31 +16,32 @@
 
 //   const fetchStats = async () => {
 //     try {
+//       console.log("🔄 Fetching admin stats...");
 //       const response = await getAdminStats();
 //       if (response.success) {
+//         console.log("✅ Stats received:", response.data);
 //         setStats(response.data);
 //         setLastUpdated(new Date(response.data.lastUpdated));
 //       }
 //     } catch (error) {
-//       console.error("Failed to fetch stats:", error);
+//       console.error("❌ Failed to fetch stats:", error);
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
 //   useEffect(() => {
-//     // Initial fetch
 //     fetchStats();
 
-//     // Setup WebSocket connection
+//     // WebSocket for real-time updates
 //     const socket = io("http://localhost:8000");
 
 //     socket.on("connect", () => {
-//       console.log("Connected to real-time updates");
+//       console.log("🔌 Connected to real-time updates");
 //     });
 
 //     socket.on("stats-update", () => {
-//       console.log("Stats updated - refreshing...");
+//       console.log("📊 Stats updated - refreshing...");
 //       fetchStats();
 //     });
 
@@ -67,7 +70,7 @@
 //     );
 //   }
 
-//   const topSkill = stats.topSkills[0];
+//   const topSkill = stats.topSkills?.[0];
 
 //   return (
 //     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -122,37 +125,19 @@
 //         />
 //       </div>
 
-//       {/* India Heatmap – Full Width */}
-//       <Heatmap stateData={stats.stateAnalytics} />
+//       {/* India Heatmap */}
+//       <Heatmap stateData={stats.stateAnalytics || []} />
+
+//       {/* User Growth Chart */}
+//       <UserGrowthChart userGrowth={stats.userGrowth || []} />
 
 //       {/* Charts + Side panels */}
 //       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
 //         <div className="xl:col-span-8">
-//           <SkillChart skillsData={stats.topSkills} />
+//           <SkillChart skillsData={stats.topSkills || []} />
 //         </div>
 //         <div className="xl:col-span-4 space-y-8">
-//           <TrendingSkills skills={stats.topSkills} />
-//         </div>
-//       </div>
-
-//       {/* User Growth Chart */}
-//       <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-//         <h3 className="text-xl font-bold text-white mb-4">User Growth (Last 30 Days)</h3>
-//         <div className="h-64 flex items-end gap-2">
-//           {stats.userGrowth.map((day, i) => (
-//             <div key={i} className="flex-1 flex flex-col items-center">
-//               <div
-//                 className="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t"
-//                 style={{
-//                   height: `${(day.count / Math.max(...stats.userGrowth.map(d => d.count))) * 100}%`,
-//                   minHeight: "4px"
-//                 }}
-//               ></div>
-//               <span className="text-xs text-white/40 mt-2">
-//                 {new Date(day._id).getDate()}
-//               </span>
-//             </div>
-//           ))}
+//           <TrendingSkills skills={stats.topSkills || []} />
 //         </div>
 //       </div>
 
@@ -169,8 +154,9 @@ import { io } from "socket.io-client";
 import StatsCard from "../components/StatsCard";
 import Heatmap from "../components/Heatmap";
 import SkillChart from "../components/SkillChart";
-import Insights from "../components/Insights";
 import TrendingSkills from "../components/TrendingSkills";
+import AIInsights from "../components/AIInsights";
+import PolicyRecommender from "../components/PolicyRecommender";
 import UserGrowthChart from "../components/UserGrowthChart";
 import { getAdminStats } from "../../services/adminApi";
 
@@ -296,18 +282,21 @@ export default function Dashboard() {
       {/* User Growth Chart */}
       <UserGrowthChart userGrowth={stats.userGrowth || []} />
 
-      {/* Charts + Side panels */}
+      {/* Skills and Trending */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
         <div className="xl:col-span-8">
           <SkillChart skillsData={stats.topSkills || []} />
         </div>
-        <div className="xl:col-span-4 space-y-8">
+        <div className="xl:col-span-4">
           <TrendingSkills skills={stats.topSkills || []} />
         </div>
       </div>
 
-      {/* Insights */}
-      <Insights stats={stats} />
+      {/* AI Insights */}
+      <AIInsights insights={stats.aiInsights || []} />
+
+      {/* Policy Recommendations */}
+      <PolicyRecommender recommendations={stats.policyRecommendations || []} />
     </div>
   );
 }
