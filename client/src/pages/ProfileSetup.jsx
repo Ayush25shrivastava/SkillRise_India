@@ -11,7 +11,12 @@ import {
   CheckCircle,
   Rocket,
   X,
-  LayoutDashboard
+  LayoutDashboard,
+  Briefcase,
+  Wrench,
+  Code,
+  Sparkles,
+  FileText
 } from "lucide-react";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
@@ -120,67 +125,216 @@ const handleSubmit = async () => {
   });
 
   if (!isEdit) {
+    const roleMap = {
+      student: "Student",
+      professional: "Professional",
+      worker: "Blue-Collar Workforce"
+    };
+
+    const userRole = formData.role || index === 0 ? "student" : index === 1 ? "professional" : "worker";
+    
+    // Calculate profile completion safely
+    const totalFields = Object.keys(formData).length > 2 ? Object.keys(formData).length : 8;
+    const filledFields = Object.values(formData).filter(v => v !== "" && v !== undefined && v !== null).length;
+    const completionPercentage = Math.min(Math.round((filledFields / totalFields) * 100), 100) || 15;
+
+    // Helper to get initials
+    const getInitials = (name) => {
+      if (!name) return "U";
+      return name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+    };
+
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#0f0f1a] to-black text-white relative">
-        
-        {/* SUCCESS NOTIFICATION */}
-        {showSuccess && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
-             <div className="w-full max-w-lg bg-[#0a101f] border border-white/10 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden text-center space-y-8 animate-in zoom-in-95 duration-500">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-600/20 blur-[60px]" />
-                
-                <div className="w-20 h-20 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto">
-                   <Rocket size={40} className="animate-bounce" />
+      <div className="min-h-screen bg-[#0a0a0f] text-white py-12 px-4 relative overflow-y-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
+          
+          {/* HEADER SECTION */}
+          <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-violet-600/10 blur-[80px] rounded-full pointer-events-none" />
+            
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
+              {/* AVATAR */}
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 p-[2px]">
+                  <div className="w-full h-full bg-[#12121a] rounded-full flex items-center justify-center text-3xl font-black tracking-tighter">
+                    {getInitials(formData.name)}
+                  </div>
                 </div>
-
-                <div className="space-y-4">
-                   <h3 className="text-3xl font-black tracking-tight text-white uppercase italic">Profile Initialized!</h3>
-                   <p className="text-white/40 font-medium leading-relaxed">
-                     Your professional vector has been saved. We've updated your recommendations based on your new skills.
-                   </p>
+                <div className="absolute -bottom-2 -right-2 bg-[#12121a] p-1.5 rounded-full border border-white/10">
+                  <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse" />
                 </div>
-
-                <div className="w-full pt-4 space-y-3 px-6">
-                   <Link 
-                     to="/dashboard"
-                     className="w-full py-4 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-400 transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/10"
-                   >
-                     Enter Dashboard
-                     <LayoutDashboard size={16} />
-                 </Link>
-                 <button 
-                   onClick={() => setShowSuccess(false)}
-                   className="w-full py-3.5 bg-white/5 text-white/50 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-white/10 hover:text-white transition-all font-bold border border-white/5"
-                 >
-                   Stay on Profile
-                 </button>
               </div>
-           </div>
-        </div>
-      )}
 
-        <div className="w-[800px] p-6 rounded-3xl bg-white/5 border border-white/10">
-
-          <h2 className="text-2xl font-bold mb-6">Your Profile</h2>
-
-          <div className="grid grid-cols-2 gap-4">
-
-            {Object.entries(formData || {}).map(([key, value]) => (
-              <div key={key} className="bg-white/5 p-3 rounded-xl">
-                <p className="text-gray-400 text-xs">{key}</p>
-                <p>{value || "-"}</p>
+              {/* INFO */}
+              <div className="flex-1">
+                <h1 className="text-3xl font-black tracking-tight mb-1">{formData.name || "Anonymous User"}</h1>
+                <div className="flex flex-wrap items-center gap-3 text-sm font-medium">
+                  <span className="px-3 py-1 bg-violet-500/10 text-violet-400 rounded-full border border-violet-500/20 capitalize flex items-center gap-1.5">
+                    <User size={14} /> {roleMap[userRole] || formData.role}
+                  </span>
+                  {formData.location && (
+                    <span className="flex items-center gap-1.5 text-white/50">
+                      <MapPin size={14} /> {formData.location}
+                    </span>
+                  )}
+                  {formData.phone && (
+                    <span className="flex items-center gap-1.5 text-white/50">
+                      <Phone size={14} /> {formData.phone}
+                    </span>
+                  )}
+                </div>
               </div>
-            ))}
 
+              {/* EDIT BUTTON */}
+              <button
+                onClick={() => setIsEdit(true)}
+                className="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold text-sm transition-all border border-white/10 flex items-center gap-2"
+              >
+                Edit Profile
+              </button>
+            </div>
+
+            {/* PROGRESS BAR */}
+            <div className="mt-8 pt-6 border-t border-white/[0.06]">
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Profile Strength</span>
+                <span className="text-sm font-black text-violet-400">{completionPercentage}%</span>
+              </div>
+              <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-violet-600 to-indigo-400 rounded-full transition-all duration-1000 ease-out"
+                  style={{ width: `${completionPercentage}%` }}
+                />
+              </div>
+            </div>
           </div>
 
-          <button
-            onClick={() => setIsEdit(true)}
-            className="mt-6 w-full bg-yellow-500 py-3 rounded-xl"
-          >
-            Edit Profile
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* LEFT COLUMN - MODULAR CARDS */}
+            <div className="md:col-span-2 space-y-6">
+              
+              {/* EDUCATION & WORK MODULAR ROUTING */}
+              {(userRole === "student" || formData.college || formData.degree) && (
+                <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400"><GraduationCap size={20} /></div>
+                    <h3 className="text-lg font-bold">Education</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-bold text-base text-white/90">{formData.degree || "Degree Not Specified"}</h4>
+                        <p className="text-sm text-white/50">{formData.college || "Institution Not Specified"}</p>
+                      </div>
+                      <span className="px-3 py-1 bg-white/5 rounded-lg text-xs font-bold text-white/60">{formData.year || "Year N/A"}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
+              {(userRole === "professional" || formData.company || formData.role) && (
+                <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-400"><Briefcase size={20} /></div>
+                    <h3 className="text-lg font-bold">Work Experience</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-bold text-base text-white/90">{formData.role || "Role Not Specified"}</h4>
+                        <p className="text-sm text-white/50">{formData.company || "Company Not Specified"}</p>
+                      </div>
+                      <span className="px-3 py-1 bg-white/5 rounded-lg text-xs font-bold text-white/60">{formData.exp ? `${formData.exp} Exp` : "Exp N/A"}</span>
+                    </div>
+                    {formData.salary && (
+                      <div className="mt-4 pt-4 border-t border-white/5">
+                        <p className="text-xs text-white/40 uppercase tracking-wider font-bold mb-1">Current Salary</p>
+                        <p className="text-sm font-medium text-white/80">{formData.salary}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {(userRole === "worker" || formData.skill || formData.work) && (
+                <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-orange-500/10 rounded-lg text-orange-400"><Wrench size={20} /></div>
+                    <h3 className="text-lg font-bold">Trade & Expertise</h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white/5 p-4 rounded-xl">
+                      <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold mb-1">Primary Skill</p>
+                      <p className="font-semibold text-sm">{formData.skill || "Not Specified"}</p>
+                    </div>
+                    <div className="bg-white/5 p-4 rounded-xl">
+                      <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold mb-1">Experience Level</p>
+                      <p className="font-semibold text-sm">{formData.exp || "Not Specified"}</p>
+                    </div>
+                    <div className="bg-white/5 p-4 rounded-xl">
+                      <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold mb-1">Work Type</p>
+                      <p className="font-semibold text-sm">{formData.work || "Not Specified"}</p>
+                    </div>
+                    {formData.tools && (
+                      <div className="bg-white/5 p-4 rounded-xl">
+                        <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold mb-1">Tools & Equip.</p>
+                        <p className="font-semibold text-sm">{formData.tools}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* SKILLS CHIP SECTION */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 bg-pink-500/10 rounded-lg text-pink-400"><Code size={20} /></div>
+                  <h3 className="text-lg font-bold">Key Skills</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.skills ? (
+                    formData.skills.split(",").map((skill, idx) => (
+                      <span key={idx} className="px-4 py-2 bg-[#1a1a2e] border border-white/10 rounded-full text-xs font-semibold text-white/80 hover:border-pink-500/50 hover:text-pink-400 transition-colors cursor-default shadow-sm">
+                        {skill.trim()}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-sm text-white/30 italic">No skills listed yet. Update your profile!</span>
+                  )}
+                </div>
+              </div>
+              
+              {/* GOAL / TARGET */}
+              {formData.goal && (
+                <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-indigo-500/10 rounded-lg text-indigo-400"><Target size={20} /></div>
+                    <h3 className="text-lg font-bold">Career Objective</h3>
+                  </div>
+                  <p className="text-white/70 text-sm leading-relaxed">{formData.goal}</p>
+                </div>
+              )}
+            </div>
+
+            {/* RIGHT COLUMN - SIDEBAR */}
+            <div className="space-y-6">
+              
+              {/* DOCUMENTS */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[24px] p-6 hover:bg-white/[0.03] transition-colors">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-zinc-500/10 rounded-lg text-zinc-400"><FileText size={20} /></div>
+                  <h3 className="text-lg font-bold">Documents</h3>
+                </div>
+                
+                <div className="group cursor-pointer bg-white/5 p-4 rounded-xl border border-white/5 border-dashed hover:border-violet-500/50 hover:bg-violet-500/5 transition-all text-center">
+                  <p className="text-sm font-semibold text-white/70 group-hover:text-violet-400">View Active Resume</p>
+                  <p className="text-[10px] text-white/40 mt-1">Uploaded 2 days ago</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     );

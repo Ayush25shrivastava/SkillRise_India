@@ -104,10 +104,11 @@ const FeatureCard = ({ title, description, icon: Icon, onClick, colorName = "pur
 ───────────────────────────────────────────── */
 const Dashboard = () => {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
   const [selectedFeature, setSelectedFeature] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : {};
+  const username = user?.name || "Mate";
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   
@@ -131,22 +132,7 @@ useEffect(() => {
     { title: "Skill Gap Analysis", description: "Find missing skills for your target role", icon: Binary, path: "/skill-gap", colorName: "cyan" },
   ];
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-    }
-  };
 
-  const removeFile = () => {
-    setSelectedFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const handleChatSubmit = () => {
-    if (!inputValue.trim()) return;
-    navigate("/chatbot", { state: { initialMessage: inputValue.trim() } });
-    setInputValue("");
-  };
 
   return (
     <>
@@ -201,78 +187,13 @@ useEffect(() => {
           </div>
 
           <h1 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
-            Good Evening, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">DeepAI.</span>
+            Good Evening, <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">{username}.</span>
             <br />
             Ready for your next breakthrough?
           </h1>
         </div>
 
-        {/* ── Chat Input ── */}
-        <div className="w-full flex justify-center mt-2">
-          <div className="w-full max-w-3xl relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-blue-500/30 rounded-[28px] blur-xl opacity-30 z-0 transition-opacity duration-1000" />
 
-            <div className="relative z-10 flex flex-col rounded-[24px] bg-[#12121a] backdrop-blur-3xl border border-white/10 shadow-2xl focus-within:border-violet-500/50 focus-within:shadow-[0_8px_50px_rgba(139,92,246,0.2)] transition-all duration-300 overflow-hidden">
-              
-              {/* File Preview block (if file selected) */}
-              {selectedFile && (
-                <div className="flex items-center gap-3 w-full bg-white/[0.02] border-b border-white/[0.05] px-6 py-4 transition-all animate-in fade-in slide-in-from-top-2">
-                  <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center">
-                    <FileText size={20} strokeWidth={2} />
-                  </div>
-                  <div className="flex flex-col flex-1">
-                    <span className="text-sm text-white font-medium truncate">{selectedFile.name}</span>
-                    <span className="text-xs text-white/40 uppercase tracking-widest font-bold">{(selectedFile.size / 1024).toFixed(1)} KB</span>
-                  </div>
-                  <button 
-                    onClick={removeFile}
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white/30 hover:text-white hover:bg-white/10 transition-all"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              )}
-
-              <div className="flex items-center gap-4 px-3 py-3">
-                
-                {/* Left Side: Actions */}
-                <div className="flex items-center gap-2 pl-2">
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group"
-                    title="Attach Resume"
-                  >
-                    <Plus size={20} strokeWidth={2.5} className="group-hover:rotate-90 transition-transform duration-300" />
-                  </button>
-                  <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-                </div>
-
-                <input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleChatSubmit();
-                    }
-                  }}
-                  placeholder="Ask anything, format resume, try a module..."
-                  className="flex-1 bg-transparent text-white text-base font-medium placeholder:text-white/20 outline-none h-14 px-2"
-                />
-
-                {/* Right Side: Send/Voice */}
-                <div className="flex items-center gap-3 pr-2">
-                  <button className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all">
-                    <Mic size={20} strokeWidth={2} />
-                  </button>
-                  <Button variant="primary" size="icon" className="w-12 h-12 rounded-[1.2rem] shadow-none hover:shadow-lg" onClick={handleChatSubmit}>
-                    <ArrowRight size={20} strokeWidth={2.5} />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* ── Modules Grid ── */}
         <div className="flex flex-col items-center gap-5 w-full mt-2">
