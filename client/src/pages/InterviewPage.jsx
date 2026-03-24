@@ -30,7 +30,7 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
 
-const BASE_URL = "http://localhost:5050/api/interview";
+const BASE_URL = import.meta.env.VITE_MOCK_API_URL ? `${import.meta.env.VITE_MOCK_API_URL}/interview` : "http://localhost:5050/api/interview";
 
 // ── Components ──
 

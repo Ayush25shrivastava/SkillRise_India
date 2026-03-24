@@ -149,7 +149,8 @@ export default function VoiceAgent({ interview, onFinished }) {
   }, [interview._id, interview.questions, isDemoMode, stopInterview, toast]);
 
   const getVapiToken = async () => {
-    const res = await fetch("http://localhost:5050/api/vapi/token", {
+    const API_BASE = import.meta.env.VITE_MOCK_API_URL || "http://localhost:5050/api";
+    const res = await fetch(`${API_BASE}/vapi/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

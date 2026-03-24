@@ -36,7 +36,8 @@ router.get(
     // On success, generate token and redirect to frontend with token/role
     const token = req.user.getSignedJwtToken();
     const role = req.user.role;
-    res.redirect(`http://localhost:5173/login?token=${token}&role=${role}`);
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    res.redirect(`${clientUrl}/login?token=${token}&role=${role}`);
   }
 );
 

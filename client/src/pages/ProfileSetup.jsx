@@ -35,7 +35,8 @@ export default function ProfileSetup() {
         return;
       }
 
-    const res = await fetch("http://localhost:8000/api/profile/me", {
+    const API_BASE = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace("/auth", "") : "http://localhost:8000/api";
+    const res = await fetch(`${API_BASE}/profile/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -76,7 +77,8 @@ const handleSubmit = async () => {
   try {
     const token = localStorage.getItem("token");
     console.log("TOKEN:", token);
-    const res = await fetch("http://localhost:8000/api/profile/save", {
+    const API_BASE = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace("/auth", "") : "http://localhost:8000/api";
+    const res = await fetch(`${API_BASE}/profile/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
