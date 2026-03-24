@@ -5,7 +5,6 @@ if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || "dummy_key");
-
 /**
  * PRODUCTION MODEL: gemini-2.5-flash
  * Strict JSON Response Mode Enabled
