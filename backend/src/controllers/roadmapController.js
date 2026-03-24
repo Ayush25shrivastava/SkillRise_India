@@ -1,7 +1,7 @@
 import { buildRoadmapPrompt, buildUpdatePrompt, buildCareerSwitchPrompt } from "../services/promptBuilder.js";
 import { generateRoadmapFromAI } from "../services/aiService.js";
 import { formatRoadmap } from "../services/roadmapFormatter.js";
-import { parseResume } from "../../../resume_analyser/backend/src/services/resumeParser.js";
+import { parseResume } from "../services/resumeParser.js";
 
 export const generateRoadmap = async (req, res) => {
   console.log("📥 Received roadmap request");
