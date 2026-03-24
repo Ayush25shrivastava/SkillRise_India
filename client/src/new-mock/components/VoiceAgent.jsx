@@ -179,7 +179,11 @@ export default function VoiceAgent({ interview, onFinished }) {
       
       vapiRef.current.on("call-start", () => {
         setStatus(CALL_STATUS.ACTIVE);
-        const firstMessage = `Hello. I am Gemini. Let's start the ${interview.role} interview. First topic: ${interview.questions[0] || "Introduction"}`;
+        const isHindi = interview.language?.toLowerCase() === "hindi" || interview.language?.toLowerCase() === "hinglish";
+        const firstMessage = isHindi 
+          ? `नमस्ते। मैं आपका इंटरव्यू ले रही हूँ। चलिए शुरू करते हैं ${interview.role} के लिए। पहला सवाल: ${interview.questions[0] || "अपने बारे में बताएं।"}`
+          : `Hello. I am Gemini. Let's start the ${interview.role} interview. First topic: ${interview.questions[0] || "Introduction"}`;
+        
         const firstEntry = { role: "assistant", content: firstMessage };
         transcriptRef.current = [firstEntry];
         setTranscript([firstEntry]);
@@ -207,11 +211,51 @@ export default function VoiceAgent({ interview, onFinished }) {
 
       vapiRef.current.on("call-end", () => handleEndInterview(transcriptRef.current));
 
-      await vapiRef.current.start({
-        model: { provider: "openai", model: "gpt-4", systemPrompt: "Speak provided text ONLY." },
-        voice: { provider: "11labs", voiceId: "sarah" },
+      const isHindiTrack = interview.language?.toLowerCase() === "hindi" || interview.language?.toLowerCase() === "hinglish";
+
+      const agentConfig = isHindiTrack ? {
+        name: "SkillRise-Hindi-Interviewer",
+        model: { 
+          provider: "openai", 
+          model: "gpt-4", 
+          messages: [
+            { role: "system", content: "आप एक प्रोफेशनल एचआर इंटरव्यूअर हैं। नेचुरल हिंदी और इंग्लिश (Hinglish) में बात करें। प्रोफेशनल और विनम्र रहें।" }
+          ]
+        },
+        voice: { 
+          provider: "11labs", 
+          voiceId: "2zRM7PkgwBPiau2jvVXc",
+          model: "eleven_multilingual_v2" 
+        },
+        transcriber: {
+          provider: "deepgram",
+          model: "nova-2",
+          language: "hi" // Force Hindi detection for better accuracy
+        },
         firstMessage: "",
-      });
+      } : {
+        name: "SkillRise-English-Interviewer",
+        model: { 
+          provider: "openai", 
+          model: "gpt-4", 
+          messages: [
+            { role: "system", content: "You are a professional HR interviewer. Respond naturally in English. Be professional and focused." }
+          ]
+        },
+        voice: { 
+          provider: "11labs", 
+          voiceId: "2zRM7PkgwBPiau2jvVXc",
+          model: "eleven_monolingual_v1" // Faster for pure English
+        },
+        transcriber: {
+          provider: "deepgram",
+          model: "nova-2",
+          language: "en" 
+        },
+        firstMessage: "",
+      };
+
+      await vapiRef.current.start(agentConfig);
 
     } catch (err) {
       console.log("%c🛠️ EMERGENCY DEMO MODE ACTIVATED", "color: #f59e0b; font-weight: bold;");

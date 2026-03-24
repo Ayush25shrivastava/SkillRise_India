@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
  * Strict JSON Response Mode Enabled
  */
 const geminiModel = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
+  model: "gemini-1.5-flash",
   generationConfig: {
     responseMimeType: "application/json"
   }

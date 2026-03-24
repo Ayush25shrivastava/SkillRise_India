@@ -270,3 +270,37 @@ export const deleteInterview = async (req, res, next) => {
     next(error);
   }
 };
+export const generateNextQuestion = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { transcript } = req.body;
+    
+    console.log(`[VAPI] Processing Turn: SessionID=${id}, HistoryLength=${transcript?.length}`);
+
+    if (!id || !transcript) {
+      console.error("[VAPI] Malformed Request: Missing id or transcript");
+      return res.status(400).json({ success: false, message: "Missing required params" });
+    }
+
+    const session = await InterviewSession.findById(id);
+    if (!session) {
+      console.error(`[VAPI] Session Not Found: ${id}`);
+      return res.status(404).json({ success: false, message: "Session Not Found" });
+    }
+
+    // AI Logic Call
+    const { generateNextQuestion: askAI } = await import("../services/geminiService.js");
+    const nextMsg = await askAI(session.role, transcript, session.language || "English");
+
+    if (!nextMsg) {
+      console.warn("[VAPI] AI returned empty response. Self-correcting...");
+      return res.json({ success: true, nextQuestion: "Could you please elaborate on that?" });
+    }
+
+    console.log(`[VAPI] Next Question Sent: "${nextMsg.substring(0, 30)}..."`);
+    res.json({ success: true, nextQuestion: nextMsg });
+  } catch (err) {
+    console.error("❌ [VAPI ERROR]:", err.stack || err.message);
+    res.status(500).json({ success: false, message: "AI generation failed." });
+  }
+};

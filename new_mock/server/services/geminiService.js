@@ -181,3 +181,48 @@ export const evaluateInterview = async (role, questions, answers, language = "En
   }
 };
 
+/**
+ * GENERATE NEXT QUESTION (Conversation Flow)
+ */
+export const generateNextQuestion = async (role, transcript = [], sessionLanguage = "English") => {
+  const isHindiMode = sessionLanguage.toLowerCase() === "hindi" || sessionLanguage.toLowerCase() === "hinglish";
+  
+  const prompt = `
+You are a professional HR Interviewer at SkillRise India.
+Context: Interviewing for a ${role} position.
+
+Full Transcript: ${JSON.stringify(transcript, null, 2)}
+
+INSTRUCTIONS:
+1. **Linguistic Track Enforcement:**
+   - **Current Mode:** ${isHindiMode ? "Hinglish/Hindi" : "English Only"}
+   - If Hindi Mode: Respond in **NATURAL HINGLISH**. Always use Devanagari script for the Hindi parts.
+   - If English Mode: Respond in **CLEAR PROFESSIONAL ENGLISH**.
+
+2. **Conduct Flow:**
+   - Based on the previous transcript, decide the next logical question.
+   - If the interview is complete (at least 3-4 rounds done), output "END_INTERVIEW" as the value of nextQuestion.
+
+3. **Constraints:**
+   - ONE SHORT SENTENCE ONLY.
+   - Return ONLY a JSON object: { "nextQuestion": "the_text_here" }
+
+Return ONLY JSON.
+`;
+
+  try {
+    const rawResult = await withRetry(async () => {
+      const result = await withTimeout(geminiModel.generateContent(prompt), 10000);
+      const response = await result.response;
+      return response.text().trim();
+    });
+
+    const parsed = extractJSON(rawResult);
+    return parsed.nextQuestion || "Could you tell me more about that?";
+  } catch (err) {
+    console.error("❌ [AI SERVICE] Next Question Failure:", err.message);
+    throw err;
+  }
+};
+
+
