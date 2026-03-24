@@ -193,11 +193,6 @@ graph TD
     L <--> C
 ```
 
-### LangGraph Multi-Agent Orchestrator and Vector DB Flow
-
-<img src="screenshots/architecture.png" alt="Multi-Agent Architecture" width="100%"/>
-
-> *Diagram illustrating the LangGraph orchestrator routing queries to specialized agents, fetching context from MongoDB and Pinecone, and generating sub-100ms responses via Llama 3 on Groq.*
 
 ### Service Ports at a Glance
 
@@ -235,7 +230,9 @@ Every interaction refines the user's vector profile. The system learns your pref
 
 ### 2. Agentic Chatbot Architecture
 
-<img src="screenshots/architecture.png" alt="Agentic Chatbot Architecture Flowchart" width="100%"/>
+<div align="center">
+  <img src="screenshots/architecture.png" alt="Agentic Chatbot Architecture Flowchart" width="70%"/>
+</div>
 
 ### 3. Hybrid Memory & Semantic Search
 
