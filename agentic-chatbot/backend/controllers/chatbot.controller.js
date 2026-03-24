@@ -51,8 +51,8 @@ const handleMessage = async (req, res) => {
       semanticContext: context.semanticMatches || [],
       datasetContext: context.datasetMatches || [],
       resumeFilePath: req.file ? req.file.path : null,
-      datasets: [],        // Will be populated by routerAgent
-      retrievedData: {},   // Will be populated by retrieverNode
+      datasets: ["jobs", "skills", "courses", "gov_schemes"], // Enforce all datasets for retriever
+      retrievedData: {},
       // Inject user memory preferences into state for agents to consume
       userPreferences: userPreferences || {}
     };

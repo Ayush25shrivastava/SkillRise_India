@@ -53,17 +53,6 @@ function findMatchingCourses(keywords, maxResults = 6) {
     if (seen.size >= maxResults) break;
   }
 
-  // Fallback: if nothing matched, just grab the first few courses
-  if (seen.size === 0) {
-    for (const course of coursesData) {
-      if (!course || !course.name || !course.link) continue;
-      if (!seen.has(course.link)) {
-        seen.set(course.link, course);
-      }
-      if (seen.size >= maxResults) break;
-    }
-  }
-
   return Array.from(seen.values())
     .slice(0, maxResults)
     .map(c => `- [${c.name}](${c.link})`);
@@ -109,16 +98,6 @@ function findMatchingSchemes(keywords, maxResults = 5) {
     if (seen.size >= maxResults) break;
   }
 
-  // Fallback if no specific topic match
-  if (seen.size === 0) {
-    for (const scheme of govSchemesData) {
-      if (!scheme || !scheme.name || !scheme.link) continue;
-      const key = scheme.name + scheme.link;
-      if (!seen.has(key)) seen.set(key, scheme);
-      if (seen.size >= maxResults) break;
-    }
-  }
-
   return Array.from(seen.values())
     .slice(0, maxResults)
     .map(s => `- [${s.name}](${s.link})`);
@@ -129,23 +108,11 @@ function findMatchingSchemes(keywords, maxResults = 5) {
  * Also incorporates skills already known from state (routerAgent extraction or userProfile).
  */
 function extractKeywordsFromQuery(query, knownSkills = []) {
-  const techTerms = [
-    "java", "python", "javascript", "typescript", "c++", "c#", "go", "rust", "kotlin", "swift",
-    "react", "node", "express", "mongodb", "mysql", "postgresql", "sql", "nosql",
-    "mern", "mean", "next.js", "vue", "angular",
-    "machine learning", "ml", "deep learning", "ai", "nlp", "data science", "data analysis",
-    "cloud", "aws", "azure", "gcp", "devops", "docker", "kubernetes",
-    "dsa", "algorithms", "data structures", "leetcode", "competitive programming",
-    "system design", "microservices", "api", "rest", "graphql",
-    "software engineer", "swe", "backend", "frontend", "fullstack", "full stack",
-    "android", "ios", "mobile", "flutter",
-    "cybersecurity", "blockchain", "web development"
-  ];
-
   const queryLower = (query || "").toLowerCase();
-  const found = techTerms.filter(term => queryLower.includes(term));
-  const combined = [...new Set([...found, ...(knownSkills || []).filter(Boolean).map(s => String(s).toLowerCase())])];
-  return combined.length > 0 ? combined : ["software development"];
+  // Split query into words to use as broad search terms
+  const queryWords = queryLower.split(/\s+/).filter(w => w.length > 3 && !['generate', 'please', 'personalized', 'learning', 'path'].includes(w));
+  const combined = [...new Set([...queryWords, ...(knownSkills || []).filter(Boolean).map(s => String(s).toLowerCase())])];
+  return combined.length > 0 ? combined : ["career", "skills"];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -162,24 +129,8 @@ function assessUserLevel(userContext) {
   return "beginner";
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Helper: Compute confidence level from aggregated data
-// ═══════════════════════════════════════════════════════════════════════════════
-function computeConfidence(finalResponseData) {
-  const matchPct = finalResponseData.skillAnalysis?.matchPercentage;
-  const hasCareer = (finalResponseData.careerRecommendations || []).length > 0;
-  const hasRoadmap = finalResponseData.roadmap && finalResponseData.roadmap.length > 0;
-
-  if (matchPct != null) {
-    if (matchPct >= 70 && hasCareer) return "High";
-    if (matchPct >= 40) return "Medium";
-    return "Low";
-  }
-
-  // Fallback when matchPercentage is not computed
-  if (hasCareer && hasRoadmap) return "Medium";
-  return "Low";
-}
+// Confidence is now determined and explained purely by the LLM in section 10
+// to ensure dynamic reasoning rather than a static string.
 
 /**
  * Response Generator Node for LangGraph
@@ -194,7 +145,7 @@ async function responseGenerator(state) {
   console.log("--- RESPONSE GENERATOR EXECUTION ---");
 
   try {
-    const finalResponseData = state.finalResponse || {};
+    const finalResponseData = state.data || state.finalResponse || {};
     const userQuery = state.userQuery || "";
     const chatHistory = state.chatHistory || [];
     const userProfile = state.userProfile || null;
@@ -202,10 +153,10 @@ async function responseGenerator(state) {
     const retrievedData = state.retrievedData || {};
     const hasStructuredData = Object.keys(finalResponseData).length > 0;
 
+    const leadIntro = state.conversationalIntro || "";
     // ─── Compute dynamic personalization signals ────────────────────────────
     const userLevel = assessUserLevel(userContext);
-    const confidence = computeConfidence(finalResponseData);
-    console.log(`[ResponseGenerator] User Level: ${userLevel}, Confidence: ${confidence}`);
+    console.log(`[ResponseGenerator] User Level: ${userLevel}, Generating full structure...`);
 
     // ─── Build retrieved data context string for prompt injection ────────────
     const hasRetrievedData = Object.keys(retrievedData).length > 0;
@@ -247,11 +198,11 @@ async function responseGenerator(state) {
 
     const coursesSection = matchedCourses.length > 0
       ? matchedCourses.join("\n")
-      : "- [NPTEL Programming in Java](https://nptel.ac.in/courses/106105191) — *NPTEL*\n- [Skill India Web Developer](https://www.skillindiadigital.gov.in) — *Skill India*";
+      : "- [Skill India Digital Courses](https://www.skillindiadigital.gov.in) — *Skill India*";
 
     const schemesSection = matchedSchemes.length > 0
       ? matchedSchemes.join("\n")
-      : "- [FutureSkills Prime](https://futureskillsprime.in/) — *NASSCOM*\n- [Skill India Digital](https://www.skillindiadigital.gov.in/) — *Skill India*";
+      : "- [Skill India Digital Training](https://www.skillindiadigital.gov.in/) — *Skill India*";
 
     // ─── Dynamic personalization instructions ───────────────────────────────
     let personalizationDirective = "";
@@ -331,17 +282,16 @@ Your response MUST use these exact markdown headings (H2 = ##, H3 = ###):
 - The user's existing skills and experience level
 - Retrieved data from the knowledge base
 - How the recommendation aligns with their goals
-- What makes this realistic for their current level — do NOT suggest overqualified roles
 
-## 3. Recommended Career / Direction
-*(Top 1–2 career options with a brief justification for each. Reference actual data where available.)*
+## 3. Recommended Career Paths
+*(Top 1–2 career options with a brief justification for each)*
 
 ## 4. Skill Gap Analysis
-*(Split into two clear subsections:)*
-### What You Already Have
-- bullet list of existing skills that match
-### What You Need to Learn
-- bullet list of missing skills, in priority order
+*(Split into two clear subsections based on the data provided:)*
+### Core Skills (Must-Have)
+- [Skill Name] - Priority: High
+### Supporting Skills (Good-to-Have)
+- [Skill Name] - Priority: Medium/Low
 
 ## 5. Roadmap
 ### Step 1: [Title]
@@ -350,14 +300,12 @@ Your response MUST use these exact markdown headings (H2 = ##, H3 = ###):
 - bullet points
 ### Step 3: [Title]
 - bullet points
-*(Use as many steps as necessary — be specific, not vague)*
 
-## 6. Courses & Government Schemes
-*(You MUST list ALL courses and schemes provided below as clickable markdown links. Do NOT skip any. Format: [Name](URL))*
+## 6. Courses & Schemes
+*(You MUST list ALL courses and schemes provided below as clickable markdown links. Format: [Name](URL))*
 
-## 7. Suggested Projects
+## 7. Projects
 - 2–3 relevant project ideas that match the user's level and target role
-- Each should be clearly achievable as a portfolio piece
 
 ## 8. Timeline
 *(Realistic week-by-week or month-by-month plan tailored to the user's experience level)*
@@ -365,20 +313,16 @@ Your response MUST use these exact markdown headings (H2 = ##, H3 = ###):
 ## 9. Next Steps
 *(3–5 concrete, immediately actionable tasks the user can start today)*
 
-## 10. Confidence Level
-*(State: High / Medium / Low based on skill match quality)*
-Current Assessment: **${confidence}** (Skill match: ${finalResponseData.skillAnalysis?.matchPercentage ?? 'N/A'}%)
+## 10. Confidence Explanation
+*(Crucial Rule: DO NOT just output "Low/Medium/High". Instead, actively explain WHY confidence in their job readiness is at that level based on their current skill gap. Suggest exactly how to improve this confidence status. Example: "You are starting from scratch, so confidence is low, but with 3-6 months of training, you will be job-ready".)*
 
 ---
 
 ## Formatting Rules
 - Use markdown headings (##, ###) — REQUIRED
-- Use bullet points, NOT paragraphs
-- Keep all explanations short and actionable
-- Do NOT write any prose paragraphs — only bullets and headings
+- Maintain clean formatting and avoid repetition. Ensure a smooth transition into this structured output.
 - Every course and scheme MUST appear as a formatted link: [Name](URL)
-- Do NOT invent courses or schemes — ONLY use the ones provided below
-- Start directly with ## 1. Quick Answer — no preamble
+- Start directly with ## 1. Quick Answer — no preamble. I will attach the preamble myself.
 
 ---
 
@@ -455,7 +399,11 @@ Now generate the complete structured response following the format above exactly
     }
 
     cache.set(cacheKey, responseContent, cache.TTL.RESPONSE);
-    return { conversationalResponse: responseContent };
+
+    // Prepend the deeply conversational LeadAgent intro to the final structured response
+    const finalRenderedText = leadIntro ? `${leadIntro}\n\n---\n\n${responseContent}` : responseContent;
+
+    return { conversationalResponse: finalRenderedText };
 
   } catch (error) {
     console.error("[ResponseGenerator] Error:", error.message);

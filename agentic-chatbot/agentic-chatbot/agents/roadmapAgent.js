@@ -22,13 +22,10 @@ async function roadMapAgent(state) {
   try {
     const targetRole = state.userContext?.targetRole || state.data?.targetRole || state.targetRole;
     
-    // missingSkills usually comes from skillAnalysis
-    const skillAnalysis = state.data?.skillAnalysis || state.skillAnalysis || state.skillMatchResult || {};
-    const missingSkills = Array.isArray(skillAnalysis.missingSkills) 
-      ? skillAnalysis.missingSkills 
-      : Array.isArray(skillAnalysis.skillGaps) 
-        ? skillAnalysis.skillGaps 
-        : [];
+    const skillAnalysis = state.data?.skillAnalysis || {};
+    const coreSkills = Array.isArray(skillAnalysis.coreSkillsToLearn) ? skillAnalysis.coreSkillsToLearn.map(s => s.skill || s) : [];
+    const supportingSkills = Array.isArray(skillAnalysis.supportingSkillsToLearn) ? skillAnalysis.supportingSkillsToLearn.map(s => s.skill || s) : [];
+    const missingSkills = [...coreSkills, ...supportingSkills];
 
     if (!targetRole) {
       console.warn("[RoadMapAgent] Warning: No targetRole specified in state.");

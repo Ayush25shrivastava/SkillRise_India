@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from "react";
 import { useLocation } from "react-router-dom";
-import { Send, User, Bot, Paperclip, X, Copy, Check, MessageSquare, Briefcase, Code, Sparkles, FileText, ArrowUp } from "lucide-react";
+import { Send, User, Bot, Paperclip, X, Copy, Check, MessageSquare, Briefcase, Code, Sparkles, FileText, ArrowUp, Plus, History } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -294,10 +294,84 @@ const ChatUI = () => {
   const [loadingText, setLoadingText] = useState("");
   const [threadId, setThreadId] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [localSessionId, setLocalSessionId] = useState(() => Date.now().toString());
 
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
+
+  // Load history on mount
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem('skillrise_chat_history') || '[]');
+    setChatHistory(saved);
+    const activeId = localStorage.getItem('skillrise_active_thread');
+    if (activeId) {
+      const activeChat = saved.find(c => c.id === activeId);
+      if (activeChat) {
+        setMessages(activeChat.messages || []);
+        setThreadId(activeChat.id.length === 24 ? activeChat.id : null);
+        setLocalSessionId(activeChat.id);
+      }
+    }
+  }, []);
+
+  // Sync session ID
+  useEffect(() => {
+    if (threadId) {
+      setLocalSessionId(threadId);
+    }
+  }, [threadId]);
+
+  // Persist history automatically
+  useEffect(() => {
+    if (messages.length === 0) return;
+    if (messages[messages.length - 1].isStreaming) return; // skip saving partial chunks
+
+    setChatHistory(prev => {
+      let newHistory = [...prev];
+      const currentId = threadId || localSessionId;
+      const existingIdx = newHistory.findIndex(c => c.id === currentId || c.id === localSessionId);
+      
+      const firstUserMsg = messages.find(m => m.role === "user")?.content || "New Chat";
+      const title = firstUserMsg.slice(0, 25) + (firstUserMsg.length > 25 ? "..." : "");
+
+      const chatObj = {
+        id: currentId,
+        title,
+        messages,
+        updatedAt: new Date().toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+
+      if (existingIdx >= 0) {
+        newHistory[existingIdx] = chatObj;
+      } else {
+        newHistory.unshift(chatObj);
+      }
+
+      newHistory = newHistory.slice(0, 5); // Keep last 5
+      localStorage.setItem('skillrise_chat_history', JSON.stringify(newHistory));
+      localStorage.setItem('skillrise_active_thread', chatObj.id);
+      return newHistory;
+    });
+  }, [messages, threadId, localSessionId]);
+
+  const startNewChat = useCallback(() => {
+    setMessages([]);
+    setThreadId(null);
+    setLocalSessionId(Date.now().toString());
+    localStorage.removeItem('skillrise_active_thread');
+  }, []);
+
+  const loadChat = useCallback((chatId) => {
+    const chat = chatHistory.find(c => c.id === chatId);
+    if (chat) {
+      setMessages(chat.messages);
+      setThreadId(chat.id.length === 24 ? chat.id : null);
+      setLocalSessionId(chat.id);
+      localStorage.setItem('skillrise_active_thread', chat.id);
+    }
+  }, [chatHistory]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -504,17 +578,70 @@ const ChatUI = () => {
       {/* Scoped animation keyframe */}
       <style>{`@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 
-      <div className="flex flex-col w-full h-[calc(100vh-135px)] bg-[#0a0a0f] border border-white/[0.06] rounded-[1.5rem] overflow-hidden">
+      <div className="flex w-full h-[calc(100vh-135px)] gap-4">
+        
+        {/* ── Sidebar (Recent Chats) ────────────────────────────────────── */}
+        <div className="hidden lg:flex w-[260px] shrink-0 h-full bg-[#0a0a0f] border border-white/[0.06] rounded-[1.5rem] flex-col overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.04] bg-[#0a0a0f]">
+            <div className="flex items-center gap-2 text-white/90">
+              <History size={16} className="text-purple-400/70" />
+              <h3 className="font-semibold text-[13px] tracking-wide">Recent Chats</h3>
+            </div>
+            <button
+              onClick={startNewChat}
+              className="w-7 h-7 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+              title="New Chat"
+            >
+              <Plus size={15} />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-3 space-y-1.5 custom-scroll">
+            {chatHistory.length === 0 ? (
+              <p className="text-[12px] text-white/30 text-center mt-6 font-medium">No recent chats</p>
+            ) : (
+              chatHistory.map((chat) => (
+                <button
+                  key={chat.id}
+                  onClick={() => loadChat(chat.id)}
+                  className={`w-full text-left px-3.5 py-3 rounded-xl transition-all flex flex-col gap-1 border border-transparent ${
+                    (threadId || localSessionId) === chat.id 
+                      ? "bg-white/[0.06] border-white/[0.05] shadow-sm text-purple-300" 
+                      : "text-white/50 hover:bg-white/[0.03] hover:text-white/80"
+                  }`}
+                >
+                  <div className={`text-[13px] font-semibold truncate ${
+                    (threadId || localSessionId) === chat.id ? "text-purple-300" : "text-white/80"
+                  }`}>
+                    {chat.title}
+                  </div>
+                  <div className="text-[10px] text-white/30 tracking-wide">{chat.updatedAt}</div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* ── Main Chat Area ────────────────────────────────────────────── */}
+        <div className="flex flex-col flex-1 h-full bg-[#0a0a0f] border border-white/[0.06] rounded-[1.5rem] overflow-hidden relative">
 
         {/* ── Header ────────────────────────────────────────────────────── */}
-        <div className="flex items-center gap-3 px-6 py-3.5 border-b border-white/[0.04] bg-[#0a0a0f]">
-          <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-purple-400/60">
-            <Sparkles size={16} />
+        <div className="flex justify-between items-center px-6 py-3.5 border-b border-white/[0.04] bg-[#0a0a0f]">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-purple-400/60">
+              <Sparkles size={16} />
+            </div>
+            <div>
+              <h2 className="text-white/90 font-semibold text-[15px] leading-tight tracking-tight">Career Assistant</h2>
+              <p className="text-[11px] text-white/30 font-medium mt-0.5">AI-powered guidance</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-white/90 font-semibold text-[15px] leading-tight tracking-tight">Career Assistant</h2>
-            <p className="text-[11px] text-white/30 font-medium mt-0.5">AI-powered guidance</p>
-          </div>
+          <button
+            onClick={startNewChat}
+            className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/5 text-white/70"
+            title="New Chat"
+          >
+            <Plus size={15} />
+          </button>
         </div>
 
         {/* ── Messages ──────────────────────────────────────────────────── */}
@@ -570,6 +697,7 @@ const ChatUI = () => {
           fileInputRef={fileInputRef}
           textareaRef={textareaRef}
         />
+        </div>
       </div>
     </>
   );

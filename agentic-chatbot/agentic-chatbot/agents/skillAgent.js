@@ -1,132 +1,74 @@
-// Skill Agent
-// Handles skill assessment and recommendations by interacting with the skillMatcher tool
-// and updating the LangGraph state.
-// UPGRADED: Refines skill matching with full profile and retrieved data through LLM reasoning.
-
-const { matchSkills } = require('../mcp-tools/skillMatcher');
 const { createLLM } = require("../utils/llmFactory");
-const getAgentPrompt = require("../prompts/agentPrompt");
+const { PromptTemplate } = require("@langchain/core/prompts");
 
-/**
- * Skill Agent Node for LangGraph
- * Passes centralized retrievedData into skillMatcher to avoid redundant Pinecone queries.
- * Refines the tool output using profile-aware full context LLM.
- * 
- * @param {Object} state - The current state of the LangGraph workflow
- * @returns {Object} State updates with strict JSON
- */
 const skillAgent = async (state) => {
-  console.log("--- SKILL AGENT EXECUTION ---");
-  
+  console.log("--- SKILL GAP AGENT EXECUTION ---");
   try {
-    const userSkills = state.userContext?.skills || state.data?.userSkills || [];
-    const targetRole = state.userContext?.targetRole || state.data?.targetRole || null;
-    
-    console.log(`[SkillAgent] Analyzing skills... Target Role preference: ${targetRole || 'Not specified'}`);
-
-    if (!userSkills || userSkills.length === 0) {
-      console.warn("[SkillAgent] Warning: No user skills found.");
-      return {
-        status: "error",
-        error: {
-          agent: "skillAgent",
-          message: "User skills missing"
-        }
-      };
-    }
-
-    // Extract centralized retrieved context (merge jobs + skills for richer context)
+    const userSkills = state.userProfile?.skills || state.userContext?.skills || state.data?.userSkills || [];
+    const targetRole = state.userQuery || state.userProfile?.targetRole || "Career Role";
     const retrievedJobs = state.retrievedData?.jobs || [];
     const retrievedSkills = state.retrievedData?.skills || [];
     const externalContext = [...retrievedJobs, ...retrievedSkills];
 
-    // Pass external context into skillMatcher — tool will skip its own Pinecone query
-    const matcherResult = await matchSkills(userSkills, externalContext.length > 0 ? externalContext : null);
+    const promptTemplate = PromptTemplate.fromTemplate(`
+Your objective is to conduct a highly intelligent Skill Gap Analysis for the user trying to enter the target role: "{targetRole}".
 
-    if (matcherResult && matcherResult.status === "error") {
-      return {
-        status: "error",
-        error: {
-          agent: "skillAgent",
-          message: matcherResult.message
-        }
-      };
-    }
+User's explicitly known skills: {userSkills}
+(Crucial Rule: If the user currently has NO skills listed above, you MUST assume they are an absolute beginner. You must NEVER output "None specified". Instead, identify the foundational basic skills they need to acquire first to even start).
 
-    console.log("[SkillAgent] Skill gap analysis tool run completed.");
+Industry Data Context (Retrieved DB matching): {externalContext}
+
+Analyze the user's gap using your LLM reasoning logic.
+Provide a JSON strictly using this format:
+{{
+  "skillAnalysis": {{
+    "coreSkillsToLearn": [
+       {{ "skill": "...", "priority": "High" }},
+       {{ "skill": "...", "priority": "High" }}
+    ],
+    "supportingSkillsToLearn": [
+       {{ "skill": "...", "priority": "Medium" }},
+       {{ "skill": "...", "priority": "Low" }}
+    ],
+    "targetRole": "{targetRole}"
+  }},
+  "refinedInsights": "A 1-2 sentence targeted summary of why these gaps matter."
+}}
+
+Rank skills strictly based on importance for absolute job readiness. If they have no skills, prioritize foundational concepts (e.g. computer literacy, math, basic communication, etc. if blue-collar/grey-collar).
+    `);
+
+    const prompt = await promptTemplate.format({
+      targetRole,
+      userSkills: userSkills.length ? userSkills.join(", ") : "[] (NO SKILLS EXPLICITLY PROVIDED)",
+      externalContext: JSON.stringify(externalContext.slice(0, 3)) // keep it light for context limits
+    });
+
+    const llm = createLLM({ temperature: 0.3, caller: "skillAgent" });
+    const response = await llm.invoke(prompt);
     
-    const analysisData = matcherResult?.data?.analysis || {};
-    const vectorMatches = matcherResult?.data?.vectorMatches || [];
-
-    const toolOutput = {
-      skillAnalysis: analysisData,
-      vectorMatches: vectorMatches,
-      targetRole: targetRole || analysisData.targetRole || "Unknown Role"
-    };
-
-    // ─── Step 2: LLM Reasoning Layer with FULL CONTEXT ────────────────────
-    try {
-      console.log(`[SkillAgent] Running full personalization reasoning layer...`);
-
-      const agentSpecificTask = `
-Your specific objective is to merge the following tool output with the user's FULL context.
-Analyze the user's skills against retrieved jobs. Specifically perform: missingSkills = requiredSkills (from jobs) - userSkills (from profile).
-Return ONLY valid JSON with this exact structure:
-{
-  "skillAnalysis": {
-    "userSkills": [...],
-    "missingSkills": [...],
-    "skillGaps": [...],
-    "priority": [...],
-    "targetRole": "..."
-  },
-  "refinedInsights": "A targeted summary of WHY these specific skill gaps matter for their profile goals."
-}
-
-EXISTING TOOL OUTPUT TO REFINE:
-${JSON.stringify(toolOutput, null, 2)}
-`;
-
-      const finalPrompt = getAgentPrompt(state, agentSpecificTask);
-
-      const llm = createLLM({ temperature: 0.3, caller: "skillAgent" });
-      const response = await llm.invoke(finalPrompt);
-      const text = response.content || "";
-
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const refined = JSON.parse(jsonMatch[0]);
-        console.log("[SkillAgent] Context-aware reasoning successful.");
-        return {
-          status: "success",
-          source: `${matcherResult?.source || "skillMatcher"}, reasoning: LLM(full_context)`,
-          reasoning: refined.refinedInsights || "Refined skill analysis using full user context.",
-          data: {
-            skillAnalysis: refined.skillAnalysis || analysisData,
-            vectorMatches: vectorMatches,
-            targetRole: refined.skillAnalysis?.targetRole || targetRole
-          }
-        };
-      }
-    } catch (refineErr) {
-      console.warn(`[SkillAgent] Reasoning layer failed (${refineErr.message}). Falling back to tool output.`);
+    // Parse JSON
+    let parsedData = {};
+    const text = response.content || "";
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        parsedData = JSON.parse(jsonMatch[0]);
+      } catch(e) { console.error("JSON Parse Error in SkillAgent"); }
     }
 
     return {
-      status: "success",
-      source: matcherResult?.source || "skillMatcher",
-      reasoning: "Successfully matched user skills and generated a skill gap analysis.",
-      data: toolOutput
+      data: {
+        skillAnalysis: parsedData.skillAnalysis || {}
+      },
+      reasoning: parsedData.refinedInsights || "Analyzed core vs supporting skills based on requirement gaps."
     };
 
   } catch (error) {
-    console.error("[SkillAgent] Encountered an error:", error);
-    
+    console.error("[SkillAgent] Error:", error);
     return {
-      status: "error",
-      error: {
-        agent: "skillAgent",
-        message: error.message
+      data: {
+        skillAnalysis: { coreSkillsToLearn: [], supportingSkillsToLearn: [] }
       }
     };
   }
