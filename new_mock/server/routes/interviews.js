@@ -7,7 +7,9 @@ import {
   getStats,
   updateInterview,
   deleteInterview,
-  generateFeedback
+  generateFeedback,
+  generateNextQuestion,
+  generateQuestions
 } from "../controllers/interviewController.js";
 import { protect } from "../middleware/auth.js";
 
@@ -18,10 +20,12 @@ router.use(protect); // Secure all production routes
 // Refactored to match user specification
 router.post("/create", createInterviewSession);
 router.post("/submit", submitInterviewSession);
+router.post("/generate-questions", generateQuestions);
 router.get("/", getInterviews);
 router.get("/stats", getStats);
 router.get("/:id", getInterview);
 router.post("/:id/generate-feedback", generateFeedback);
+router.post("/:id/next-question", generateNextQuestion);
 router.put("/:id", updateInterview);
 router.delete("/:id", deleteInterview);
 

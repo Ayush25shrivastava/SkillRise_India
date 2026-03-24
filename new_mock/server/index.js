@@ -11,7 +11,6 @@ import errorHandler from "./middleware/error.js";
 // Route imports
 import authRoutes from "./routes/auth.js";
 import interviewRoutes from "./routes/interviews.js";
-import vapiRoutes from "./routes/vapi.js";
 
 // Connect to MongoDB
 connectDB();
@@ -45,7 +44,6 @@ app.use("/api/", limiter);
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/interviews", interviewRoutes);
-app.use("/api/vapi", vapiRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
@@ -61,7 +59,5 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log("VAPI KEY:", process.env.VAPI_PRIVATE_KEY || process.env.VAPI_API_KEY);
   console.log(`📡 API: http://localhost:${PORT}/api`);
-  console.log("✅ Vapi Secure Proxy Active");
 });

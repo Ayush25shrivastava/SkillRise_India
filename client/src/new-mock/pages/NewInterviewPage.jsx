@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { interviewAPI, vapiAPI } from "../api";
+import { interviewAPI } from "../api";
 import { useToast } from "../components/ui/Toast";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
@@ -61,7 +61,7 @@ export default function NewInterviewPage() {
   const generateQuestions = async () => {
     setGeneratingQ(true);
     try {
-      const { data } = await vapiAPI.generateQuestions({
+      const { data } = await interviewAPI.generateQuestions({
         userCategory: form.userCategory,
         role: form.role,
         type: form.type,

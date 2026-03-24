@@ -9,11 +9,13 @@ const templateSchema = new mongoose.Schema({
   techStack: { type: String, required: true },
   difficulty: { type: String, required: true },
   language: { type: String, default: "English" }, // 🌍 Multilingual support
+  category: { type: String }, // blue-collar or white-collar
+  version: { type: String, default: "v2" }, // Cache versioning
   questions: [String],
   createdAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-templateSchema.index({ role: 1, techStack: 1, difficulty: 1, language: 1 }, { unique: true });
+templateSchema.index({ role: 1, techStack: 1, difficulty: 1, language: 1, version: 1 }, { unique: true });
 
 /**
  * SessionSchema: Tracks a specific user's attempt at an interview
@@ -43,6 +45,13 @@ const sessionSchema = new mongoose.Schema({
     strengths: [String],
     weaknesses: [String],
     suggestions: [String],
+    categoryBreakdown: {
+      communication: Number,
+      practicalKnowledge: Number,
+      confidence: Number,
+      safety: Number,
+      problemSolving: Number
+    },
     questionFeedback: [
       {
         question: String,

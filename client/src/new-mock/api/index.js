@@ -44,12 +44,7 @@ export const interviewAPI = {
   generateFeedback: (id) => api.post(`/interviews/${id}/generate-feedback`),
   generateNextQuestion: (id, transcript) => api.post(`/interviews/${id}/next-question`, { transcript }),
   getStats: () => api.get("/interviews/stats"),
-};
-
-// VAPI
-export const vapiAPI = {
-  getToken: (data) => api.post("/vapi/token", data),
-  generateQuestions: (data) => api.post("/vapi/generate-questions", data),
+  generateQuestions: (data) => api.post("/interviews/generate-questions", data),
 };
 
 export default api;

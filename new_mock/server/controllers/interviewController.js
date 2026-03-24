@@ -1,6 +1,24 @@
+import mongoose from "mongoose";
 import { InterviewTemplate, InterviewSession } from "../models/Interview.js";
-import { generateQuestions, evaluateInterview } from "../services/geminiService.js";
+import { generateQuestions as generateQuestionsFromAI, evaluateInterview, generateNextDynamicQuestion } from "../services/geminiService.js";
 import fallbacks from "../utils/fallbacks.js";
+
+function enrichContext(userProfile, role) {
+  const detectCategory = (r) => {
+    const blueCollarRoles = ["electrician", "plumber", "driver", "warehouse", "delivery", "operator", "mechanic"];
+    const rLower = (r || "").toLowerCase();
+    return blueCollarRoles.some(bc => rLower.includes(bc)) ? "blue-collar" : "white-collar";
+  };
+  return {
+    role,
+    category: detectCategory(role),
+    experienceLevel: userProfile?.experience || "beginner",
+    skills: userProfile?.skills || [],
+    education: userProfile?.education || "Not specified",
+    preferredLanguage: userProfile?.language || "English",
+    workType: userProfile?.workType || "office"
+  };
+}
 
 /**
  * ⚡ CREATE INTERVIEW (Call #1)
@@ -47,12 +65,26 @@ export const createInterviewSession = async (req, res, next) => {
 
     const userId = req.user?.id || "6673f0000000000000000000";
 
-    // 3. Caching Step
+    // 2.5 Fetch Profile & Enrich Context safely
+    let rawProfile = {};
+    try {
+      if (mongoose.Types.ObjectId.isValid(userId)) {
+        rawProfile = await mongoose.connection.collection("profiles").findOne({ user: new mongoose.Types.ObjectId(userId) });
+        if (rawProfile && rawProfile.data) {
+          rawProfile = rawProfile.data; // Sankalp-int stores data inside .data
+        }
+      }
+    } catch (e) { console.warn("Could not fetch profile", e.message); }
+    
+    const enrichedContext = enrichContext(rawProfile, role);
+
+    // 3. Caching Step (use 'v2' version string to bounce old cache)
     let template = await InterviewTemplate.findOne({
       role: role.trim(),
       techStack,
       difficulty,
-      language, // 🌍 Include language in cache key
+      language,
+      version: "v2"
     });
 
     if (!template) {
@@ -60,12 +92,14 @@ export const createInterviewSession = async (req, res, next) => {
       try {
         const questions = preGeneratedQuestions?.length > 0
           ? preGeneratedQuestions
-          : await generateQuestions(role, techStack, difficulty, interviewType, 5, language);
+          : await generateQuestions(enrichedContext, techStack, difficulty, interviewType, 5, language);
         template = await InterviewTemplate.create({
           role: role.trim(),
           techStack,
           difficulty,
           language, // 🌍 Save language in cache
+          version: "v2",
+          category: enrichedContext.category,
           questions,
         });
       } catch (err) {
@@ -191,6 +225,28 @@ export const generateFeedback = async (req, res, next) => {
   }
 };
 
+export const generateNextQuestion = async (req, res, next) => {
+  try {
+    const { transcript } = req.body;
+    const session = await InterviewSession.findOne({ _id: req.params.id, userId: req.user.id });
+    
+    if (!session) {
+      return res.status(404).json({ success: false, message: "Interview Session not found." });
+    }
+
+    try {
+      const nextQuestion = await generateNextDynamicQuestion(session.role, transcript, session.language || "English");
+      res.json({ success: true, nextQuestion });
+    } catch (err) {
+      console.error("❌ Next Question Generation Failed", err);
+      // Failsafe string
+      res.json({ success: true, nextQuestion: "Could you tell me more about your recent project experience?" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getInterviews = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -266,6 +322,43 @@ export const deleteInterview = async (req, res, next) => {
     const result = await InterviewSession.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
     if (!result) return res.status(404).json({ success: false, message: "Interview not found" });
     res.json({ success: true, message: "Interview deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const generateQuestions = async (req, res, next) => {
+  try {
+    const { role, level, techstack, type = "technical", language = "English", amount = 10 } = req.body;
+
+    const techString = (Array.isArray(techstack) ? techstack.sort().join(", ") : techstack) || "General";
+    
+    let template = await InterviewTemplate.findOne({
+      role: role.trim(),
+      difficulty: level,
+      techStack: techString,
+      language,
+    });
+
+    if (template) {
+      return res.json({ success: true, questions: template.questions.slice(0, amount) });
+    }
+
+    try {
+      const { generateQuestions: callAiToGenerate } = await import('../services/geminiService.js');
+      const questions = await callAiToGenerate(role, techString, level, type, amount, language);
+      await InterviewTemplate.create({
+        role: role.trim(),
+        difficulty: level,
+        techStack: techString,
+        language,
+        questions,
+      });
+      res.json({ success: true, questions: questions.slice(0, amount) });
+    } catch (aiErr) {
+      const backup = fallbacks[role.toLowerCase()] || fallbacks.fullstack;
+      res.json({ success: true, questions: backup.slice(0, amount) });
+    }
   } catch (error) {
     next(error);
   }
